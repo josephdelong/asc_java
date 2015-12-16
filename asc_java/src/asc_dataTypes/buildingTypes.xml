@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildingTypes>
+	<buildingType>
+		<id>1</id>
+		<name>Town Center</name>
+		<offense>1</offense>
+		<defense>5</defense>
+		<woodCost>0</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>0</goldCost>
+		<special>true</special>
+		<imageId>1</imageId>
+		<maxOccupants>10</maxOccupants>
+		<maxGarrisoned>3</maxGarrisoned>
+		<description>The Town Center is the heart of any City. It provides citizens a place to gather in times of peril and celebration, both. The Town Center is vital to the governance of the City proper and serves as the City marketplace, where all citizens bring their work goods to sell. All goods procured through the Town Center add to the prosperity and value of the entire City.</description>
+	</buildingType>
+	<buildingType>
+		<id>2</id>
+		<name>Farm</name>
+		<offense>0</offense>
+		<defense>1</defense>
+		<woodCost>5</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>150</goldCost>
+		<special>false</special>
+		<imageId>2</imageId>
+		<maxOccupants>3</maxOccupants>
+		<maxGarrisoned>1</maxGarrisoned>
+		<description>The Farm fuels a City’s growth and expansion. It provides Food to be used for Unit purchases and citizen growth. Without Farms, a City cannot properly grow and increase its population.</description>
+	</buildingType>
+	<buildingType>
+		<id>3</id>
+		<name>Mine</name>
+		<offense>0</offense>
+		<defense>2</defense>
+		<woodCost>5</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>200</goldCost>
+		<special>false</special>
+		<imageId>3</imageId>
+		<maxOccupants>3</maxOccupants>
+		<maxGarrisoned>1</maxGarrisoned>
+		<description>The Mine is a bountiful resource which can be worked to provide your City with Stone, Iron and, occasionally, Gems.</description>
+	</buildingType>
+	<buildingType>
+		<id>4</id>
+		<name>Lumber Mill</name>
+		<offense>0</offense>
+		<defense>1</defense>
+		<woodCost>5</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>200</goldCost>
+		<special>false</special>
+		<imageId>4</imageId>
+		<maxOccupants>3</maxOccupants>
+		<maxGarrisoned>1</maxGarrisoned>
+		<description>The Lumber Mill provides Wood to your City, which can be used to purchase other Buildings or Units. It is an invaluable addition to any City.</description>
+	</buildingType>
+	<buildingType>
+		<id>5</id>
+		<name>Granary</name>
+		<offense>0</offense>
+		<defense>2</defense>
+		<woodCost>5</woodCost>
+		<stoneCost>5</stoneCost>
+		<goldCost>200</goldCost>
+		<special>false</special>
+		<imageId>5</imageId>
+		<maxOccupants>3</maxOccupants>
+		<maxGarrisoned>1</maxGarrisoned>
+		<description>The Granary provides your City with a wealth of Food, which enables you to grow your Population and purchase Units. A strong, lasting Civilization’s bread and butter.</description>
+	</buildingType>
+	<buildingType>
+		<id>6</id>
+		<name>Blacksmith</name>
+		<offense>1</offense>
+		<defense>2</defense>
+		<woodCost>5</woodCost>
+		<stoneCost>5</stoneCost>
+		<goldCost>250</goldCost>
+		<special>false</special>
+		<imageId>6</imageId>
+		<maxOccupants>3</maxOccupants>
+		<maxGarrisoned>1</maxGarrisoned>
+		<description>The Blacksmith is an important materials crafting Building, allowing the smelting and forging of metals. It furnishes your garrison with metal weapons and armor, providing the opportunity to purchase more advanced and hardier Units.</description>
+	</buildingType>
+	<buildingType>
+		<id>7</id>
+		<name>Siege Workshop</name>
+		<offense>1</offense>
+		<defense>2</defense>
+		<woodCost>10</woodCost>
+		<stoneCost>5</stoneCost>
+		<goldCost>250</goldCost>
+		<special>false</special>
+		<imageId>7</imageId>
+		<maxOccupants>4</maxOccupants>
+		<maxGarrisoned>2</maxGarrisoned>
+		<description>The Siege Workshop provides your City with the best of workmanship and engineering when it comes to powerful, efficient weaponry. It unlocks the potential of advanced weaponry, allowing the construction of Catapults, Crossbowman, and the like.</description>
+	</buildingType>
+	<buildingType>
+		<id>8</id>
+		<name>Church</name>
+		<offense>0</offense>
+		<defense>3</defense>
+		<woodCost>10</woodCost>
+		<stoneCost>10</stoneCost>
+		<goldCost>500</goldCost>
+		<special>true</special>
+		<imageId>8</imageId>
+		<maxOccupants>5</maxOccupants>
+		<maxGarrisoned>0</maxGarrisoned>
+		<description>The Church is a sanctuary –a bastion of safety– in the wide, wild world of Appian SimCivi. Here, your City’s citizens can find refuge and comfort from the toils of everyday labor. The Church provides your City a bonus to Happiness, which increases worker productivity, city combat strength, and overall score.</description>
+	</buildingType>
+	<buildingType>
+		<id>9</id>
+		<name>Barracks</name>
+		<offense>2</offense>
+		<defense>3</defense>
+		<woodCost>15</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>300</goldCost>
+		<special>false</special>
+		<imageId>9</imageId>
+		<maxOccupants>10</maxOccupants>
+		<maxGarrisoned>3</maxGarrisoned>
+		<description>The Barracks is where all melee Units go to receive basic training. It strengthens your City’s fighting ability and provides housing for your combat Units. The Barracks allows for the purchase of intermediate-level melee Units, including the Swordsman.</description>
+	</buildingType>
+	<buildingType>
+		<id>10</id>
+		<name>Archery Range</name>
+		<offense>3</offense>
+		<defense>2</defense>
+		<woodCost>15</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>300</goldCost>
+		<special>false</special>
+		<imageId>10</imageId>
+		<maxOccupants>10</maxOccupants>
+		<maxGarrisoned>3</maxGarrisoned>
+		<description>The Archery Range is to ranged Units what the Barracks is to melee Units. It provides lodging and training for intermediate-level ranged Units including the Bowman, Longbowman, and Crossbowman.</description>
+	</buildingType>
+	<buildingType>
+		<id>11</id>
+		<name>Stable</name>
+		<offense>2</offense>
+		<defense>3</defense>
+		<woodCost>15</woodCost>
+		<stoneCost>0</stoneCost>
+		<goldCost>300</goldCost>
+		<special>false</special>
+		<imageId>11</imageId>
+		<maxOccupants>10</maxOccupants>
+		<maxGarrisoned>3</maxGarrisoned>
+		<description>The Stable is an advanced Unit facility, allowing for the training of mounted Units such as the Horseman, Knight, and Lancer. It provides lodging for these mounted Units and sizable enclosed pens for animal mounts.</description>
+	</buildingType>
+	<buildingType>
+		<id>12</id>
+		<name>Castle</name>
+		<offense>5</offense>
+		<defense>10</defense>
+		<woodCost>25</woodCost>
+		<stoneCost>25</stoneCost>
+		<goldCost>1000</goldCost>
+		<special>true</special>
+		<imageId>12</imageId>
+		<maxOccupants>15</maxOccupants>
+		<maxGarrisoned>5</maxGarrisoned>
+		<description>The Castle is a stalwart stronghold which bolsters your City’s combat strength and serves as headquarters and strategic planning center for your City garrison. It is the lofty seat of your City’s governing council and last refuge in times of great peril.</description>
+	</buildingType>
+</buildingTypes>
