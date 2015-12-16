@@ -3,6 +3,7 @@
  */
 package asc_dataTypes;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -24,42 +25,45 @@ public class Building {
 	private int offense;
 	private int upgrade;
 	private boolean special;
-	private int image;
+	private File image;
 	private ArrayList<Integer> occupants;
 	private ArrayList<Integer> garrisonedUnits;
 	private int productionType;
+	private ArrayList<Integer> requiredBuildings;
 
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
 	public Building() {
-		this.id = 0;
-		this.buildingType = 0;
-		this.name = "";
-		this.city = 0;
-		this.location = 0;
-		this.defense = 0;
-		this.offense = 0;
-		this.upgrade = 0;
-		this.special = false;
-		this.image = 0;
-		this.occupants = new ArrayList<Integer>();
-		this.garrisonedUnits = new ArrayList<Integer>();
-		this.productionType = 0;
+		setId(0);
+		setBuildingType(0);
+		setName("");
+		setCity(0);
+		setLocation(0);
+		setDefense(0);
+		setOffense(0);
+		setUpgrade(0);
+		setSpecial(false);
+		setImage(null);
+		setOccupants(new ArrayList<Integer>());
+		setGarrisonedUnits(new ArrayList<Integer>());
+		setProductionType(0);
+		setRequiredBuildings(new ArrayList<Integer>());
 	}
 
 	/**
 	 * Constructor which sets a new Building's details based on its Building Type
-	 * @param buildingType int representing the ASC BuildingType of this Building
+	 * @param buildingTypeId int representing the ASC BuildingType of this Building
 	 */
-	public Building(int buildingType) {
-		BuildingType type = new BuildingType(buildingType);
-		this.setBuildingType(type.getId());
-		this.setName("New " + type.getName());
-		this.setDefense(type.getDefense());
-		this.setOffense(type.getDefense());
-		this.setSpecial(type.getSpecial());
-		this.setImage(type.getImage());
+	public Building(int buildingTypeId) {
+		BuildingType buildingType = new BuildingType(buildingTypeId);
+		setBuildingType(buildingType.getId());
+		setName("New " + buildingType.getName());
+		setDefense(buildingType.getDefense());
+		setOffense(buildingType.getDefense());
+		setSpecial(buildingType.getSpecial());
+		setImage(buildingType.getImage());
+		setRequiredBuildings(buildingType.getRequiredBuildings());
 	}
 
 	/**
@@ -128,7 +132,7 @@ public class Building {
 	/**
 	 * @return the image
 	 */
-	public int getImage() {
+	public File getImage() {
 		return image;
 	}
 
@@ -151,6 +155,13 @@ public class Building {
 	 */
 	public int getProductionType() {
 		return productionType;
+	}
+
+	/**
+	 * @return the requiredBuildings
+	 */
+	public ArrayList<Integer> getRequiredBuildings() {
+		return requiredBuildings;
 	}
 
 	/**
@@ -219,7 +230,7 @@ public class Building {
 	/**
 	 * @param image the image to set
 	 */
-	public void setImage(int image) {
+	public void setImage(File image) {
 		this.image = image;
 	}
 
@@ -242,6 +253,13 @@ public class Building {
 	 */
 	public void setProductionType(int productionType) {
 		this.productionType = productionType;
+	}
+
+	/**
+	 * @param requiredBuildings the requiredBuildings to set
+	 */
+	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
+		this.requiredBuildings = requiredBuildings;
 	}
 
 }

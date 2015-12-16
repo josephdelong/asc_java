@@ -13,6 +13,7 @@
 		<maxOccupants>10</maxOccupants>
 		<maxGarrisoned>3</maxGarrisoned>
 		<description>The Town Center is the heart of any City. It provides citizens a place to gather in times of peril and celebration, both. The Town Center is vital to the governance of the City proper and serves as the City marketplace, where all citizens bring their work goods to sell. All goods procured through the Town Center add to the prosperity and value of the entire City.</description>
+		<requiredBuildings></requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>2</id>
@@ -27,6 +28,9 @@
 		<maxOccupants>3</maxOccupants>
 		<maxGarrisoned>1</maxGarrisoned>
 		<description>The Farm fuels a City’s growth and expansion. It provides Food to be used for Unit purchases and citizen growth. Without Farms, a City cannot properly grow and increase its population.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>3</id>
@@ -41,6 +45,9 @@
 		<maxOccupants>3</maxOccupants>
 		<maxGarrisoned>1</maxGarrisoned>
 		<description>The Mine is a bountiful resource which can be worked to provide your City with Stone, Iron and, occasionally, Gems.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>4</id>
@@ -55,6 +62,9 @@
 		<maxOccupants>3</maxOccupants>
 		<maxGarrisoned>1</maxGarrisoned>
 		<description>The Lumber Mill provides Wood to your City, which can be used to purchase other Buildings or Units. It is an invaluable addition to any City.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>5</id>
@@ -69,6 +79,11 @@
 		<maxOccupants>3</maxOccupants>
 		<maxGarrisoned>1</maxGarrisoned>
 		<description>The Granary provides your City with a wealth of Food, which enables you to grow your Population and purchase Units. A strong, lasting Civilization’s bread and butter.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>3</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>6</id>
@@ -83,6 +98,11 @@
 		<maxOccupants>3</maxOccupants>
 		<maxGarrisoned>1</maxGarrisoned>
 		<description>The Blacksmith is an important materials crafting Building, allowing the smelting and forging of metals. It furnishes your garrison with metal weapons and armor, providing the opportunity to purchase more advanced and hardier Units.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>3</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>7</id>
@@ -97,6 +117,11 @@
 		<maxOccupants>4</maxOccupants>
 		<maxGarrisoned>2</maxGarrisoned>
 		<description>The Siege Workshop provides your City with the best of workmanship and engineering when it comes to powerful, efficient weaponry. It unlocks the potential of advanced weaponry, allowing the construction of Catapults, Crossbowman, and the like.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>3</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>8</id>
@@ -111,6 +136,11 @@
 		<maxOccupants>5</maxOccupants>
 		<maxGarrisoned>0</maxGarrisoned>
 		<description>The Church is a sanctuary –a bastion of safety– in the wide, wild world of Appian SimCivi. Here, your City’s citizens can find refuge and comfort from the toils of everyday labor. The Church provides your City a bonus to Happiness, which increases worker productivity, city combat strength, and overall score.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>3</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>9</id>
@@ -125,6 +155,10 @@
 		<maxOccupants>10</maxOccupants>
 		<maxGarrisoned>3</maxGarrisoned>
 		<description>The Barracks is where all melee Units go to receive basic training. It strengthens your City’s fighting ability and provides housing for your combat Units. The Barracks allows for the purchase of intermediate-level melee Units, including the Swordsman.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>10</id>
@@ -139,6 +173,10 @@
 		<maxOccupants>10</maxOccupants>
 		<maxGarrisoned>3</maxGarrisoned>
 		<description>The Archery Range is to ranged Units what the Barracks is to melee Units. It provides lodging and training for intermediate-level ranged Units including the Bowman, Longbowman, and Crossbowman.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>11</id>
@@ -153,6 +191,10 @@
 		<maxOccupants>10</maxOccupants>
 		<maxGarrisoned>3</maxGarrisoned>
 		<description>The Stable is an advanced Unit facility, allowing for the training of mounted Units such as the Horseman, Knight, and Lancer. It provides lodging for these mounted Units and sizable enclosed pens for animal mounts.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 	<buildingType>
 		<id>12</id>
@@ -167,5 +209,10 @@
 		<maxOccupants>15</maxOccupants>
 		<maxGarrisoned>5</maxGarrisoned>
 		<description>The Castle is a stalwart stronghold which bolsters your City’s combat strength and serves as headquarters and strategic planning center for your City garrison. It is the lofty seat of your City’s governing council and last refuge in times of great peril.</description>
+		<requiredBuildings>
+			<requiredBuilding>1</requiredBuilding>
+			<requiredBuilding>3</requiredBuilding>
+			<requiredBuilding>4</requiredBuilding>
+		</requiredBuildings>
 	</buildingType>
 </buildingTypes>

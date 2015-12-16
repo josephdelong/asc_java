@@ -10,49 +10,55 @@ import java.util.ArrayList;
  * @author joseph_delong
  *
  */
-public class BuildingType {
-
+public class UnitType {
+	
+	/**
+	 * Private Data Members
+	 */
 	private int id;
 	private String name;
+	private String type;
 	private int offense;
 	private int defense;
-	
+	private int foodCost;
 	private int woodCost;
 	private int stoneCost;
+	private int ironCost;
+	private int cottonCost;
+	private int silkCost;
 	private int goldCost;
-	
 	private boolean special;
 	private File image;
-	private int maxOccupants;
-	private int maxGarrison;
-	
+	private String description;
 	private ArrayList<Integer> requiredBuildings;
-	
+
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
-	public BuildingType() {
+	public UnitType() {
 		setId(0);
 		setName("");
 		setOffense(0);
 		setDefense(0);
+		setFoodCost(0);
 		setWoodCost(0);
 		setStoneCost(0);
+		setIronCost(0);
+		setCottonCost(0);
+		setSilkCost(0);
 		setGoldCost(0);
 		setSpecial(false);
 		setImage(null);
-		setMaxOccupants(0);
-		setMaxGarrison(0);
+		setDescription("");
 		setRequiredBuildings(new ArrayList<Integer>());
 	}
 	
-	/**
-	 * Constructor which returns a BuildingType with data members initialized based on the Type of Building desired.
-	 * @param buildingType
+	/*
+	 * 
 	 */
-	public BuildingType(int buildingTypeId) {
+	public UnitType(int unitTypeId) {
 		//PARSE XML FILE TO GET DEFAULT VALUES BASED ON ID
-		setId(buildingTypeId);
+		setId(unitTypeId);
 		
 	}
 
@@ -71,6 +77,13 @@ public class BuildingType {
 	}
 
 	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
 	 * @return the offense
 	 */
 	public int getOffense() {
@@ -85,6 +98,13 @@ public class BuildingType {
 	}
 
 	/**
+	 * @return the foodCost
+	 */
+	public int getFoodCost() {
+		return foodCost;
+	}
+
+	/**
 	 * @return the woodCost
 	 */
 	public int getWoodCost() {
@@ -96,6 +116,27 @@ public class BuildingType {
 	 */
 	public int getStoneCost() {
 		return stoneCost;
+	}
+
+	/**
+	 * @return the ironCost
+	 */
+	public int getIronCost() {
+		return ironCost;
+	}
+
+	/**
+	 * @return the cottonCost
+	 */
+	public int getCottonCost() {
+		return cottonCost;
+	}
+
+	/**
+	 * @return the silkCost
+	 */
+	public int getSilkCost() {
+		return silkCost;
 	}
 
 	/**
@@ -120,17 +161,10 @@ public class BuildingType {
 	}
 
 	/**
-	 * @return the maxOccupants
+	 * @return the description
 	 */
-	public int getMaxOccupants() {
-		return maxOccupants;
-	}
-
-	/**
-	 * @return the maxGarrison
-	 */
-	public int getMaxGarrison() {
-		return maxGarrison;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
@@ -141,7 +175,7 @@ public class BuildingType {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param iD the iD to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -152,6 +186,13 @@ public class BuildingType {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	/**
@@ -169,6 +210,13 @@ public class BuildingType {
 	}
 
 	/**
+	 * @param foodCost the foodCost to set
+	 */
+	public void setFoodCost(int foodCost) {
+		this.foodCost = foodCost;
+	}
+
+	/**
 	 * @param woodCost the woodCost to set
 	 */
 	public void setWoodCost(int woodCost) {
@@ -180,6 +228,27 @@ public class BuildingType {
 	 */
 	public void setStoneCost(int stoneCost) {
 		this.stoneCost = stoneCost;
+	}
+
+	/**
+	 * @param ironCost the ironCost to set
+	 */
+	public void setIronCost(int ironCost) {
+		this.ironCost = ironCost;
+	}
+
+	/**
+	 * @param cottonCost the cottonCost to set
+	 */
+	public void setCottonCost(int cottonCost) {
+		this.cottonCost = cottonCost;
+	}
+
+	/**
+	 * @param silkCost the silkCost to set
+	 */
+	public void setSilkCost(int silkCost) {
+		this.silkCost = silkCost;
 	}
 
 	/**
@@ -204,17 +273,10 @@ public class BuildingType {
 	}
 
 	/**
-	 * @param maxOccupants the maxOccupants to set
+	 * @param description the description to set
 	 */
-	public void setMaxOccupants(int maxOccupants) {
-		this.maxOccupants = maxOccupants;
-	}
-
-	/**
-	 * @param maxGarrison the maxGarrison to set
-	 */
-	public void setMaxGarrison(int maxGarrison) {
-		this.maxGarrison = maxGarrison;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
@@ -223,4 +285,5 @@ public class BuildingType {
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
+	
 }
