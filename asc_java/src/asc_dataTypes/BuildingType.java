@@ -32,27 +32,27 @@ public class BuildingType {
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
 	public BuildingType() {
-		setId(0);
-		setName("");
-		setOffense(0);
-		setDefense(0);
-		setWoodCost(0);
-		setStoneCost(0);
-		setGoldCost(0);
-		setSpecial(false);
-		setImage(null);
-		setMaxOccupants(0);
-		setMaxGarrison(0);
-		setRequiredBuildings(new ArrayList<Integer>());
+		this.setId(0);
+		this.setName("");
+		this.setOffense(0);
+		this.setDefense(0);
+		this.setWoodCost(0);
+		this.setStoneCost(0);
+		this.setGoldCost(0);
+		this.setSpecial(false);
+		this.setImage(null);
+		this.setMaxOccupants(0);
+		this.setMaxGarrison(0);
+		this.setRequiredBuildings(new ArrayList<Integer>());
 	}
 	
 	/**
 	 * Constructor which returns a BuildingType with data members initialized based on the Type of Building desired.
-	 * @param buildingType
+	 * @param buildingType <code>int</code> representing the ID of this Building Type.
 	 */
 	public BuildingType(int buildingTypeId) {
 		//PARSE XML FILE TO GET DEFAULT VALUES BASED ON ID
-		setId(buildingTypeId);
+		this.setId(buildingTypeId);
 		
 	}
 
@@ -222,5 +222,39 @@ public class BuildingType {
 	 */
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("BuildingType: [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", offense=");
+		builder.append(offense);
+		builder.append(", defense=");
+		builder.append(defense);
+		builder.append(", woodCost=");
+		builder.append(woodCost);
+		builder.append(", stoneCost=");
+		builder.append(stoneCost);
+		builder.append(", goldCost=");
+		builder.append(goldCost);
+		builder.append(", special=");
+		builder.append(special);
+		builder.append(", image=");
+		builder.append(image);
+		builder.append(", maxOccupants=");
+		builder.append(maxOccupants);
+		builder.append(", maxGarrison=");
+		builder.append(maxGarrison);
+		builder.append(", requiredBuildings=");
+		builder.append(requiredBuildings);
+		builder.append("]");
+		return builder.toString();
 	}
 }

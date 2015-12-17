@@ -36,30 +36,31 @@ public class UnitType {
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
 	public UnitType() {
-		setId(0);
-		setName("");
-		setOffense(0);
-		setDefense(0);
-		setFoodCost(0);
-		setWoodCost(0);
-		setStoneCost(0);
-		setIronCost(0);
-		setCottonCost(0);
-		setSilkCost(0);
-		setGoldCost(0);
-		setSpecial(false);
-		setImage(null);
-		setDescription("");
-		setRequiredBuildings(new ArrayList<Integer>());
+		this.setId(0);
+		this.setName("");
+		this.setOffense(0);
+		this.setDefense(0);
+		this.setFoodCost(0);
+		this.setWoodCost(0);
+		this.setStoneCost(0);
+		this.setIronCost(0);
+		this.setCottonCost(0);
+		this.setSilkCost(0);
+		this.setGoldCost(0);
+		this.setSpecial(false);
+		this.setImage(null);
+		this.setDescription("");
+		this.setRequiredBuildings(new ArrayList<Integer>());
 	}
 	
-	/*
-	 * 
+	/**
+	 * Constructor which sets a new Unit Type's details based on its ID
+	 * @param unitTypeId <code>int</code> representing the ID of this UnitType.
 	 */
 	public UnitType(int unitTypeId) {
 		//PARSE XML FILE TO GET DEFAULT VALUES BASED ON ID
-		setId(unitTypeId);
-		
+		this.setId(unitTypeId);
+		//set this unit type's values to the parsed XML values
 	}
 
 	/**
@@ -284,6 +285,48 @@ public class UnitType {
 	 */
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UnitType: [id=");
+		builder.append(id);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append(", offense=");
+		builder.append(offense);
+		builder.append(", defense=");
+		builder.append(defense);
+		builder.append(", foodCost=");
+		builder.append(foodCost);
+		builder.append(", woodCost=");
+		builder.append(woodCost);
+		builder.append(", stoneCost=");
+		builder.append(stoneCost);
+		builder.append(", ironCost=");
+		builder.append(ironCost);
+		builder.append(", cottonCost=");
+		builder.append(cottonCost);
+		builder.append(", silkCost=");
+		builder.append(silkCost);
+		builder.append(", goldCost=");
+		builder.append(goldCost);
+		builder.append(", special=");
+		builder.append(special);
+		builder.append(", image=");
+		builder.append(image);
+		builder.append(", description=");
+		builder.append(description);
+		builder.append(", requiredBuildings=");
+		builder.append(requiredBuildings);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 }

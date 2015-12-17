@@ -33,34 +33,34 @@ public class Unit {
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
 	public Unit() {
-		setId(0);
-		setUnitId(0);
-		setUnitName("");
-		setPlayer(0);
-		setCity(0);
-		setLocation(0);
-		setOffense(0);
-		setDefense(0);
-		setUpgrade(0);
-		setXp(0);
-		setSpecial(false);
-		setImage(null);
-		setRequiredBuildings(new ArrayList<Integer>());
+		this.setId(0);
+		this.setUnitId(0);
+		this.setUnitName("");
+		this.setPlayer(0);
+		this.setCity(0);
+		this.setLocation(0);
+		this.setOffense(0);
+		this.setDefense(0);
+		this.setUpgrade(0);
+		this.setXp(0);
+		this.setSpecial(false);
+		this.setImage(null);
+		this.setRequiredBuildings(new ArrayList<Integer>());
 	}
 	
 	/**
 	 * Constructor which sets a new Unit's details based on its Unit Type
-	 * @param unitTypeId
+	 * @param unitTypeId <code>int</code> representing the ASC UnitType of this Unit.
 	 */
 	public Unit(int unitTypeId) {
 		UnitType unitType = new UnitType(unitTypeId);
-		setUnitId(unitType.getId());
-		setUnitName(unitType.getName());
-		setOffense(unitType.getOffense());
-		setDefense(unitType.getDefense());
-		setSpecial(unitType.getSpecial());
-		setImage(unitType.getImage());
-		setRequiredBuildings(unitType.getRequiredBuildings());
+		this.setUnitId(unitType.getId());
+		this.setUnitName(unitType.getName());
+		this.setOffense(unitType.getOffense());
+		this.setDefense(unitType.getDefense());
+		this.setSpecial(unitType.getSpecial());
+		this.setImage(unitType.getImage());
+		this.setRequiredBuildings(unitType.getRequiredBuildings());
 	}
 
 	/**
@@ -243,5 +243,41 @@ public class Unit {
 	 */
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Unit: [id=");
+		builder.append(id);
+		builder.append(", unitId=");
+		builder.append(unitId);
+		builder.append(", unitName=");
+		builder.append(unitName);
+		builder.append(", player=");
+		builder.append(player);
+		builder.append(", city=");
+		builder.append(city);
+		builder.append(", location=");
+		builder.append(location);
+		builder.append(", offense=");
+		builder.append(offense);
+		builder.append(", defense=");
+		builder.append(defense);
+		builder.append(", upgrade=");
+		builder.append(upgrade);
+		builder.append(", xp=");
+		builder.append(xp);
+		builder.append(", special=");
+		builder.append(special);
+		builder.append(", image=");
+		builder.append(image);
+		builder.append(", requiredBuildings=");
+		builder.append(requiredBuildings);
+		builder.append("]");
+		return builder.toString();
 	}
 }

@@ -35,35 +35,35 @@ public class Building {
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
 	public Building() {
-		setId(0);
-		setBuildingType(0);
-		setName("");
-		setCity(0);
-		setLocation(0);
-		setDefense(0);
-		setOffense(0);
-		setUpgrade(0);
-		setSpecial(false);
-		setImage(null);
-		setOccupants(new ArrayList<Integer>());
-		setGarrisonedUnits(new ArrayList<Integer>());
-		setProductionType(0);
-		setRequiredBuildings(new ArrayList<Integer>());
+		this.setId(0);
+		this.setBuildingType(0);
+		this.setName("");
+		this.setCity(0);
+		this.setLocation(0);
+		this.setDefense(0);
+		this.setOffense(0);
+		this.setUpgrade(0);
+		this.setSpecial(false);
+		this.setImage(null);
+		this.setOccupants(new ArrayList<Integer>());
+		this.setGarrisonedUnits(new ArrayList<Integer>());
+		this.setProductionType(0);
+		this.setRequiredBuildings(new ArrayList<Integer>());
 	}
 
 	/**
-	 * Constructor which sets a new Building's details based on its Building Type
-	 * @param buildingTypeId int representing the ASC BuildingType of this Building
+	 * Constructor which sets a new Building's details based on its Building Type.
+	 * @param buildingTypeId <code>int</code> representing the ASC BuildingType of this Building.
 	 */
 	public Building(int buildingTypeId) {
 		BuildingType buildingType = new BuildingType(buildingTypeId);
-		setBuildingType(buildingType.getId());
-		setName("New " + buildingType.getName());
-		setDefense(buildingType.getDefense());
-		setOffense(buildingType.getDefense());
-		setSpecial(buildingType.getSpecial());
-		setImage(buildingType.getImage());
-		setRequiredBuildings(buildingType.getRequiredBuildings());
+		this.setBuildingType(buildingType.getId());
+		this.setName("New " + buildingType.getName());
+		this.setDefense(buildingType.getDefense());
+		this.setOffense(buildingType.getDefense());
+		this.setSpecial(buildingType.getSpecial());
+		this.setImage(buildingType.getImage());
+		this.setRequiredBuildings(buildingType.getRequiredBuildings());
 	}
 
 	/**
@@ -260,6 +260,44 @@ public class Building {
 	 */
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Building: [id=");
+		builder.append(id);
+		builder.append(", buildingType=");
+		builder.append(buildingType);
+		builder.append(", name=");
+		builder.append(name);
+		builder.append(", city=");
+		builder.append(city);
+		builder.append(", location=");
+		builder.append(location);
+		builder.append(", defense=");
+		builder.append(defense);
+		builder.append(", offense=");
+		builder.append(offense);
+		builder.append(", upgrade=");
+		builder.append(upgrade);
+		builder.append(", special=");
+		builder.append(special);
+		builder.append(", image=");
+		builder.append(image);
+		builder.append(", occupants=");
+		builder.append(occupants);
+		builder.append(", garrisonedUnits=");
+		builder.append(garrisonedUnits);
+		builder.append(", productionType=");
+		builder.append(productionType);
+		builder.append(", requiredBuildings=");
+		builder.append(requiredBuildings);
+		builder.append("]");
+		return builder.toString();
 	}
 
 }
