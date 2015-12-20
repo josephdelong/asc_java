@@ -1,16 +1,24 @@
 /**
- * 
+ * @author Joseph DeLong
+ *
  */
 package asc_dataTypes;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import util.XMLparser;
 
 /**
- * @author joseph_delong
  *
  */
-public class Building {
+public class Building extends DataType {
 
 	/**
 	 * Private data members: id buildingType name city location defense offense
@@ -64,6 +72,97 @@ public class Building {
 		this.setSpecial(buildingType.getSpecial());
 		this.setImage(buildingType.getImage());
 		this.setRequiredBuildings(buildingType.getRequiredBuildings());
+	}
+
+	/**
+	 * Parse method which sets the data members of this class to values parsed from input
+	 */
+	@Override
+	public void parse(String fieldName, String value) {
+		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("id")) {
+			this.setId(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("name")) {
+			this.setName(value);
+		} else if(fieldName.equalsIgnoreCase("city")) {
+			this.setCity(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("location")) {
+			this.setLocation(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("offense")) {
+			this.setOffense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("defense")) {
+			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("upgrade")) {
+			this.setUpgrade(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("special")) {
+			this.setSpecial(Boolean.parseBoolean(value));
+		} else if(fieldName.equalsIgnoreCase("image")) {
+			this.setImage(new File(value));
+		} else if(fieldName.equalsIgnoreCase("occupants")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("occupant")) {
+			this.addOccupant(Integer.valueOf(value));
+		} else if(fieldName.equalsIgnoreCase("garrisonedUnits")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("garrisonedUnit")) {
+			this.addGarrisonedUnit(Integer.valueOf(value));
+		} else if(fieldName.equalsIgnoreCase("productionType")) {
+			this.setProductionType(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
+			this.addRequiredBuilding(Integer.valueOf(value));
+		}
+	}
+
+	/**
+	 * Method which returns an instance of Building based on a unique instance ID, if found.
+	 *   Otherwise returns null.
+	 * @param instanceId The unique identifier for the instance of Building you are looking for.
+	 * @return Building associated with instanceId, or null.
+	 */
+	public static Building getInstance(Integer instanceId) {
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		ArrayList<DataType> buildings = new ArrayList<DataType>();
+		ids.add(instanceId);
+		XMLparser parser = new XMLparser();
+		
+		try {
+			buildings = parser.parse("src/asc_dataTypes/buildings.xml", null, ids);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			// throw new DataSourceParseException("Get Building Instance lookup", e);
+		}
+		
+		Iterator<DataType> it = buildings.iterator();
+		if(it.hasNext()) {
+			return (Building)it.next();
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Method which returns this Data Type's fields.
+	 * @return ArrayList of Strings containing the names of this Data Type's fields. 
+	 */
+	public ArrayList<String> getFields() {
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add("id");
+		fields.add("buildingType");
+		fields.add("name");
+		fields.add("city");
+		fields.add("location");
+		fields.add("offense");
+		fields.add("defense");
+		fields.add("upgrade");
+		fields.add("special");
+		fields.add("image");
+		fields.add("occupants");
+		fields.add("garrisonedUnits");
+		fields.add("productionType");
+		fields.add("requiredBuildings");
+		return fields;
 	}
 
 	/**
@@ -125,7 +224,7 @@ public class Building {
 	/**
 	 * @return the special
 	 */
-	public boolean isSpecial() {
+	public boolean getSpecial() {
 		return special;
 	}
 
@@ -261,7 +360,80 @@ public class Building {
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
+	
+	/**
+	 * Adds a Required Building to this Building
+	 * @param buildingTypeId
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId) {
+		ArrayList<Integer> temp = this.getRequiredBuildings();
+		temp.add(buildingTypeId);
+		this.setRequiredBuildings(temp);
+	}
 
+	/**
+	 * Adds the specified Unit ID to this Building's Garrison, provided there is sufficient room.
+	 *   Otherwise, will throw BuildingAtMaxGarrisonException
+	 * @param unitId
+	 */
+	private void addGarrisonedUnit(Integer unitId) {
+		// Parse data source for Unit by unitId
+		if(Unit.getInstance(unitId) == null) {
+			// throw new UnitNotFoundException
+			return;
+		}
+		
+		ArrayList<Integer> temp = this.getGarrisonedUnits();
+		BuildingType tempBT = new BuildingType(this.getBuildingType());
+		
+		if(tempBT.getMaxGarrison() > temp.size()) {
+			temp.add(unitId);
+			this.setGarrisonedUnits(temp);
+		} else {
+			// throw new BuildingAtMaxGarrisonExcaption();
+		}
+	}
+
+	/**
+	 * Adds the specified Unit ID to this Building's Occupants ArrayList.
+	 * @param unitId
+	 */
+	private void addOccupant(Integer unitId) {
+		ArrayList<Integer> temp = this.getOccupants();
+		temp.add(unitId);
+		this.setOccupants(temp);
+	}
+	
+	/**
+	 * Removes the specified Unit from this Building's Garrison, if present.
+	 *   Otherwise throws UnitNotFoundInBuildingException
+	 * @param unitId
+	 */
+	private void removeGarrisonedUnit(Integer unitId) {
+		ArrayList<Integer> temp = this.getGarrisonedUnits();
+		if(temp.contains(unitId)) {
+			temp.remove(unitId);
+			this.setGarrisonedUnits(temp);
+		} else {
+			// throw new UnitNotFoundInBuildingException
+		}
+	}
+	
+	/**
+	 * Remomves the specified Unit from this Building's Occupants, if present.
+	 *   Otherwise throws UnitNotFoundInBuildingException
+	 * @param unitId
+	 */
+	private void removeOccupant(Integer unitId) {
+		ArrayList<Integer> temp = this.getGarrisonedUnits();
+		if(temp.contains(unitId)) {
+			temp.remove(unitId);
+			this.setOccupants(temp);
+		} else {
+			// throw new UnitNotFoundInBuildingException
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

@@ -1,23 +1,31 @@
 /**
- * 
+ * @author Joseph DeLong
+ *
  */
 package asc_dataTypes;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import util.XMLparser;
 
 /**
- * @author joseph_delong
  *
  */
-public class Unit {
+public class Unit extends DataType {
 
 	/**
 	 * Private Data Members
 	 */
 	private int id;
 	private int unitId;
-	private String unitName;
+	private String name;
 	private int player;
 	private int city;
 	private int location;
@@ -35,7 +43,7 @@ public class Unit {
 	public Unit() {
 		this.setId(0);
 		this.setUnitId(0);
-		this.setUnitName("");
+		this.setName("");
 		this.setPlayer(0);
 		this.setCity(0);
 		this.setLocation(0);
@@ -55,12 +63,96 @@ public class Unit {
 	public Unit(int unitTypeId) {
 		UnitType unitType = new UnitType(unitTypeId);
 		this.setUnitId(unitType.getId());
-		this.setUnitName(unitType.getName());
+		this.setName(unitType.getName());
 		this.setOffense(unitType.getOffense());
 		this.setDefense(unitType.getDefense());
 		this.setSpecial(unitType.getSpecial());
 		this.setImage(unitType.getImage());
 		this.setRequiredBuildings(unitType.getRequiredBuildings());
+	}
+
+	/**
+	 * Parse method which sets the data members of this class to values parsed from input
+	 */
+	@Override
+	public void parse(String fieldName, String value) {
+		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("id")) {
+			this.setId(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("name")) {
+			this.setName(value);
+		} else if(fieldName.equalsIgnoreCase("player")) {
+			this.setPlayer(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("city")) {
+			this.setCity(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("location")) {
+			this.setLocation(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("offense")) {
+			this.setOffense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("defense")) {
+			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("upgrade")) {
+			this.setUpgrade(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("xp")) {
+			this.setXp(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("special")) {
+			this.setSpecial(Boolean.parseBoolean(value));
+		} else if(fieldName.equalsIgnoreCase("image")) {
+			this.setImage(new File(value));
+		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
+			this.addRequiredBuilding(Integer.valueOf(value));
+		}
+	}
+
+	/**
+	 * Method which returns an instance of Unit based on a unique instance ID, if found.
+	 *   Otherwise returns null.
+	 * @param instanceId The unique identifier for the instance of Unit you are looking for.
+	 * @return Unit associated with instanceId, or null.
+	 */
+	public static Unit getInstance(Integer instanceId) {
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		ArrayList<DataType> units = new ArrayList<DataType>();
+		ids.add(instanceId);
+		XMLparser parser = new XMLparser();
+		
+		try {
+			units = parser.parse("src/asc_dataTypes/units.xml", null, ids);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			// throw new DataSourceParseException("Get Unit Instance lookup", e);
+		}
+		
+		Iterator<DataType> it = units.iterator();
+		if(it.hasNext()) {
+			return (Unit)it.next();
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Method which returns this Data Type's fields.
+	 * @return ArrayList of Strings containing the names of this Data Type's fields. 
+	 */
+	public ArrayList<String> getFields() {
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add("id");
+		fields.add("unitId");
+		fields.add("name");
+		fields.add("player");
+		fields.add("city");
+		fields.add("location");
+		fields.add("offense");
+		fields.add("defense");
+		fields.add("upgrade");
+		fields.add("xp");
+		fields.add("special");
+		fields.add("image");
+		fields.add("requiredBuildings");
+		return fields;
 	}
 
 	/**
@@ -80,8 +172,8 @@ public class Unit {
 	/**
 	 * @return the unitName
 	 */
-	public String getUnitName() {
-		return unitName;
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -171,22 +263,22 @@ public class Unit {
 	/**
 	 * @param unitName the unitName to set
 	 */
-	public void setUnitName(String unitName) {
-		this.unitName = unitName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
 	 * @param player the player to set
 	 */
-	public void setPlayer(int player) {
-		this.player = player;
+	public void setPlayer(int playerId) {
+		this.player = playerId;
 	}
 
 	/**
 	 * @param city the city to set
 	 */
-	public void setCity(int city) {
-		this.city = city;
+	public void setCity(int cityId) {
+		this.city = cityId;
 	}
 
 	/**
@@ -244,6 +336,16 @@ public class Unit {
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
+	
+	/**
+	 * Adds a Required Building to this Unit
+	 * @param buildingTypeId
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId) {
+		ArrayList<Integer> temp = this.getRequiredBuildings();
+		temp.add(buildingTypeId);
+		this.setRequiredBuildings(temp);
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -256,7 +358,7 @@ public class Unit {
 		builder.append(", unitId=");
 		builder.append(unitId);
 		builder.append(", unitName=");
-		builder.append(unitName);
+		builder.append(name);
 		builder.append(", player=");
 		builder.append(player);
 		builder.append(", city=");

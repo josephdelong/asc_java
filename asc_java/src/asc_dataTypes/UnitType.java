@@ -1,16 +1,24 @@
 /**
- * 
+ * @author Joseph DeLong
+ *
  */
 package asc_dataTypes;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import util.XMLparser;
 
 /**
- * @author joseph_delong
  *
  */
-public class UnitType {
+public class UnitType extends DataType {
 	
 	/**
 	 * Private Data Members
@@ -52,15 +60,136 @@ public class UnitType {
 		this.setDescription("");
 		this.setRequiredBuildings(new ArrayList<Integer>());
 	}
+
+	/**
+	 * Constructor which clones the passed in UnitType.
+	 * @param u The UnitType to clone.
+	 */
+	public UnitType(UnitType u) {
+		this.setId(u.getId());
+		this.setName(u.getName());
+		this.setOffense(u.getOffense());
+		this.setDefense(u.getDefense());
+		this.setFoodCost(u.getFoodCost());
+		this.setWoodCost(u.getWoodCost());
+		this.setStoneCost(u.getStoneCost());
+		this.setIronCost(u.getIronCost());
+		this.setCottonCost(u.getCottonCost());
+		this.setSilkCost(u.getSilkCost());
+		this.setGoldCost(u.getGoldCost());
+		this.setSpecial(u.getSpecial());
+		this.setImage(u.getImage());
+		this.setDescription(u.getDescription());
+		this.setRequiredBuildings(u.getRequiredBuildings());
+	}
 	
 	/**
 	 * Constructor which sets a new Unit Type's details based on its ID
 	 * @param unitTypeId <code>int</code> representing the ID of this UnitType.
 	 */
 	public UnitType(int unitTypeId) {
-		//PARSE XML FILE TO GET DEFAULT VALUES BASED ON ID
-		this.setId(unitTypeId);
-		//set this unit type's values to the parsed XML values
+		// Parse data source for values
+		UnitType temp = UnitType.getInstance(unitTypeId);
+		if(temp.equals(null)) {
+			new UnitType();
+		} else {
+			new UnitType(temp);
+		}
+	}
+
+	/**
+	 * Parse method which sets the data members of this class to values parsed from input
+	 */
+	@Override
+	public void parse(String fieldName, String value) {
+		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("id")) {
+			this.setId(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("name")) {
+			this.setName(value);
+		} else if(fieldName.equalsIgnoreCase("type")) {
+			this.setType(value);
+		} else if(fieldName.equalsIgnoreCase("offense")) {
+			this.setOffense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("defense")) {
+			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("foodCost")) {
+			this.setFoodCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("woodCost")) {
+			this.setWoodCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("stoneCost")) {
+			this.setStoneCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("ironCost")) {
+			this.setIronCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("cottonCost")) {
+			this.setCottonCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("silkCost")) {
+			this.setSilkCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("goldCost")) {
+			this.setGoldCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("special")) {
+			this.setSpecial(Boolean.parseBoolean(value));
+		} else if(fieldName.equalsIgnoreCase("image")) {
+			this.setImage(new File(value));
+		} else if(fieldName.equalsIgnoreCase("description")) {
+			this.setDescription(value);
+		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
+			this.addRequiredBuilding(Integer.valueOf(value));
+		}
+	}
+
+	/**
+	 * Method which returns an instance of UnitType based on a unique instance ID, if found.
+	 *   Otherwise returns null.
+	 * @param instanceId The unique identifier for the instance of UnitType you are looking for.
+	 * @return UnitType associated with instanceId, or null.
+	 */
+	public static UnitType getInstance(Integer instanceId) {
+		ArrayList<Integer> ids = new ArrayList<Integer>();
+		ArrayList<DataType> units = new ArrayList<DataType>();
+		ids.add(instanceId);
+		XMLparser parser = new XMLparser();
+		
+		try {
+			units = parser.parse("src/asc_dataTypes/unitTypes.xml", null, ids);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			// throw new DataSourceParseException("Get UnitType Instance lookup", e);
+		}
+		
+		Iterator<DataType> it = units.iterator();
+		if(it.hasNext()) {
+			return (UnitType)it.next();
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Method which returns this Data Type's fields.
+	 * @return ArrayList of Strings containing the names of this Data Type's fields. 
+	 */
+	public ArrayList<String> getFields() {
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add("id");
+		fields.add("name");
+		fields.add("type");
+		fields.add("offense");
+		fields.add("defense");
+		fields.add("foodCost");
+		fields.add("woodCost");
+		fields.add("stoneCost");
+		fields.add("ironCost");
+		fields.add("cottonCost");
+		fields.add("silkCost");
+		fields.add("goldCost");
+		fields.add("special");
+		fields.add("image");
+		fields.add("description");
+		fields.add("requiredBuildings");
+		return fields;
 	}
 
 	/**
@@ -285,6 +414,16 @@ public class UnitType {
 	 */
 	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
+	}
+	
+	/**
+	 * Adds a Required Building to this UnitType
+	 * @param buildingTypeId
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId) {
+		ArrayList<Integer> temp = this.getRequiredBuildings();
+		temp.add(buildingTypeId);
+		this.setRequiredBuildings(temp);
 	}
 
 	/* (non-Javadoc)
