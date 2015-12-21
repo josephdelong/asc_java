@@ -21,21 +21,20 @@ import util.XMLparser;
 public class Building extends DataType {
 
 	/**
-	 * Private data members: id buildingType name city location defense offense
-	 * upgrade special image occupants garrisonedUnits
+	 * Private data members
 	 */
 	private int id;
 	private int buildingType;
 	private String name;
-	private int city;
+	private City city;
 	private int location;
 	private int defense;
 	private int offense;
 	private int upgrade;
 	private boolean special;
 	private File image;
-	private ArrayList<Integer> occupants;
-	private ArrayList<Integer> garrisonedUnits;
+	private ArrayList<Unit> occupants;
+	private ArrayList<Unit> garrisonedUnits;
 	private int productionType;
 	private ArrayList<Integer> requiredBuildings;
 
@@ -46,15 +45,15 @@ public class Building extends DataType {
 		this.setId(0);
 		this.setBuildingType(0);
 		this.setName("");
-		this.setCity(0);
+		this.setCity(null);
 		this.setLocation(0);
 		this.setDefense(0);
 		this.setOffense(0);
 		this.setUpgrade(0);
 		this.setSpecial(false);
 		this.setImage(null);
-		this.setOccupants(new ArrayList<Integer>());
-		this.setGarrisonedUnits(new ArrayList<Integer>());
+		this.setOccupants(new ArrayList<Unit>());
+		this.setGarrisonedUnits(new ArrayList<Unit>());
 		this.setProductionType(0);
 		this.setRequiredBuildings(new ArrayList<Integer>());
 	}
@@ -86,7 +85,7 @@ public class Building extends DataType {
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
 		} else if(fieldName.equalsIgnoreCase("city")) {
-			this.setCity(Integer.parseInt(value));
+			this.setCity(City.getInstance(Integer.parseInt(value)));
 		} else if(fieldName.equalsIgnoreCase("location")) {
 			this.setLocation(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("offense")) {
@@ -189,7 +188,7 @@ public class Building extends DataType {
 	/**
 	 * @return the city
 	 */
-	public int getCity() {
+	public City getCity() {
 		return city;
 	}
 
@@ -238,14 +237,14 @@ public class Building extends DataType {
 	/**
 	 * @return the occupants
 	 */
-	public ArrayList<Integer> getOccupants() {
+	public ArrayList<Unit> getOccupants() {
 		return occupants;
 	}
 
 	/**
 	 * @return the garrisonedUnits
 	 */
-	public ArrayList<Integer> getGarrisonedUnits() {
+	public ArrayList<Unit> getGarrisonedUnits() {
 		return garrisonedUnits;
 	}
 
@@ -287,7 +286,7 @@ public class Building extends DataType {
 	/**
 	 * @param city the city to set
 	 */
-	public void setCity(int city) {
+	public void setCity(City city) {
 		this.city = city;
 	}
 
@@ -336,14 +335,14 @@ public class Building extends DataType {
 	/**
 	 * @param occupants the occupants to set
 	 */
-	public void setOccupants(ArrayList<Integer> occupants) {
+	public void setOccupants(ArrayList<Unit> occupants) {
 		this.occupants = occupants;
 	}
 
 	/**
 	 * @param garrisonedUnits the garrisonedUnits to set
 	 */
-	public void setGarrisonedUnits(ArrayList<Integer> garrisonedUnits) {
+	public void setGarrisonedUnits(ArrayList<Unit> garrisonedUnits) {
 		this.garrisonedUnits = garrisonedUnits;
 	}
 
@@ -383,11 +382,11 @@ public class Building extends DataType {
 			return;
 		}
 		
-		ArrayList<Integer> temp = this.getGarrisonedUnits();
+		ArrayList<Unit> temp = this.getGarrisonedUnits();
 		BuildingType tempBT = new BuildingType(this.getBuildingType());
 		
 		if(tempBT.getMaxGarrison() > temp.size()) {
-			temp.add(unitId);
+			temp.add(Unit.getInstance(unitId));
 			this.setGarrisonedUnits(temp);
 		} else {
 			// throw new BuildingAtMaxGarrisonExcaption();
@@ -399,8 +398,13 @@ public class Building extends DataType {
 	 * @param unitId
 	 */
 	private void addOccupant(Integer unitId) {
-		ArrayList<Integer> temp = this.getOccupants();
-		temp.add(unitId);
+		// Parse data source for Unit by unitId
+		if(Unit.getInstance(unitId) == null) {
+			// throw new UnitNotFoundException
+			return;
+		}
+		ArrayList<Unit> temp = this.getOccupants();
+		temp.add(Unit.getInstance(unitId));
 		this.setOccupants(temp);
 	}
 	
@@ -410,9 +414,9 @@ public class Building extends DataType {
 	 * @param unitId
 	 */
 	private void removeGarrisonedUnit(Integer unitId) {
-		ArrayList<Integer> temp = this.getGarrisonedUnits();
-		if(temp.contains(unitId)) {
-			temp.remove(unitId);
+		ArrayList<Unit> temp = this.getGarrisonedUnits();
+		if(temp.contains(Unit.getInstance(unitId))) {
+			temp.remove(Unit.getInstance(unitId));
 			this.setGarrisonedUnits(temp);
 		} else {
 			// throw new UnitNotFoundInBuildingException
@@ -425,9 +429,9 @@ public class Building extends DataType {
 	 * @param unitId
 	 */
 	private void removeOccupant(Integer unitId) {
-		ArrayList<Integer> temp = this.getGarrisonedUnits();
-		if(temp.contains(unitId)) {
-			temp.remove(unitId);
+		ArrayList<Unit> temp = this.getGarrisonedUnits();
+		if(temp.contains(Unit.getInstance(unitId))) {
+			temp.remove(Unit.getInstance(unitId));
 			this.setOccupants(temp);
 		} else {
 			// throw new UnitNotFoundInBuildingException

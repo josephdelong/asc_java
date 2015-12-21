@@ -20,6 +20,9 @@ import util.XMLparser;
  */
 public class BuildingType extends DataType {
 
+	/**
+	 * Private Data Members
+	 */
 	private int id;
 	private String name;
 	private int offense;
@@ -128,17 +131,17 @@ public class BuildingType extends DataType {
 	 */
 	public static BuildingType getInstance(Integer instanceId) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		ArrayList<DataType> buildings = new ArrayList<DataType>();
+		ArrayList<DataType> buildingTypes = new ArrayList<DataType>();
 		ids.add(instanceId);
 		XMLparser parser = new XMLparser();
 		
 		try {
-			buildings = parser.parse("src/asc_dataTypes/buildingTypes.xml", null, ids);
+			buildingTypes = parser.parse("src/asc_dataTypes/buildingTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get BuildingType Instance lookup", e);
 		}
 		
-		Iterator<DataType> it = buildings.iterator();
+		Iterator<DataType> it = buildingTypes.iterator();
 		if(it.hasNext()) {
 			return (BuildingType)it.next();
 		} else {

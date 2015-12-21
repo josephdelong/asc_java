@@ -40,6 +40,16 @@ public class XMLparser extends DefaultHandler {
 	
 	private int currentIndex = 1;
 
+	public static void main(String[] args) {
+		XMLparser parser = new XMLparser();
+		try {
+			parser.parse("src/asc_dataTypes/buildings.xml", null, null);
+		} catch (IOException | SAXException | ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * The parse method sets up the SAXParserFactory, SAXParser, and creates an instance of
 	 *   this XMLparser class which handles all XML parsing, passing values contained within
@@ -68,13 +78,13 @@ public class XMLparser extends DefaultHandler {
 		// Extract the Data Type from the XML file name, dropping the last 's'
 		dataType = xmlFile.substring(xmlFile.lastIndexOf('/') + 1, xmlFile.lastIndexOf('.') - 1);
 		// Grab the tags parameter
-		if(tags.isEmpty()) {
+		if(tags == null || tags.equals(null) || tags.isEmpty()) {
 			this.tags = null;
 		} else {
 			this.tags = tags;
 		}
 		//Grab the indexes parameter
-		if(indexes.isEmpty()) {
+		if(indexes == null || indexes.equals(null) || indexes.isEmpty()) {
 			this.indexes = null;
 		} else {
 			this.indexes = indexes;

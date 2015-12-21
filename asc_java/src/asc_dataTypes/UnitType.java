@@ -149,17 +149,17 @@ public class UnitType extends DataType {
 	 */
 	public static UnitType getInstance(Integer instanceId) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		ArrayList<DataType> units = new ArrayList<DataType>();
+		ArrayList<DataType> unitTypes = new ArrayList<DataType>();
 		ids.add(instanceId);
 		XMLparser parser = new XMLparser();
 		
 		try {
-			units = parser.parse("src/asc_dataTypes/unitTypes.xml", null, ids);
+			unitTypes = parser.parse("src/asc_dataTypes/unitTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get UnitType Instance lookup", e);
 		}
 		
-		Iterator<DataType> it = units.iterator();
+		Iterator<DataType> it = unitTypes.iterator();
 		if(it.hasNext()) {
 			return (UnitType)it.next();
 		} else {

@@ -26,8 +26,8 @@ public class Unit extends DataType {
 	private int id;
 	private int unitId;
 	private String name;
-	private int player;
-	private int city;
+	private Player player;
+	private City city;
 	private int location;
 	private int offense;
 	private int defense;
@@ -44,8 +44,8 @@ public class Unit extends DataType {
 		this.setId(0);
 		this.setUnitId(0);
 		this.setName("");
-		this.setPlayer(0);
-		this.setCity(0);
+		this.setPlayer(null);
+		this.setCity(null);
 		this.setLocation(0);
 		this.setOffense(0);
 		this.setDefense(0);
@@ -83,9 +83,9 @@ public class Unit extends DataType {
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
 		} else if(fieldName.equalsIgnoreCase("player")) {
-			this.setPlayer(Integer.parseInt(value));
+			this.setPlayer(Player.getInstance(Integer.parseInt(value)));
 		} else if(fieldName.equalsIgnoreCase("city")) {
-			this.setCity(Integer.parseInt(value));
+			this.setCity(City.getInstance(Integer.parseInt(value)));
 		} else if(fieldName.equalsIgnoreCase("location")) {
 			this.setLocation(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("offense")) {
@@ -179,14 +179,14 @@ public class Unit extends DataType {
 	/**
 	 * @return the player
 	 */
-	public int getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
 	/**
 	 * @return the city
 	 */
-	public int getCity() {
+	public City getCity() {
 		return city;
 	}
 
@@ -270,15 +270,15 @@ public class Unit extends DataType {
 	/**
 	 * @param player the player to set
 	 */
-	public void setPlayer(int playerId) {
-		this.player = playerId;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 	/**
 	 * @param city the city to set
 	 */
-	public void setCity(int cityId) {
-		this.city = cityId;
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	/**
