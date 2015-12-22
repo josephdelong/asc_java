@@ -21,7 +21,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import asc_dataTypes.Building;
 import asc_dataTypes.BuildingType;
+import asc_dataTypes.City;
 import asc_dataTypes.DataType;
+import asc_dataTypes.Player;
 import asc_dataTypes.Resource;
 import asc_dataTypes.Unit;
 import asc_dataTypes.UnitType;
@@ -40,16 +42,6 @@ public class XMLparser extends DefaultHandler {
 	
 	private int currentIndex = 1;
 
-	public static void main(String[] args) {
-		XMLparser parser = new XMLparser();
-		try {
-			parser.parse("src/asc_dataTypes/buildings.xml", null, null);
-		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * The parse method sets up the SAXParserFactory, SAXParser, and creates an instance of
 	 *   this XMLparser class which handles all XML parsing, passing values contained within
@@ -111,6 +103,7 @@ public class XMLparser extends DefaultHandler {
 	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
+		// TODO: add parsing of tag attributes?
 		// reset string buffer
 		temp = "";
 		if(indexes.isEmpty() == false) { // if indexes is NOT empty
@@ -182,7 +175,7 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("checkInLog")) {
 			//d = new CheckInLog();
 		} else if(dataType.equalsIgnoreCase("city")) {
-			//d = new City();
+			d = new City();
 		} else if(dataType.equalsIgnoreCase("map")) {
 			//d = new Map();
 		} else if(dataType.equalsIgnoreCase("mapTile")) {
@@ -190,7 +183,7 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("marketLog")) {
 			//d = new MarketLog
 		} else if(dataType.equalsIgnoreCase("player")) {
-			//d = new Player();
+			d = new Player();
 		} else if(dataType.equalsIgnoreCase("resource")) {
 			d = new Resource();
 		} else if(dataType.equalsIgnoreCase("ticket")) {
@@ -223,6 +216,7 @@ public class XMLparser extends DefaultHandler {
 		} else {
 			// pass temp to dataMember so it can parse
 			dataMember.parse(field, temp);
+			// TODO: implement parse(field, attribute, value)?
 		}
 
 	}

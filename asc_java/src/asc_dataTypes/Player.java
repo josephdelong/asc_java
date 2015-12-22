@@ -73,8 +73,7 @@ public class Player extends DataType {
 		} else if (fieldName.equalsIgnoreCase("resourceSurplus")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			// TODO: SOMETHING
-			//this.setSurplusIndex(index, Integer.parseInt(value));
+			this.addResource(type, Integer.parseInt(value));
 		}
 	}
 
@@ -115,8 +114,16 @@ public class Player extends DataType {
 	 */
 	@Override
 	public ArrayList<String> getFields() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> fields = new ArrayList<String>();
+		fields.add("id");
+		fields.add("name");
+		fields.add("active");
+		fields.add("cities");
+		fields.add("currentCity");
+		fields.add("allies");
+		fields.add("score");
+		fields.add("resourceSurplus");
+		return fields;
 	}
 
 	/**

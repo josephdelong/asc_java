@@ -54,7 +54,7 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("buildings")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("building")) {
-			// TODO: SOMETHING
+			this.addBuilding(type, Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("defense")) {
@@ -64,7 +64,7 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("resources")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			// TODO: SOMETHING
+			this.addResource(type, Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("value")) {
 			this.setValue(Double.parseDouble(value));
 		} else if (fieldName.equalsIgnoreCase("happiness")) {
@@ -74,7 +74,9 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("image")) {
 			this.setImage(new File(value));
 		} else if (fieldName.equalsIgnoreCase("assignedWork")) {
-			// TODO: SOMETHING
+			// do nothing
+		} else if (fieldName.equalsIgnoreCase("work")) {
+			this.addWork(type, Integer.parseInt(value));
 		}
 	}
 
