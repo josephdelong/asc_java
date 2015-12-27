@@ -3,7 +3,7 @@
 	<unitType>
 		<ID>1</ID>
 		<name>Brute</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>1</offense>
 		<defense>2</defense>
 		<foodCost>1</foodCost>
@@ -23,7 +23,7 @@
 	<unitType>
 		<ID>2</ID>
 		<name>Slinger</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>2</offense>
 		<defense>1</defense>
 		<foodCost>1</foodCost>
@@ -43,7 +43,7 @@
 	<unitType>
 		<ID>3</ID>
 		<name>Warrior</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>2</offense>
 		<defense>3</defense>
 		<foodCost>1</foodCost>
@@ -58,7 +58,7 @@
 		<description>The Warrior is a hardy melee Unit, stronger than the Brute in both Offense and Defense.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
 			<requiredBuilding>9</requiredBuilding>
@@ -67,7 +67,7 @@
 	<unitType>
 		<ID>4</ID>
 		<name>Archer</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>3</offense>
 		<defense>2</defense>
 		<foodCost>1</foodCost>
@@ -82,7 +82,7 @@
 		<description>The Archer is a robust ranged Unit, stronger than the Slinger in both Offense and Defense.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>10</requiredBuilding>
 		</requiredBuildings>
@@ -90,7 +90,7 @@
 	<unitType>
 		<ID>5</ID>
 		<name>Longbowman</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>4</offense>
 		<defense>3</defense>
 		<foodCost>1</foodCost>
@@ -105,7 +105,7 @@
 		<description>The Longbowman is a strong ranged Unit, having greater Offense and Defense than the Archer.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>10</requiredBuilding>
 		</requiredBuildings>
@@ -113,7 +113,7 @@
 	<unitType>
 		<ID>6</ID>
 		<name>Spearman</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>3</offense>
 		<defense>4</defense>
 		<foodCost>1</foodCost>
@@ -128,7 +128,7 @@
 		<description>The Spearman is a formidable melee Unit, having greater Offense and Defense than the Warrior.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -138,7 +138,7 @@
 	<unitType>
 		<ID>7</ID>
 		<name>Horseman</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>4</offense>
 		<defense>5</defense>
 		<foodCost>2</foodCost>
@@ -153,7 +153,8 @@
 		<description>The Horseman is a powerful melee Unit, with greater Offense and Defense than the Spearman.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -163,7 +164,7 @@
 	<unitType>
 		<ID>8</ID>
 		<name>Chariot Archer</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>5</offense>
 		<defense>4</defense>
 		<foodCost>2</foodCost>
@@ -178,7 +179,7 @@
 		<description>The Chariot Archer is a versatile ranged Unit, having greater Offense and Defense than the Longbowman.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -189,7 +190,7 @@
 	<unitType>
 		<ID>9</ID>
 		<name>War Elephant</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>6</offense>
 		<defense>7</defense>
 		<foodCost>3</foodCost>
@@ -204,7 +205,8 @@
 		<description>The War Elephant is a very strong melee Unit, having greater Offense and Defense than the Horseman.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -214,7 +216,7 @@
 	<unitType>
 		<ID>10</ID>
 		<name>Elephant Archer</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>7</offense>
 		<defense>6</defense>
 		<foodCost>3</foodCost>
@@ -229,7 +231,8 @@
 		<description>The Elephant Archer is a very strong ranged Unit, having greater Offense and Defense than the Chariot Archer.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -240,7 +243,7 @@
 	<unitType>
 		<ID>11</ID>
 		<name>Swordsman</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>6</offense>
 		<defense>4</defense>
 		<foodCost>2</foodCost>
@@ -255,7 +258,8 @@
 		<description>The Swordsman is a balanced melee Unit, with Offense equal to the War Elephant and Defense equal to the Spearman.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
 			<requiredBuilding>9</requiredBuilding>
@@ -264,7 +268,7 @@
 	<unitType>
 		<ID>12</ID>
 		<name>Catapult</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>8</offense>
 		<defense>2</defense>
 		<foodCost>0</foodCost>
@@ -288,7 +292,7 @@
 	<unitType>
 		<ID>13</ID>
 		<name>Crossbowman</name>
-		<type>Ranged</type>
+		<combatType>Ranged</combatType>
 		<offense>6</offense>
 		<defense>5</defense>
 		<foodCost>1</foodCost>
@@ -303,7 +307,8 @@
 		<description>The Crossbowman is a well-balanced ranged Unit, having slightly less Offense and Defense than the Elephant Archer.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -314,7 +319,7 @@
 	<unitType>
 		<ID>14</ID>
 		<name>Pikeman</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>5</offense>
 		<defense>6</defense>
 		<foodCost>1</foodCost>
@@ -329,7 +334,8 @@
 		<description>The Pikeman is a well-balanced melee Unit, having slightly less Offense and Defense than the War Elephant.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -339,7 +345,7 @@
 	<unitType>
 		<ID>15</ID>
 		<name>Knight</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>8</offense>
 		<defense>6</defense>
 		<foodCost>3</foodCost>
@@ -354,7 +360,8 @@
 		<description>The Knight is a formidable Offense-based melee Unit, with Offense greater than and Defense equal to the War Elephant.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
 			<requiredBuilding>11</requiredBuilding>
@@ -363,7 +370,7 @@
 	<unitType>
 		<ID>16</ID>
 		<name>Lancer</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>6</offense>
 		<defense>8</defense>
 		<foodCost>3</foodCost>
@@ -378,7 +385,8 @@
 		<description>The Lancer is a formidable Defense-based melee Unit, with Offense equal to and Defense greater than the War Elephant.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
@@ -388,7 +396,7 @@
 	<unitType>
 		<ID>17</ID>
 		<name>General</name>
-		<type>Special</type>
+		<combatType>Special</combatType>
 		<offense>0</offense>
 		<defense>0</defense>
 		<foodCost>0</foodCost>
@@ -409,7 +417,7 @@
 	<unitType>
 		<ID>18</ID>
 		<name>Spy</name>
-		<type>Special</type>
+		<combatType>Special</combatType>
 		<offense>0</offense>
 		<defense>0</defense>
 		<foodCost>0</foodCost>
@@ -430,7 +438,7 @@
 	<unitType>
 		<ID>19</ID>
 		<name>Ninja</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>10</offense>
 		<defense>8</defense>
 		<foodCost>1</foodCost>
@@ -445,7 +453,9 @@
 		<description>The Ninja is a very powerful special Offense-based melee Unit, with Offense and Defense greater than the Knight.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "2">2</requiredBuilding>
+			<requiredBuilding type = "3">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>
 			<requiredBuilding>9</requiredBuilding>
@@ -455,7 +465,7 @@
 	<unitType>
 		<ID>20</ID>
 		<name>Samurai</name>
-		<type>Melee</type>
+		<combatType>Melee</combatType>
 		<offense>8</offense>
 		<defense>10</defense>
 		<foodCost>1</foodCost>
@@ -470,7 +480,8 @@
 		<description>The Samurai is a very powerful special Defense-based melee Unit, with Offense and Defense greater than the Lancer.</description>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type = "1">2</requiredBuilding>
+			<requiredBuilding type = "3">2</requiredBuilding>
 			<requiredBuilding>3</requiredBuilding>
 			<requiredBuilding>4</requiredBuilding>
 			<requiredBuilding>6</requiredBuilding>

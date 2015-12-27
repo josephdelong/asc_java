@@ -42,7 +42,7 @@ public class City extends DataType {
 	 * from input
 	 */
 	@Override
-	public void parse(String fieldName, String value) {
+	public void parse(String fieldName, String attribute, String value) {
 		if (fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("id")) {
@@ -54,7 +54,7 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("buildings")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("building")) {
-			this.addBuilding(type, Integer.parseInt(value));
+			this.addBuilding(Integer.parseInt(attribute), Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("defense")) {
@@ -64,7 +64,7 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("resources")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			this.addResource(type, Integer.parseInt(value));
+			this.addResource(Integer.parseInt(attribute), Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("value")) {
 			this.setValue(Double.parseDouble(value));
 		} else if (fieldName.equalsIgnoreCase("happiness")) {
@@ -76,7 +76,7 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("assignedWork")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("work")) {
-			this.addWork(type, Integer.parseInt(value));
+			this.addWork(Integer.parseInt(attribute), Integer.parseInt(value));
 		}
 	}
 
@@ -130,97 +130,104 @@ public class City extends DataType {
 		fields.add("assignedWork");
 		return fields;
 	}
+	
+	/**
+	 * Method which sets this instance's type-specific fields based on input.
+	 */
+	public void setType(String type) {
+		// do nothing
+	}
 
 	/**
 	 * @return the id
 	 */
 	@Override
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
 	 * @return the owner
 	 */
 	public Player getOwner() {
-		return this.owner;
+		return owner;
 	}
 
 	/**
 	 * @return the buildings
 	 */
 	public ArrayList<Building> getBuildings() {
-		return this.buildings;
+		return buildings;
 	}
 
 	/**
 	 * @return the offense
 	 */
 	public int getOffense() {
-		return this.offense;
+		return offense;
 	}
 
 	/**
 	 * @return the defense
 	 */
 	public int getDefense() {
-		return this.defense;
+		return defense;
 	}
 
 	/**
 	 * @return the population
 	 */
 	public int getPopulation() {
-		return this.population;
+		return population;
 	}
 
 	/**
 	 * @return the resources
 	 */
 	public ArrayList<Resource> getResources() {
-		return this.resources;
+		return resources;
 	}
 
 	/**
 	 * @return the value
 	 */
 	public double getValue() {
-		return this.value;
+		return value;
 	}
 
 	/**
 	 * @return the happiness
 	 */
 	public double getHappiness() {
-		return this.happiness;
+		return happiness;
 	}
 
 	/**
 	 * @return the score
 	 */
 	public double getScore() {
-		return this.score;
+		return score;
 	}
 
 	/**
 	 * @return the image
 	 */
 	public File getImage() {
-		return this.image;
+		return image;
 	}
 
 	/**
 	 * @return the assignedWork
 	 */
 	public ArrayList<Integer> getAssignedWork() {
-		return this.assignedWork;
+		return assignedWork;
 	}
 
 	/**
@@ -312,6 +319,50 @@ public class City extends DataType {
 	 */
 	public void setAssignedWork(ArrayList<Integer> assignedWork) {
 		this.assignedWork = assignedWork;
+	}
+
+	/**
+	 * Method which adds the specified work type and percent to this City's assignedWork.
+	 *   Used when parsing data from the data source only.
+	 * @param workType
+	 * @param percent
+	 */
+	private void addWork(int workType, int percent) {
+		ArrayList<Integer> work = this.getAssignedWork();
+		work.add(workType, percent);
+		this.setAssignedWork(work);
+	}
+
+	/**
+	 * Method which adds the specified resourceType with the specified amount to this instance's Resources.
+	 *   Used when parsing data from the data source only.
+	 * @param resourceType
+	 * @param amount
+	 */
+	private void addResource(int resourceType, int amount) {
+		Resource r = new Resource(resourceType);
+		r.setAmount(amount);
+		ArrayList<Resource> resources = this.getResources();
+		resources.add(resourceType, r);
+		this.setResources(resources);
+	}
+
+	/**
+	 * Method which adds a new Building to this City.buildings, with the specified BuildingType and Resource production.
+	 * @param buildingType
+	 * @param productionValue
+	 */
+	private void addBuilding(int buildingType, int productionValue) {
+		ArrayList<Building> buildings = this.getBuildings();
+		Building newBuilding = new Building(buildingType);
+		Integer i = Integer.valueOf(productionValue);
+		if(i == null || i.equals(null) || i.intValue() == 0) {
+			// do nothing
+		} else {
+			newBuilding.setProductionType(productionValue);
+		}
+		buildings.add(newBuilding);
+		this.setBuildings(buildings);
 	}
 
 	/* (non-Javadoc)

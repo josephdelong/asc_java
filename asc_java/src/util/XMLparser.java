@@ -36,6 +36,7 @@ public class XMLparser extends DefaultHandler {
 	private ArrayList<DataType> dataMembers = new ArrayList<DataType>();
 	private String dataType;
 	private String field;
+	private String attribute;
 	
 	private ArrayList<String> tags;
 	private ArrayList<Integer> indexes;
@@ -65,7 +66,7 @@ public class XMLparser extends DefaultHandler {
 		SAXParser sp = saxParserFactory.newSAXParser();
 
 		// Create an instance of this class; it defines all the handler methods
-		XMLparser parser = new XMLparser();
+//		XMLparser parser = new XMLparser();
 
 		// Extract the Data Type from the XML file name, dropping the last 's'
 		dataType = xmlFile.substring(xmlFile.lastIndexOf('/') + 1, xmlFile.lastIndexOf('.') - 1);
@@ -83,7 +84,7 @@ public class XMLparser extends DefaultHandler {
 		}
 		
 		// Finally, tell the parser to parse the input and notify the handler
-		sp.parse(xmlFile, parser);
+		sp.parse(xmlFile, this);
 		// Read out the contents of the dataMember ArrayList
 		//parser.readList();
 		return dataMembers;
@@ -103,14 +104,20 @@ public class XMLparser extends DefaultHandler {
 	 */
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		// TODO: add parsing of tag attributes?
 		// reset string buffer
 		temp = "";
-		if(indexes.isEmpty() == false) { // if indexes is NOT empty
-			if(tags.isEmpty() == false) { // if tags is NOT empty
+		if(indexes != null ) { // if indexes is NOT empty
+			if(tags != null) { // if tags is NOT empty
 				// get specific tags from specific indexes
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
+					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+					if(attribute == null) {
+						// do nothing
+					} else {
+						dataMember.setType(attribute);
+						attribute = null;
+					}
 				} else { // we're getting a FIELD
 					if(indexes.contains(currentIndex)) { // if we want this index
 						if(tags.contains(field)) { // if we want this field
@@ -126,6 +133,13 @@ public class XMLparser extends DefaultHandler {
 				// get all tags from specific indexes
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
+					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+					if(attribute == null) {
+						// do nothing
+					} else {
+						dataMember.setType(attribute);
+						attribute = null;
+					}
 				} else { // we're getting a FIELD
 					if(indexes.contains(currentIndex)) { // if we want this index
 						field = qName; // get the field for later parsing
@@ -135,10 +149,17 @@ public class XMLparser extends DefaultHandler {
 				}
 			}
 		} else { // indexes IS empty: get all indexes
-			if(tags.isEmpty() == false) { // if tags is NOT empty
+			if(tags != null) { // if tags is NOT empty
 				// get every occurence of tags
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
+					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+					if(attribute.equals(null)) {
+						// do nothing
+					} else {
+						dataMember.setType(attribute);
+						attribute = null;
+					}
 				} else { // we're getting a FIELD
 					if(tags.contains(field)) { // if we want this field
 						field = qName; // get the field for later parsing
@@ -150,6 +171,13 @@ public class XMLparser extends DefaultHandler {
 				//get EVERYTHING
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
+					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+					if(attribute == null) {
+						// do nothing
+					} else {
+						dataMember.setType(attribute);
+						attribute = null;
+					}
 				} else { // we're getting a FIELD
 					field = qName; // get the field for later parsing
 				}
@@ -211,12 +239,12 @@ public class XMLparser extends DefaultHandler {
 				// add it to the list
 				dataMembers.add(dataMember);
 			}
+			System.out.println("Processed DataMember #" + currentIndex + ": " + dataType + " with values of: " + dataMember.toString());
 			// increment currentIndex
 			currentIndex++;
 		} else {
 			// pass temp to dataMember so it can parse
-			dataMember.parse(field, temp);
-			// TODO: implement parse(field, attribute, value)?
+			dataMember.parse(field, attribute, temp);
 		}
 
 	}

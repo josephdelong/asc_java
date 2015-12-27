@@ -32,9 +32,10 @@ public class BuildingType extends DataType {
 	private int goldCost;
 	private boolean special;
 	private File image;
+	private String description;
 	private int maxOccupants;
 	private int maxGarrison;
-	private ArrayList<Integer> requiredBuildings;
+	private ArrayList<Building> requiredBuildings;
 	
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
@@ -51,7 +52,7 @@ public class BuildingType extends DataType {
 		this.setImage(null);
 		this.setMaxOccupants(0);
 		this.setMaxGarrison(0);
-		this.setRequiredBuildings(new ArrayList<Integer>());
+		this.setRequiredBuildings(new ArrayList<Building>());
 	}
 
 	/**
@@ -91,8 +92,8 @@ public class BuildingType extends DataType {
 	 * Parse method which sets the data members of this class to values parsed from input
 	 */
 	@Override
-	public void parse(String fieldName, String value) {
-		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+	public void parse(String fieldName, String attribute, String value) {
+		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
@@ -112,6 +113,8 @@ public class BuildingType extends DataType {
 			this.setSpecial(Boolean.parseBoolean(value));
 		} else if(fieldName.equalsIgnoreCase("image")) {
 			this.setImage(new File(value));
+		} else if(fieldName.equalsIgnoreCase("description")) {
+			this.setDescription(value);
 		} else if(fieldName.equalsIgnoreCase("maxOccupants")) {
 			this.setMaxOccupants(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("maxGarrison")) {
@@ -119,7 +122,12 @@ public class BuildingType extends DataType {
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
-			this.addRequiredBuilding(Integer.valueOf(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addRequiredBuilding(Integer.valueOf(s));
+			}
 		}
 	}
 
@@ -139,6 +147,7 @@ public class BuildingType extends DataType {
 			buildingTypes = parser.parse("src/asc_dataTypes/buildingTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get BuildingType Instance lookup", e);
+			System.exit(1);
 		}
 		
 		Iterator<DataType> it = buildingTypes.iterator();
@@ -168,6 +177,13 @@ public class BuildingType extends DataType {
 		fields.add("maxGarrison");
 		fields.add("requiredBuildings");
 		return fields;
+	}
+
+	/**
+	 * Method which sets this instance's type-specific fields based on input.
+	 */
+	public void setType(String type) {
+		// do nothing
 	}
 
 	/**
@@ -234,6 +250,13 @@ public class BuildingType extends DataType {
 	}
 
 	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
 	 * @return the maxOccupants
 	 */
 	public int getMaxOccupants() {
@@ -250,7 +273,7 @@ public class BuildingType extends DataType {
 	/**
 	 * @return the requiredBuildings
 	 */
-	public ArrayList<Integer> getRequiredBuildings() {
+	public ArrayList<Building> getRequiredBuildings() {
 		return requiredBuildings;
 	}
 
@@ -318,6 +341,13 @@ public class BuildingType extends DataType {
 	}
 
 	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
 	 * @param maxOccupants the maxOccupants to set
 	 */
 	public void setMaxOccupants(int maxOccupants) {
@@ -334,7 +364,7 @@ public class BuildingType extends DataType {
 	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
-	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
+	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
 	
@@ -343,8 +373,8 @@ public class BuildingType extends DataType {
 	 * @param buildingTypeId
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) {
-		ArrayList<Integer> temp = this.getRequiredBuildings();
-		temp.add(buildingTypeId);
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
 	}
 

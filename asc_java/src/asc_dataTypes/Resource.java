@@ -28,8 +28,8 @@ public class Resource extends DataType {
 	private double value;
 	private File image;
 	private float baseAccumulationRate;
-	private ArrayList<Integer> requiredBuildings;
-	private ArrayList<Integer> producingBuildings;
+	private ArrayList<Building> requiredBuildings;
+	private ArrayList<Building> producingBuildings;
 	private int amount;
 	
 	/**
@@ -41,8 +41,8 @@ public class Resource extends DataType {
 		this.setValue(0);
 		this.setImage(null);
 		this.setBaseAccumulationRate(0);
-		this.setRequiredBuildings(new ArrayList<Integer>());
-		this.setProducingBuildings(new ArrayList<Integer>());
+		this.setRequiredBuildings(new ArrayList<Building>());
+		this.setProducingBuildings(new ArrayList<Building>());
 		this.setAmount(0);
 	}
 	
@@ -79,7 +79,7 @@ public class Resource extends DataType {
 	 * Parse method which sets the data members of this class to values parsed from input
 	 */
 	@Override
-	public void parse(String fieldName, String value) {
+	public void parse(String fieldName, String attribute, String value) {
 		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
@@ -95,11 +95,29 @@ public class Resource extends DataType {
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
-			this.addRequiredBuilding(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				if(attribute == null || attribute.equals(null) || attribute.isEmpty() || attribute.equalsIgnoreCase("")) {
+					this.addRequiredBuilding(Integer.valueOf(value));
+				} else {
+					this.addRequiredBuilding(Integer.valueOf(s), Integer.valueOf(attribute.trim()));
+				}
+			}
 		} else if(fieldName.equalsIgnoreCase("producingBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("producingBuilding")) {
-			this.addProducingBuilding(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				if(attribute == null || attribute.equals(null) || attribute.isEmpty() || attribute.equalsIgnoreCase("")) {
+					this.addProducingBuilding(Integer.parseInt(s));
+				} else {
+					this.addProducingBuilding(Integer.parseInt(s), Integer.valueOf(attribute.trim()));
+				}
+			}
 		} else if(fieldName.equalsIgnoreCase("amount")) {
 			this.setAmount(Integer.parseInt(value));
 		}
@@ -113,17 +131,18 @@ public class Resource extends DataType {
 	 */
 	public static Resource getInstance(Integer instanceId) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		ArrayList<DataType> units = new ArrayList<DataType>();
+		ArrayList<DataType> resources = new ArrayList<DataType>();
 		ids.add(instanceId);
 		XMLparser parser = new XMLparser();
 		
 		try {
-			units = parser.parse("src/asc_dataTypes/resources.xml", null, ids);
+			resources = parser.parse("src/asc_dataTypes/resources.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get Resource Instance lookup", e);
+			System.exit(1);
 		}
 		
-		Iterator<DataType> it = units.iterator();
+		Iterator<DataType> it = resources.iterator();
 		if(it.hasNext()) {
 			return (Resource)it.next();
 		} else {
@@ -139,7 +158,21 @@ public class Resource extends DataType {
 	public ArrayList<String> getFields() {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("id");
+		fields.add("name");
+		fields.add("value");
+		fields.add("image");
+		fields.add("baseAccumulationRate");
+		fields.add("requiredBuildings");
+		fields.add("producingBuildings");
+		fields.add("amount");
 		return fields;
+	}
+	
+	/**
+	 * Method which sets this instance's type-specific fields based on input.
+	 */
+	public void setType(String type) {
+		// do nothing
 	}
 
 	/**
@@ -181,14 +214,14 @@ public class Resource extends DataType {
 	/**
 	 * @return the requiredBuildings
 	 */
-	public ArrayList<Integer> getRequiredBuildings() {
+	public ArrayList<Building> getRequiredBuildings() {
 		return this.requiredBuildings;
 	}
 
 	/**
 	 * @return the producingBuildings
 	 */
-	public ArrayList<Integer> getProducingBuildings() {
+	public ArrayList<Building> getProducingBuildings() {
 		return this.producingBuildings;
 	}
 
@@ -237,14 +270,14 @@ public class Resource extends DataType {
 	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
-	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
+	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
 
 	/**
 	 * @param producingBuildings the producingBuildings to set
 	 */
-	public void setProducingBuildings(ArrayList<Integer> producingBuildings) {
+	public void setProducingBuildings(ArrayList<Building> producingBuildings) {
 		this.producingBuildings = producingBuildings;
 	}
 
@@ -260,8 +293,21 @@ public class Resource extends DataType {
 	 * @param buildingTypeId
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) {
-		ArrayList<Integer> temp = this.getRequiredBuildings();
-		temp.add(buildingTypeId);
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		temp.add(new Building(buildingTypeId));
+		this.setRequiredBuildings(temp);
+	}
+	
+	/**
+	 * Adds a Required Building to this Resource
+	 * @param buildingTypeId
+	 * @param buildingSubType
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) {
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		Building newBuilding = new Building(buildingTypeId);
+		newBuilding.setProductionType(buildingSubType);
+		temp.add(newBuilding);
 		this.setRequiredBuildings(temp);
 	}
 	
@@ -270,8 +316,21 @@ public class Resource extends DataType {
 	 * @param buildingTypeId
 	 */
 	private void addProducingBuilding(Integer buildingTypeId) {
-		ArrayList<Integer> temp = this.getProducingBuildings();
-		temp.add(buildingTypeId);
+		ArrayList<Building> temp = this.getProducingBuildings();
+		temp.add(new Building(buildingTypeId));
+		this.setProducingBuildings(temp);
+	}
+	
+	/**
+	 * Adds a Producing Building to this Resource
+	 * @param buildingTypeId
+	 * @param buildingSubType
+	 */
+	private void addProducingBuilding(Integer buildingTypeId, Integer buildingSubType) {
+		ArrayList<Building> temp = this.getProducingBuildings();
+		Building newBuilding = new Building(buildingTypeId);
+		newBuilding.setProductionType(buildingSubType);
+		temp.add(newBuilding);
 		this.setProducingBuildings(temp);
 	}
 

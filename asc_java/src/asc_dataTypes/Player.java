@@ -49,7 +49,7 @@ public class Player extends DataType {
 	 * from input
 	 */
 	@Override
-	public void parse(String fieldName, String value) {
+	public void parse(String fieldName, String attribute, String value) {
 		if (fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("id")) {
@@ -73,7 +73,7 @@ public class Player extends DataType {
 		} else if (fieldName.equalsIgnoreCase("resourceSurplus")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			this.addResource(type, Integer.parseInt(value));
+			this.addResource(Integer.parseInt(attribute), Integer.parseInt(value));
 		}
 	}
 
@@ -125,62 +125,69 @@ public class Player extends DataType {
 		fields.add("resourceSurplus");
 		return fields;
 	}
+	
+	/**
+	 * Method which sets this instance's type-specific fields based on input.
+	 */
+	public void setType(String type) {
+		// do nothing
+	}
 
 	/**
 	 * @return the id
 	 */
 	@Override
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	/**
 	 * @return the active
 	 */
 	public boolean getActive() {
-		return this.active;
+		return active;
 	}
 
 	/**
 	 * @return the cities
 	 */
 	public ArrayList<City> getCities() {
-		return this.cities;
+		return cities;
 	}
 
 	/**
 	 * @return the currentCity
 	 */
 	public City getCurrentCity() {
-		return this.currentCity;
+		return currentCity;
 	}
 
 	/**
 	 * @return the allies
 	 */
 	public ArrayList<Player> getAllies() {
-		return this.allies;
+		return allies;
 	}
 
 	/**
 	 * @return the score
 	 */
 	public double getScore() {
-		return this.score;
+		return score;
 	}
 
 	/**
 	 * @return the resoruceSurplus
 	 */
 	public ArrayList<Resource> getResourceSurplus() {
-		return this.resourceSurplus;
+		return resourceSurplus;
 	}
 
 	/**
@@ -296,6 +303,20 @@ public class Player extends DataType {
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Method which adds the specified resourceType with the specified amount to this instance's Resources.
+	 *   Used when parsing data from the data source only.
+	 * @param resourceType
+	 * @param amount
+	 */
+	private void addResource(int resourceType, int amount) {
+		Resource r = new Resource(resourceType);
+		r.setAmount(amount);
+		ArrayList<Resource> resources = this.getResourceSurplus();
+		resources.add(resourceType, r);
+		this.setResourceSurplus(resources);
 	}
 
 	/* (non-Javadoc)

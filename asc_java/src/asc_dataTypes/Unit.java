@@ -35,7 +35,7 @@ public class Unit extends DataType {
 	private int xp;
 	private boolean special;
 	private File image;
-	private ArrayList<Integer> requiredBuildings;
+	private ArrayList<Building> requiredBuildings;
 	
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
@@ -53,7 +53,7 @@ public class Unit extends DataType {
 		this.setXp(0);
 		this.setSpecial(false);
 		this.setImage(null);
-		this.setRequiredBuildings(new ArrayList<Integer>());
+		this.setRequiredBuildings(new ArrayList<Building>());
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class Unit extends DataType {
 	 * Parse method which sets the data members of this class to values parsed from input
 	 */
 	@Override
-	public void parse(String fieldName, String value) {
+	public void parse(String fieldName, String attribute, String value) {
 		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
@@ -103,7 +103,16 @@ public class Unit extends DataType {
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
-			this.addRequiredBuilding(Integer.valueOf(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				if(attribute == null || attribute.equals(null) || attribute.isEmpty() || attribute.equalsIgnoreCase("")) {
+					this.addRequiredBuilding(Integer.valueOf(s));
+				} else {
+					this.addRequiredBuilding(Integer.valueOf(s), Integer.valueOf(attribute.trim()));
+				}
+			}
 		}
 	}
 
@@ -153,6 +162,13 @@ public class Unit extends DataType {
 		fields.add("image");
 		fields.add("requiredBuildings");
 		return fields;
+	}
+	
+	/**
+	 * Method which sets this instance's type-specific fields based on input.
+	 */
+	public void setType(String type) {
+		// do nothing
 	}
 
 	/**
@@ -242,7 +258,7 @@ public class Unit extends DataType {
 	/**
 	 * @return the requiredBuildings
 	 */
-	public ArrayList<Integer> getRequiredBuildings() {
+	public ArrayList<Building> getRequiredBuildings() {
 		return requiredBuildings;
 	}
 
@@ -333,7 +349,7 @@ public class Unit extends DataType {
 	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
-	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
+	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
 	
@@ -342,8 +358,21 @@ public class Unit extends DataType {
 	 * @param buildingTypeId
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) {
-		ArrayList<Integer> temp = this.getRequiredBuildings();
-		temp.add(buildingTypeId);
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		temp.add(new Building(buildingTypeId));
+		this.setRequiredBuildings(temp);
+	}
+	
+	/**
+	 * Adds a Required Building to this Unit
+	 * @param buildingTypeId
+	 * @param buildingSubType
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) {
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		Building newBuilding = new Building(buildingTypeId);
+		newBuilding.setProductionType(buildingSubType);
+		temp.add(newBuilding);
 		this.setRequiredBuildings(temp);
 	}
 

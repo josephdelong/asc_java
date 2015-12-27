@@ -25,7 +25,7 @@ public class UnitType extends DataType {
 	 */
 	private int id;
 	private String name;
-	private String type;
+	private String combatType;
 	private int offense;
 	private int defense;
 	private int foodCost;
@@ -38,7 +38,7 @@ public class UnitType extends DataType {
 	private boolean special;
 	private File image;
 	private String description;
-	private ArrayList<Integer> requiredBuildings;
+	private ArrayList<Building> requiredBuildings;
 
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
@@ -46,6 +46,7 @@ public class UnitType extends DataType {
 	public UnitType() {
 		this.setId(0);
 		this.setName("");
+		this.setCombatType("");
 		this.setOffense(0);
 		this.setDefense(0);
 		this.setFoodCost(0);
@@ -58,7 +59,7 @@ public class UnitType extends DataType {
 		this.setSpecial(false);
 		this.setImage(null);
 		this.setDescription("");
-		this.setRequiredBuildings(new ArrayList<Integer>());
+		this.setRequiredBuildings(new ArrayList<Building>());
 	}
 
 	/**
@@ -68,6 +69,7 @@ public class UnitType extends DataType {
 	public UnitType(UnitType u) {
 		this.setId(u.getId());
 		this.setName(u.getName());
+		this.setCombatType(u.getCombatType());
 		this.setOffense(u.getOffense());
 		this.setDefense(u.getDefense());
 		this.setFoodCost(u.getFoodCost());
@@ -101,15 +103,15 @@ public class UnitType extends DataType {
 	 * Parse method which sets the data members of this class to values parsed from input
 	 */
 	@Override
-	public void parse(String fieldName, String value) {
+	public void parse(String fieldName, String attribute, String value) {
 		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
-		} else if(fieldName.equalsIgnoreCase("type")) {
-			this.setType(value);
+		} else if(fieldName.equalsIgnoreCase("combatType")) {
+			this.setCombatType(value);
 		} else if(fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
@@ -137,7 +139,16 @@ public class UnitType extends DataType {
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
-			this.addRequiredBuilding(Integer.valueOf(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				if(attribute == null || attribute.equals(null) || attribute.isEmpty() || attribute.equalsIgnoreCase("")) {
+					this.addRequiredBuilding(Integer.valueOf(s));
+				} else {
+					this.addRequiredBuilding(Integer.valueOf(s), Integer.valueOf(attribute.trim()));
+				}
+			}
 		}
 	}
 
@@ -175,7 +186,7 @@ public class UnitType extends DataType {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("id");
 		fields.add("name");
-		fields.add("type");
+		fields.add("combatType");
 		fields.add("offense");
 		fields.add("defense");
 		fields.add("foodCost");
@@ -190,6 +201,13 @@ public class UnitType extends DataType {
 		fields.add("description");
 		fields.add("requiredBuildings");
 		return fields;
+	}
+	
+	/**
+	 * Method which sets this instance's type-specific fields based on input.
+	 */
+	public void setType(String type) {
+		// do nothing
 	}
 
 	/**
@@ -207,10 +225,10 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @return the type
+	 * @return the combatType
 	 */
-	public String getType() {
-		return type;
+	public String getCombatType() {
+		return combatType;
 	}
 
 	/**
@@ -300,7 +318,7 @@ public class UnitType extends DataType {
 	/**
 	 * @return the requiredBuildings
 	 */
-	public ArrayList<Integer> getRequiredBuildings() {
+	public ArrayList<Building> getRequiredBuildings() {
 		return requiredBuildings;
 	}
 
@@ -319,10 +337,10 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param combatType the combatType to set
 	 */
-	public void setType(String type) {
-		this.type = type;
+	public void setCombatType(String combatType) {
+		this.combatType = combatType;
 	}
 
 	/**
@@ -412,7 +430,7 @@ public class UnitType extends DataType {
 	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
-	public void setRequiredBuildings(ArrayList<Integer> requiredBuildings) {
+	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
 		this.requiredBuildings = requiredBuildings;
 	}
 	
@@ -421,8 +439,21 @@ public class UnitType extends DataType {
 	 * @param buildingTypeId
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) {
-		ArrayList<Integer> temp = this.getRequiredBuildings();
-		temp.add(buildingTypeId);
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		temp.add(new Building(buildingTypeId));
+		this.setRequiredBuildings(temp);
+	}
+	
+	/**
+	 * Adds a Required Building to this UnitType
+	 * @param buildingTypeId
+	 * @param buildingSubType
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) {
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		Building newBuilding = new Building(buildingTypeId);
+		newBuilding.setProductionType(buildingSubType);
+		temp.add(newBuilding);
 		this.setRequiredBuildings(temp);
 	}
 
@@ -437,7 +468,7 @@ public class UnitType extends DataType {
 		builder.append(", name=");
 		builder.append(name);
 		builder.append(", type=");
-		builder.append(type);
+		builder.append(combatType);
 		builder.append(", offense=");
 		builder.append(offense);
 		builder.append(", defense=");
