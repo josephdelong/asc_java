@@ -9,8 +9,6 @@ package util;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -41,7 +39,7 @@ public class XMLparser extends DefaultHandler {
 	private ArrayList<String> tags;
 	private ArrayList<Integer> indexes;
 	
-	private int currentIndex = 1;
+	private Integer currentIndex = 1;
 
 	/**
 	 * The parse method sets up the SAXParserFactory, SAXParser, and creates an instance of
@@ -111,17 +109,18 @@ public class XMLparser extends DefaultHandler {
 				// get specific tags from specific indexes
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-					if(attribute == null) {
-						// do nothing
-					} else {
-						dataMember.setType(attribute);
-						attribute = null;
-					}
+//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+//					if(attribute == null) {
+//						// do nothing
+//					} else {
+//						dataMember.setType(attribute);
+//						attribute = null;
+//					}
 				} else { // we're getting a FIELD
 					if(indexes.contains(currentIndex)) { // if we want this index
 						if(tags.contains(field)) { // if we want this field
 							field = qName; // get the field for later parsing
+							attribute = attributes.getValue("type"); // get the TYPE attribute if exists
 						} else { // we DON'T want this field
 							field = null; // do nothing
 						}
@@ -133,16 +132,17 @@ public class XMLparser extends DefaultHandler {
 				// get all tags from specific indexes
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-					if(attribute == null) {
-						// do nothing
-					} else {
-						dataMember.setType(attribute);
-						attribute = null;
-					}
+//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+//					if(attribute == null) {
+//						// do nothing
+//					} else {
+//						dataMember.setType(attribute);
+//						attribute = null;
+//					}
 				} else { // we're getting a FIELD
 					if(indexes.contains(currentIndex)) { // if we want this index
 						field = qName; // get the field for later parsing
+						attribute = attributes.getValue("type"); // get the TYPE attribute if exists
 					} else { // we DON'T want this index
 						field = null; // do nothing
 					}
@@ -153,16 +153,17 @@ public class XMLparser extends DefaultHandler {
 				// get every occurence of tags
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-					if(attribute.equals(null)) {
-						// do nothing
-					} else {
-						dataMember.setType(attribute);
-						attribute = null;
-					}
+//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+//					if(attribute.equals(null)) {
+//						// do nothing
+//					} else {
+//						dataMember.setType(attribute);
+//						attribute = null;
+//					}
 				} else { // we're getting a FIELD
 					if(tags.contains(field)) { // if we want this field
 						field = qName; // get the field for later parsing
+						attribute = attributes.getValue("type"); // get the TYPE attribute if exists
 					} else { // we DON'T want this field
 						field = null; // do nothing
 					}
@@ -171,15 +172,16 @@ public class XMLparser extends DefaultHandler {
 				//get EVERYTHING
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-					if(attribute == null) {
-						// do nothing
-					} else {
-						dataMember.setType(attribute);
-						attribute = null;
-					}
+//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
+//					if(attribute == null) {
+//						// do nothing
+//					} else {
+//						dataMember.setType(attribute);
+//						attribute = null;
+//					}
 				} else { // we're getting a FIELD
 					field = qName; // get the field for later parsing
+					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
 				}
 			}
 		}
@@ -236,10 +238,13 @@ public class XMLparser extends DefaultHandler {
 			if(dataMember.getId() == 0) { // this means the data type hasn't been properly initialized
 				// do nothing
 			} else {
-				// add it to the list
-				dataMembers.add(dataMember);
+				if(indexes.contains(currentIndex)) {
+					dataMembers.add(dataMember); // add it to the list
+				} else {
+					// do nothing
+				}
 			}
-			System.out.println("Processed DataMember #" + currentIndex + ": " + dataType + " with values of: " + dataMember.toString());
+			//System.out.println("Processed DataMember #" + currentIndex + ": " + dataType + " with values of: " + dataMember.toString());
 			// increment currentIndex
 			currentIndex++;
 		} else {
@@ -249,12 +254,12 @@ public class XMLparser extends DefaultHandler {
 
 	}
 
-	private void readList() {
-		System.out.println("Total number of parsed data members: " + dataMembers.size() + ".");
-		Iterator<DataType> it = dataMembers.iterator();
-		while(it.hasNext()) {
-			System.out.println(it.next().toString());
-		}
-	}
-
+//	private void readList() {
+//		System.out.println("Total number of parsed data members: " + dataMembers.size() + ".");
+//		Iterator<DataType> it = dataMembers.iterator();
+//		while(it.hasNext()) {
+//			System.out.println(it.next().toString());
+//		}
+//	}
+//
 }

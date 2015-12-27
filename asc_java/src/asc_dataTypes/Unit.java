@@ -61,14 +61,18 @@ public class Unit extends DataType {
 	 * @param unitTypeId <code>int</code> representing the ASC UnitType of this Unit.
 	 */
 	public Unit(int unitTypeId) {
-		UnitType unitType = new UnitType(unitTypeId);
-		this.setUnitId(unitType.getId());
-		this.setName(unitType.getName());
-		this.setOffense(unitType.getOffense());
-		this.setDefense(unitType.getDefense());
-		this.setSpecial(unitType.getSpecial());
-		this.setImage(unitType.getImage());
-		this.setRequiredBuildings(unitType.getRequiredBuildings());
+		UnitType unitType = UnitType.getInstance(unitTypeId);
+		if(unitType == null) {
+			new Unit();
+		} else {
+			this.setUnitId(unitType.getId());
+			this.setName(unitType.getName());
+			this.setOffense(unitType.getOffense());
+			this.setDefense(unitType.getDefense());
+			this.setSpecial(unitType.getSpecial());
+			this.setImage(unitType.getImage());
+			this.setRequiredBuildings(unitType.getRequiredBuildings());
+		}
 	}
 
 	/**
@@ -76,7 +80,7 @@ public class Unit extends DataType {
 	 */
 	@Override
 	public void parse(String fieldName, String attribute, String value) {
-		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
@@ -382,33 +386,57 @@ public class Unit extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Unit: [id=");
+		builder.append("Unit:");
+		builder.append("\n\t");
+		builder.append("id=");
 		builder.append(id);
-		builder.append(", unitId=");
+		builder.append("\n\t");
+		builder.append("unitId=");
 		builder.append(unitId);
-		builder.append(", unitName=");
+		builder.append("\n\t");
+		builder.append("name=");
 		builder.append(name);
-		builder.append(", player=");
+		builder.append("\n\t");
+		builder.append("player=");
 		builder.append(player);
-		builder.append(", city=");
+		builder.append("\n\t");
+		builder.append("city=");
 		builder.append(city);
-		builder.append(", location=");
+		builder.append("\n\t");
+		builder.append("location=");
 		builder.append(location);
-		builder.append(", offense=");
+		builder.append("\n\t");
+		builder.append("offense=");
 		builder.append(offense);
-		builder.append(", defense=");
+		builder.append("\n\t");
+		builder.append("defense=");
 		builder.append(defense);
-		builder.append(", upgrade=");
+		builder.append("\n\t");
+		builder.append("upgrade=");
 		builder.append(upgrade);
-		builder.append(", xp=");
+		builder.append("\n\t");
+		builder.append("xp=");
 		builder.append(xp);
-		builder.append(", special=");
+		builder.append("\n\t");
+		builder.append("special=");
 		builder.append(special);
-		builder.append(", image=");
+		builder.append("\n\t");
+		builder.append("image=");
 		builder.append(image);
-		builder.append(", requiredBuildings=");
-		builder.append(requiredBuildings);
-		builder.append("]");
+		builder.append("\n\t");
+		builder.append("requiredBuildings=");
+		ArrayList<Building> buildings = this.getRequiredBuildings();
+		Iterator<Building> it = buildings.iterator();
+		while(it.hasNext()) {
+			Building b = it.next();
+			builder.append("\n\t\t");
+			builder.append(b.getName());
+			Integer i = Integer.valueOf(b.getProductionType());
+			if(i != null && i > 0 && i < 4) {
+				builder.append(", Type=");
+				builder.append(i);
+			}
+		}
 		return builder.toString();
 	}
 }

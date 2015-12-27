@@ -63,48 +63,11 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * Constructor which clones the passed in UnitType.
-	 * @param u The UnitType to clone.
-	 */
-	public UnitType(UnitType u) {
-		this.setId(u.getId());
-		this.setName(u.getName());
-		this.setCombatType(u.getCombatType());
-		this.setOffense(u.getOffense());
-		this.setDefense(u.getDefense());
-		this.setFoodCost(u.getFoodCost());
-		this.setWoodCost(u.getWoodCost());
-		this.setStoneCost(u.getStoneCost());
-		this.setIronCost(u.getIronCost());
-		this.setCottonCost(u.getCottonCost());
-		this.setSilkCost(u.getSilkCost());
-		this.setGoldCost(u.getGoldCost());
-		this.setSpecial(u.getSpecial());
-		this.setImage(u.getImage());
-		this.setDescription(u.getDescription());
-		this.setRequiredBuildings(u.getRequiredBuildings());
-	}
-	
-	/**
-	 * Constructor which sets a new Unit Type's details based on its ID
-	 * @param unitTypeId <code>int</code> representing the ID of this UnitType.
-	 */
-	public UnitType(int unitTypeId) {
-		// Parse data source for values
-		UnitType temp = UnitType.getInstance(unitTypeId);
-		if(temp.equals(null)) {
-			new UnitType();
-		} else {
-			new UnitType(temp);
-		}
-	}
-
-	/**
 	 * Parse method which sets the data members of this class to values parsed from input
 	 */
 	@Override
 	public void parse(String fieldName, String attribute, String value) {
-		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
@@ -172,7 +135,9 @@ public class UnitType extends DataType {
 		
 		Iterator<DataType> it = unitTypes.iterator();
 		if(it.hasNext()) {
-			return (UnitType)it.next();
+			UnitType ut = (UnitType)it.next();
+//			System.out.println(ut.toString());
+			return ut;
 		} else {
 			return null;
 		}
@@ -463,39 +428,66 @@ public class UnitType extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("UnitType: [id=");
+		builder.append("UnitType:");
+		builder.append("\n\t");
+		builder.append("id=");
 		builder.append(id);
-		builder.append(", name=");
+		builder.append("\n\t");
+		builder.append("name=");
 		builder.append(name);
-		builder.append(", type=");
+		builder.append("\n\t");
+		builder.append("combatType=");
 		builder.append(combatType);
-		builder.append(", offense=");
+		builder.append("\n\t");
+		builder.append("offense=");
 		builder.append(offense);
-		builder.append(", defense=");
+		builder.append("\n\t");
+		builder.append("defense=");
 		builder.append(defense);
-		builder.append(", foodCost=");
+		builder.append("\n\t");
+		builder.append("foodCost=");
 		builder.append(foodCost);
-		builder.append(", woodCost=");
+		builder.append("\n\t");
+		builder.append("woodCost=");
 		builder.append(woodCost);
-		builder.append(", stoneCost=");
+		builder.append("\n\t");
+		builder.append("stoneCost=");
 		builder.append(stoneCost);
-		builder.append(", ironCost=");
+		builder.append("\n\t");
+		builder.append("ironCost=");
 		builder.append(ironCost);
-		builder.append(", cottonCost=");
+		builder.append("\n\t");
+		builder.append("cottonCost=");
 		builder.append(cottonCost);
-		builder.append(", silkCost=");
+		builder.append("\n\t");
+		builder.append("silkCost=");
 		builder.append(silkCost);
-		builder.append(", goldCost=");
+		builder.append("\n\t");
+		builder.append("goldCost=");
 		builder.append(goldCost);
-		builder.append(", special=");
+		builder.append("\n\t");
+		builder.append("special=");
 		builder.append(special);
-		builder.append(", image=");
+		builder.append("\n\t");
+		builder.append("image=");
 		builder.append(image);
-		builder.append(", description=");
+		builder.append("\n\t");
+		builder.append("description=");
 		builder.append(description);
-		builder.append(", requiredBuildings=");
-		builder.append(requiredBuildings);
-		builder.append("]");
+		builder.append("\n\t");
+		builder.append("requiredBuildings=");
+		ArrayList<Building> buildings = this.getRequiredBuildings();
+		Iterator<Building> it = buildings.iterator();
+		while(it.hasNext()) {
+			Building b = it.next();
+			builder.append("\n\t\t");
+			builder.append(b.getName());
+			Integer i = Integer.valueOf(b.getProductionType());
+			if(i != null && i > 0 && i < 4) {
+				builder.append(", Type=");
+				builder.append(i);
+			}
+		}
 		return builder.toString();
 	}
 	

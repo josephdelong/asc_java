@@ -63,14 +63,28 @@ public class Building extends DataType {
 	 * @param buildingTypeId <code>int</code> representing the ASC BuildingType of this Building.
 	 */
 	public Building(int buildingTypeId) {
-		BuildingType buildingType = new BuildingType(buildingTypeId);
-		this.setBuildingType(buildingType.getId());
-		this.setName("New " + buildingType.getName());
-		this.setDefense(buildingType.getDefense());
-		this.setOffense(buildingType.getDefense());
-		this.setSpecial(buildingType.getSpecial());
-		this.setImage(buildingType.getImage());
-		this.setRequiredBuildings(buildingType.getRequiredBuildings());
+		BuildingType buildingType = BuildingType.getInstance(buildingTypeId);
+		if(buildingType == null) {
+			new Building();
+		} else {
+			this.setBuildingType(buildingType.getId());
+			this.setName(buildingType.getName());
+			this.setDefense(buildingType.getDefense());
+			this.setOffense(buildingType.getDefense());
+			this.setSpecial(buildingType.getSpecial());
+			this.setImage(buildingType.getImage());
+			this.setRequiredBuildings(buildingType.getRequiredBuildings());
+		}
+	}
+	
+	/**
+	 * Constructor which sets a new Building's details based on its Building Type and Production Type.
+	 * @param buildingTypeId
+	 * @param productionType
+	 */
+	public Building(int buildingTypeId, int productionType) {
+		new Building(buildingTypeId);
+		setProductionType(productionType);
 	}
 
 	/**
@@ -78,7 +92,7 @@ public class Building extends DataType {
 	 */
 	@Override
 	public void parse(String fieldName, String attribute, String value) {
-		if(fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
@@ -400,13 +414,13 @@ public class Building extends DataType {
 		}
 		
 		ArrayList<Unit> temp = this.getGarrisonedUnits();
-		BuildingType tempBT = new BuildingType(this.getBuildingType());
+		BuildingType tempBT = BuildingType.getInstance(this.getBuildingType());
 		
 		if(tempBT.getMaxGarrison() > temp.size()) {
 			temp.add(Unit.getInstance(unitId));
 			this.setGarrisonedUnits(temp);
 		} else {
-			// throw new BuildingAtMaxGarrisonExcaption();
+			// throw new BuildingAtMaxGarrisonException();
 		}
 	}
 
@@ -461,35 +475,60 @@ public class Building extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Building: [id=");
+		builder.append("Building:");
+		builder.append("\n\t");
+		builder.append("id=");
 		builder.append(id);
-		builder.append(", buildingType=");
+		builder.append("\n\t");
+		builder.append("buildingType=");
 		builder.append(buildingType);
-		builder.append(", name=");
+		builder.append("\n\t");
+		builder.append("name=");
 		builder.append(name);
-		builder.append(", city=");
+		builder.append("\n\t");
+		builder.append("city=");
 		builder.append(city);
-		builder.append(", location=");
+		builder.append("\n\t");
+		builder.append("location=");
 		builder.append(location);
-		builder.append(", defense=");
+		builder.append("\n\t");
+		builder.append("defense=");
 		builder.append(defense);
-		builder.append(", offense=");
+		builder.append("\n\t");
+		builder.append("offense=");
 		builder.append(offense);
-		builder.append(", upgrade=");
+		builder.append("\n\t");
+		builder.append("upgrade=");
 		builder.append(upgrade);
-		builder.append(", special=");
+		builder.append("\n\t");
+		builder.append("special=");
 		builder.append(special);
-		builder.append(", image=");
+		builder.append("\n\t");
+		builder.append("image=");
 		builder.append(image);
-		builder.append(", occupants=");
+		builder.append("\n\t");
+		builder.append("occupants=");
 		builder.append(occupants);
-		builder.append(", garrisonedUnits=");
+		builder.append("\n\t");
+		builder.append("garrisonedUnits=");
 		builder.append(garrisonedUnits);
-		builder.append(", productionType=");
+		builder.append("\n\t");
+		builder.append("productionType=");
 		builder.append(productionType);
-		builder.append(", requiredBuildings=");
-		builder.append(requiredBuildings);
-		builder.append("]");
+		builder.append("\n\t");
+		builder.append("requiredBuildings=");
+		ArrayList<Building> buildings = this.getRequiredBuildings();
+		Iterator<Building> it = buildings.iterator();
+		while(it.hasNext()) {
+			Building b = it.next();
+			builder.append("\n\t\t");
+			builder.append(b.getName());
+			Integer i = Integer.valueOf(b.getProductionType());
+			if(i != null && i > 0 && i < 4) {
+				builder.append(", Type=");
+				builder.append(i);
+			}
+		}
 		return builder.toString();
 	}
 

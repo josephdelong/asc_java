@@ -47,32 +47,22 @@ public class Resource extends DataType {
 	}
 	
 	/**
-	 * Constructor which clones the passed in Resource.
-	 * @param r The Resource to clone.
-	 */
-	public Resource(Resource r) {
-		this.setId(r.getId());
-		this.setName(r.getName());
-		this.setValue(r.getValue());
-		this.setImage(r.getImage());
-		this.setBaseAccumulationRate(r.getBaseAccumulationRate());
-		this.setRequiredBuildings(r.getRequiredBuildings());
-		this.setProducingBuildings(r.getProducingBuildings());
-		this.setAmount(r.getAmount());
-	}
-	
-	/**
 	 * Constructor which sets a Resource's details based on its Resource ID.
 	 * @param resourceId <code>int</code> representing the ID of this Resource.
 	 */
 	public Resource(int resourceId) {
 		// Parse data source for values
-		Resource temp = Resource.getInstance(resourceId);
-		if(temp.equals(null)) {
-			new Resource();
-		} else {
-			new Resource(temp);
-		}
+		Resource.getInstance(resourceId);
+	}
+	
+	/**
+	 * Constructor which sets a Resource's details based on its Resource ID and amount.
+	 * @param resourceId
+	 * @param amount
+	 */
+	public Resource(int resourceId, int amount) {
+		new Resource(resourceId);
+		setAmount(amount);
 	}
 
 	/**
@@ -340,23 +330,52 @@ public class Resource extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Resource [id=");
+		builder.append("Resource:");
+		builder.append("\n\t");
+		builder.append("id=");
 		builder.append(id);
-		builder.append(", name=");
+		builder.append("\n\t");
+		builder.append("name=");
 		builder.append(name);
-		builder.append(", value=");
+		builder.append("\n\t");
+		builder.append("value=");
 		builder.append(value);
-		builder.append(", image=");
+		builder.append("\n\t");
+		builder.append("image=");
 		builder.append(image);
-		builder.append(", baseAccumulationRate=");
+		builder.append("\n\t");
+		builder.append("baseAccumulationRate=");
 		builder.append(baseAccumulationRate);
-		builder.append(", requiredBuildings=");
-		builder.append(requiredBuildings);
-		builder.append(", producingBuildings=");
-		builder.append(producingBuildings);
-		builder.append(", amount=");
+		builder.append("\n\t");
+		builder.append("requiredBuildings=");
+		ArrayList<Building> buildings = this.getRequiredBuildings();
+		Iterator<Building> it = buildings.iterator();
+		while(it.hasNext()) {
+			Building b = it.next();
+			builder.append("\n\t\t");
+			builder.append(b.getName());
+			Integer i = Integer.valueOf(b.getProductionType());
+			if(i != null && i > 0 && i < 4) {
+				builder.append(", Type=");
+				builder.append(i);
+			}
+		}
+		builder.append("\n\t");
+		buildings = this.getProducingBuildings();
+		it = buildings.iterator();
+		while(it.hasNext()) {
+			Building b = it.next();
+			builder.append("\n\t\t");
+			builder.append(b.getName());
+			Integer i = Integer.valueOf(b.getProductionType());
+			if(i != null && i > 0 && i < 4) {
+				builder.append(", Type=");
+				builder.append(i);
+			}
+		}
+		builder.append("\n\t");
+		builder.append("amount=");
 		builder.append(amount);
-		builder.append("]");
 		return builder.toString();
 	}
 

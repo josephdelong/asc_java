@@ -4,14 +4,8 @@
  */
 package test;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import asc_dataTypes.BuildingType;
-import util.XMLparser;
+import asc_dataTypes.UnitType;
 
 /**
  * 
@@ -19,8 +13,10 @@ import util.XMLparser;
 public class XMLparserTest {
 
 	public static void main(String[] args) {
-		BuildingType bt = new BuildingType(5);
-		bt.toString();
+//		BuildingType bt = BuildingType.getInstance(5);
+//		System.out.println(bt.toString());
+		UnitType ut = UnitType.getInstance(7);
+		System.out.println(ut.toString());
 	}
 	
 }

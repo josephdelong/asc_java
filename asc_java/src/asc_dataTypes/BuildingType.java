@@ -56,39 +56,6 @@ public class BuildingType extends DataType {
 	}
 
 	/**
-	 * Constructor which clones the passed in BuildingType.
-	 * @param b The BuildingType to clone.
-	 */
-	public BuildingType(BuildingType b) {
-		this.setId(b.getId());
-		this.setName(b.getName());
-		this.setOffense(b.getOffense());
-		this.setDefense(b.getDefense());
-		this.setWoodCost(b.getWoodCost());
-		this.setStoneCost(b.getStoneCost());
-		this.setGoldCost(b.getGoldCost());
-		this.setSpecial(b.getSpecial());
-		this.setImage(b.getImage());
-		this.setMaxOccupants(b.getMaxOccupants());
-		this.setMaxGarrison(b.getMaxGarrison());
-		this.setRequiredBuildings(b.getRequiredBuildings());
-	}
-	
-	/**
-	 * Constructor which returns a BuildingType with data members initialized based on the Type of Building desired.
-	 * @param buildingType <code>int</code> representing the ID of this Building Type.
-	 */
-	public BuildingType(Integer buildingTypeId) {
-		// Parse data source for values
-		BuildingType temp = BuildingType.getInstance(buildingTypeId);
-		if(temp.equals(null)) {
-			new BuildingType();
-		} else {
-			new BuildingType(temp);
-		}
-	}
-
-	/**
 	 * Parse method which sets the data members of this class to values parsed from input
 	 */
 	@Override
@@ -384,31 +351,54 @@ public class BuildingType extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BuildingType: [id=");
+		builder.append("BuildingType:");
+		builder.append("\n\t");
+		builder.append("id=");
 		builder.append(id);
-		builder.append(", name=");
+		builder.append("\n\t");
+		builder.append("name=");
 		builder.append(name);
-		builder.append(", offense=");
+		builder.append("\n\t");
+		builder.append("offense=");
 		builder.append(offense);
-		builder.append(", defense=");
+		builder.append("\n\t");
+		builder.append("defense=");
 		builder.append(defense);
-		builder.append(", woodCost=");
+		builder.append("\n\t");
+		builder.append("woodCost=");
 		builder.append(woodCost);
-		builder.append(", stoneCost=");
+		builder.append("\n\t");
+		builder.append("stoneCost=");
 		builder.append(stoneCost);
-		builder.append(", goldCost=");
+		builder.append("\n\t");
+		builder.append("goldCost=");
 		builder.append(goldCost);
-		builder.append(", special=");
+		builder.append("\n\t");
+		builder.append("special=");
 		builder.append(special);
-		builder.append(", image=");
+		builder.append("\n\t");
+		builder.append("image=");
 		builder.append(image);
-		builder.append(", maxOccupants=");
+		builder.append("\n\t");
+		builder.append("maxOccupants=");
 		builder.append(maxOccupants);
-		builder.append(", maxGarrison=");
+		builder.append("\n\t");
+		builder.append("maxGarrison=");
 		builder.append(maxGarrison);
-		builder.append(", requiredBuildings=");
-		builder.append(requiredBuildings);
-		builder.append("]");
+		builder.append("\n\t");
+		builder.append("requiredBuildings=");
+		ArrayList<Building> buildings = this.getRequiredBuildings();
+		Iterator<Building> it = buildings.iterator();
+		while(it.hasNext()) {
+			Building b = it.next();
+			builder.append("\n\t\t");
+			builder.append(b.getName());
+			Integer i = Integer.valueOf(b.getProductionType());
+			if(i != null && i > 0 && i < 4) {
+				builder.append(", Type=");
+				builder.append(i);
+			}
+		}
 		return builder.toString();
 	}
 	
