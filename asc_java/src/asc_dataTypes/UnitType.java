@@ -128,7 +128,7 @@ public class UnitType extends DataType {
 		XMLparser parser = new XMLparser();
 		
 		try {
-			unitTypes = parser.parse("src/asc_dataTypes/unitTypes.xml", null, ids);
+			unitTypes = parser.parse("src/datastore/unitTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get UnitType Instance lookup", e);
 		}

@@ -111,7 +111,7 @@ public class BuildingType extends DataType {
 		XMLparser parser = new XMLparser();
 		
 		try {
-			buildingTypes = parser.parse("src/asc_dataTypes/buildingTypes.xml", null, ids);
+			buildingTypes = parser.parse("src/datastore/buildingTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get BuildingType Instance lookup", e);
 			System.exit(1);

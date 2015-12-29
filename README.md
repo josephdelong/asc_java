@@ -1,1 +1,2 @@
-# asc_java
+# ASC_Java
+#### Advanced SimCivi, Java Edition

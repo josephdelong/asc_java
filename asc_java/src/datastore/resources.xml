@@ -10,7 +10,7 @@
 			<requiredBuilding>1</requiredBuilding>
 		</requiredBuildings>
 		<producingBuildings>
-			<producingBuilding>2</producingBuilding>
+			<producingBuilding type="1">2</producingBuilding>
 			<producingBuilding>5</producingBuilding>
 		</producingBuildings>
 		<amount></amount>
@@ -66,10 +66,10 @@
 		<baseAccumulationRate>0.008333333333</baseAccumulationRate>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type="2">2</requiredBuilding>
 		</requiredBuildings>
 		<producingBuildings>
-			<producingBuilding>2</producingBuilding>
+			<producingBuilding type="2">2</producingBuilding>
 		</producingBuildings>
 		<amount></amount>
 	</resource>
@@ -81,10 +81,10 @@
 		<baseAccumulationRate>0.008333333333</baseAccumulationRate>
 		<requiredBuildings>
 			<requiredBuilding>1</requiredBuilding>
-			<requiredBuilding>2</requiredBuilding>
+			<requiredBuilding type="3">2</requiredBuilding>
 		</requiredBuildings>
 		<producingBuildings>
-			<producingBuilding>2</producingBuilding>
+			<producingBuilding type="3">2</producingBuilding>
 		</producingBuildings>
 		<amount></amount>
 	</resource>

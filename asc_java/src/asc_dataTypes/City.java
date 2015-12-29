@@ -96,7 +96,7 @@ public class City extends DataType {
 		XMLparser parser = new XMLparser();
 
 		try {
-			cities = parser.parse("src/asc_dataTypes/citys.xml", null, ids);
+			cities = parser.parse("src/datastore/citys.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get City Instance lookup", e);
 		}

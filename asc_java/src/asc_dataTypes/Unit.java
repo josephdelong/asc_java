@@ -133,7 +133,7 @@ public class Unit extends DataType {
 		XMLparser parser = new XMLparser();
 		
 		try {
-			units = parser.parse("src/asc_dataTypes/units.xml", null, ids);
+			units = parser.parse("src/datastore/units.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get Unit Instance lookup", e);
 		}

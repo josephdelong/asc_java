@@ -126,7 +126,7 @@ public class Resource extends DataType {
 		XMLparser parser = new XMLparser();
 		
 		try {
-			resources = parser.parse("src/asc_dataTypes/resources.xml", null, ids);
+			resources = parser.parse("src/datastore/resources.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get Resource Instance lookup", e);
 			System.exit(1);

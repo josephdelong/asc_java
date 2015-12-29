@@ -93,7 +93,7 @@ public class Player extends DataType {
 		XMLparser parser = new XMLparser();
 
 		try {
-			players = parser.parse("src/asc_dataTypes/players.xml", null, ids);
+			players = parser.parse("src/datastore/players.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get Player Instance lookup", e);
 		}

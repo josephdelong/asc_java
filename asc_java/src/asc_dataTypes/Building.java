@@ -147,7 +147,7 @@ public class Building extends DataType {
 		XMLparser parser = new XMLparser();
 		
 		try {
-			buildings = parser.parse("src/asc_dataTypes/buildings.xml", null, ids);
+			buildings = parser.parse("src/datastore/buildings.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get Building Instance lookup", e);
 		}
@@ -397,7 +397,7 @@ public class Building extends DataType {
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) {
 		ArrayList<Building> temp = this.getRequiredBuildings();
-		temp.add(new Building(buildingType));
+		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
 	}
 
