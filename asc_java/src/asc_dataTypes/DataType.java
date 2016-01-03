@@ -6,12 +6,15 @@ package asc_dataTypes;
 
 import java.util.ArrayList;
 
+import exceptions.ASCException;
+
 public abstract class DataType {
 	
 	/**
 	 * Parse method which sets the data members of this class to values parsed from input.
+	 * @throws ASCException 
 	 */
-	public abstract void parse(String fieldName, String attribute, String value);
+	public abstract void parse(String fieldName, String attribute, String value) throws ASCException;
 	
 	/**
 	 * Method which returns this Data Type's fields.
@@ -26,13 +29,7 @@ public abstract class DataType {
 	public abstract int getId();
 	
 	/**
-	 * Method which sets this DataType's type-specific values based on desired type.
-	 * @param type
-	 */
-	public abstract void setType(String type);
-	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * Every child class should have a toString() method.
 	 */
 	@Override
 	public abstract String toString();

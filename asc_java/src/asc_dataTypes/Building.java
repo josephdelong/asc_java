@@ -13,6 +13,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import exceptions.ASCException;
+import exceptions.BuildingAtMaxGarrisonException;
+import exceptions.DataSourceParseException;
+import exceptions.InvalidBuildingProductionTypeException;
+import exceptions.UnitNotFoundException;
+import exceptions.UnitNotFoundInBuildingException;
 import util.XMLparser;
 
 /**
@@ -26,7 +32,7 @@ public class Building extends DataType {
 	private int id;
 	private int buildingType;
 	private String name;
-	private City city;
+	private Integer city;
 	private int location;
 	private int defense;
 	private int offense;
@@ -40,8 +46,9 @@ public class Building extends DataType {
 
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	public Building() {
+	public Building() throws InvalidBuildingProductionTypeException {
 		this.setId(0);
 		this.setBuildingType(0);
 		this.setName("");
@@ -61,8 +68,9 @@ public class Building extends DataType {
 	/**
 	 * Constructor which sets a new Building's details based on its Building Type.
 	 * @param buildingTypeId <code>int</code> representing the ASC BuildingType of this Building.
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	public Building(int buildingTypeId) {
+	public Building(int buildingTypeId) throws InvalidBuildingProductionTypeException {
 		BuildingType buildingType = BuildingType.getInstance(buildingTypeId);
 		if(buildingType == null) {
 			new Building();
@@ -70,7 +78,7 @@ public class Building extends DataType {
 			this.setBuildingType(buildingType.getId());
 			this.setName(buildingType.getName());
 			this.setDefense(buildingType.getDefense());
-			this.setOffense(buildingType.getDefense());
+			this.setOffense(buildingType.getOffense());
 			this.setSpecial(buildingType.getSpecial());
 			this.setImage(buildingType.getImage());
 			this.setRequiredBuildings(buildingType.getRequiredBuildings());
@@ -81,17 +89,19 @@ public class Building extends DataType {
 	 * Constructor which sets a new Building's details based on its Building Type and Production Type.
 	 * @param buildingTypeId
 	 * @param productionType
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	public Building(int buildingTypeId, int productionType) {
+	public Building(int buildingTypeId, int productionType) throws InvalidBuildingProductionTypeException {
 		new Building(buildingTypeId);
 		setProductionType(productionType);
 	}
 
 	/**
 	 * Parse method which sets the data members of this class to values parsed from input
+	 * @throws ASCException 
 	 */
 	@Override
-	public void parse(String fieldName, String attribute, String value) {
+	public void parse(String fieldName, String attribute, String value) throws ASCException {
 		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
@@ -99,7 +109,7 @@ public class Building extends DataType {
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
 		} else if(fieldName.equalsIgnoreCase("city")) {
-			this.setCity(City.getInstance(Integer.parseInt(value)));
+			this.setCity(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("location")) {
 			this.setLocation(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("offense")) {
@@ -139,8 +149,9 @@ public class Building extends DataType {
 	 *   Otherwise returns null.
 	 * @param instanceId The unique identifier for the instance of Building you are looking for.
 	 * @return Building associated with instanceId, or null.
+	 * @throws DataSourceParseException 
 	 */
-	public static Building getInstance(Integer instanceId) {
+	public static Building getInstance(Integer instanceId) throws DataSourceParseException {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		ArrayList<DataType> buildings = new ArrayList<DataType>();
 		ids.add(instanceId);
@@ -149,7 +160,7 @@ public class Building extends DataType {
 		try {
 			buildings = parser.parse("src/datastore/buildings.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get Building Instance lookup", e);
+			throw new DataSourceParseException("Get Building instance lookup: " + instanceId, e);
 		}
 		
 		Iterator<DataType> it = buildings.iterator();
@@ -184,18 +195,6 @@ public class Building extends DataType {
 	}
 
 	/**
-	 * Method which sets this instance's type-specific fields based on input.
-	 */
-	public void setType(String type) {
-		int i = Integer.parseInt(type);
-		if(i < 1 || i > 3) {
-			//throw new InvalidBuildingProductionTypeException("Cannot set a Building's productionType to " + i + ". Valid range is 1-3.");
-		} else {
-			this.setProductionType(i);
-		}
-	}
-
-	/**
 	 * @return the id
 	 */
 	public int getId() {
@@ -219,7 +218,7 @@ public class Building extends DataType {
 	/**
 	 * @return the city
 	 */
-	public City getCity() {
+	public Integer getCity() {
 		return city;
 	}
 
@@ -315,10 +314,10 @@ public class Building extends DataType {
 	}
 
 	/**
-	 * @param city the city to set
+	 * @param cityId the cityId to set
 	 */
-	public void setCity(City city) {
-		this.city = city;
+	public void setCity(Integer cityId) {
+		this.city = cityId;
 	}
 
 	/**
@@ -379,9 +378,14 @@ public class Building extends DataType {
 
 	/**
 	 * @param productionType the productionType to set
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	public void setProductionType(int productionType) {
-		this.productionType = productionType;
+	public void setProductionType(int productionType) throws InvalidBuildingProductionTypeException {
+		if(productionType < 1 || productionType > 3) {
+			throw new InvalidBuildingProductionTypeException("Cannot set a Building's productionType to " + productionType + ". Valid range is 1-3.");
+		} else {
+			this.productionType = productionType;
+		}
 	}
 
 	/**
@@ -394,8 +398,9 @@ public class Building extends DataType {
 	/**
 	 * Adds a Required Building to this Building
 	 * @param buildingTypeId
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
@@ -405,12 +410,13 @@ public class Building extends DataType {
 	 * Adds the specified Unit ID to this Building's Garrison, provided there is sufficient room.
 	 *   Otherwise, will throw BuildingAtMaxGarrisonException
 	 * @param unitId
+	 * @throws UnitNotFoundException 
+	 * @throws BuildingAtMaxGarrisonException 
 	 */
-	private void addGarrisonedUnit(Integer unitId) {
+	public void addGarrisonedUnit(Integer unitId) throws UnitNotFoundException, BuildingAtMaxGarrisonException {
 		// Parse data source for Unit by unitId
 		if(Unit.getInstance(unitId) == null) {
-			// throw new UnitNotFoundException
-			return;
+			throw new UnitNotFoundException("Unit with ID of " + unitId + " not found. Unable to add to Building Garrison.", this);
 		}
 		
 		ArrayList<Unit> temp = this.getGarrisonedUnits();
@@ -419,20 +425,29 @@ public class Building extends DataType {
 		if(tempBT.getMaxGarrison() > temp.size()) {
 			temp.add(Unit.getInstance(unitId));
 			this.setGarrisonedUnits(temp);
+			// calculate new Building offense & defense
+			Integer off = tempBT.getOffense();
+			Integer def = tempBT.getDefense();
+			Iterator<Unit> it = temp.iterator();
+			while (it.hasNext()) {
+				Unit u = it.next();
+				off += u.getOffense();
+				def += u.getDefense();
+			}
 		} else {
-			// throw new BuildingAtMaxGarrisonException();
+			throw new BuildingAtMaxGarrisonException("Unable to add Unit with ID " + unitId + ": garrison at full capacity.", this);
 		}
 	}
 
 	/**
 	 * Adds the specified Unit ID to this Building's Occupants ArrayList.
 	 * @param unitId
+	 * @throws UnitNotFoundException 
 	 */
-	private void addOccupant(Integer unitId) {
+	public void addOccupant(Integer unitId) throws UnitNotFoundException {
 		// Parse data source for Unit by unitId
 		if(Unit.getInstance(unitId) == null) {
-			// throw new UnitNotFoundException
-			return;
+			throw new UnitNotFoundException("Unit with ID of " + unitId + " not found. Unable to add to Building Occupants.", this);
 		}
 		ArrayList<Unit> temp = this.getOccupants();
 		temp.add(Unit.getInstance(unitId));
@@ -443,29 +458,31 @@ public class Building extends DataType {
 	 * Removes the specified Unit from this Building's Garrison, if present.
 	 *   Otherwise throws UnitNotFoundInBuildingException
 	 * @param unitId
+	 * @throws UnitNotFoundInBuildingException 
 	 */
-	private void removeGarrisonedUnit(Integer unitId) {
+	public void removeGarrisonedUnit(Integer unitId) throws UnitNotFoundInBuildingException {
 		ArrayList<Unit> temp = this.getGarrisonedUnits();
 		if(temp.contains(Unit.getInstance(unitId))) {
 			temp.remove(Unit.getInstance(unitId));
 			this.setGarrisonedUnits(temp);
 		} else {
-			// throw new UnitNotFoundInBuildingException
+			throw new UnitNotFoundInBuildingException("Unable to locate Unit with ID of " + unitId + " in Building Garrison.", this);
 		}
 	}
 	
 	/**
-	 * Remomves the specified Unit from this Building's Occupants, if present.
+	 * Removes the specified Unit from this Building's Occupants, if present.
 	 *   Otherwise throws UnitNotFoundInBuildingException
 	 * @param unitId
+	 * @throws UnitNotFoundInBuildingException 
 	 */
-	private void removeOccupant(Integer unitId) {
+	public void removeOccupant(Integer unitId) throws UnitNotFoundInBuildingException {
 		ArrayList<Unit> temp = this.getGarrisonedUnits();
 		if(temp.contains(Unit.getInstance(unitId))) {
 			temp.remove(Unit.getInstance(unitId));
 			this.setOccupants(temp);
 		} else {
-			// throw new UnitNotFoundInBuildingException
+			throw new UnitNotFoundInBuildingException("Unable to locate Unit with ID of " + unitId + " in Building Occupants.", this);
 		}
 	}
 	
@@ -516,7 +533,7 @@ public class Building extends DataType {
 		builder.append("productionType=");
 		builder.append(productionType);
 		builder.append("\n\t");
-		builder.append("requiredBuildings=");
+		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
 		Iterator<Building> it = buildings.iterator();
 		while(it.hasNext()) {

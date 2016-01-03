@@ -114,7 +114,9 @@
 		</requiredBuildings>
 		<producingBuildings>
 			<producingBuilding>1</producingBuilding>
-			<producingBuilding>2</producingBuilding>
+			<producingBuilding type="1">2</producingBuilding>
+			<producingBuilding type="2">2</producingBuilding>
+			<producingBuilding type="3">2</producingBuilding>
 			<producingBuilding>3</producingBuilding>
 			<producingBuilding>4</producingBuilding>
 			<producingBuilding>5</producingBuilding>

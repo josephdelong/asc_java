@@ -12,6 +12,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import exceptions.ASCException;
+import exceptions.DataSourceParseException;
 import util.XMLparser;
 
 /**
@@ -27,7 +29,7 @@ public class Player extends DataType {
 	private boolean active;
 	private ArrayList<City> cities;
 	private City currentCity;
-	private ArrayList<Player> allies;
+	private ArrayList<Integer> allies;
 	private double score;
 	private ArrayList<Resource> resourceSurplus;
 
@@ -45,12 +47,28 @@ public class Player extends DataType {
 	}
 
 	/**
+	 * Constructor which sets up a new Player instance. Note: input fields
+	 * expected to not be null.
+	 * 
+	 * @param playerId
+	 * @param name
+	 */
+	public Player(Integer playerId, String name) {
+		new Player();
+		this.setActive(true);
+		this.setId(playerId);
+		this.setName(name);
+	}
+
+	/**
 	 * Parse method which sets the data members of this class to values parsed
 	 * from input
+	 * @throws DataSourceParseException 
 	 */
 	@Override
-	public void parse(String fieldName, String attribute, String value) {
-		if (fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
+	public void parse(String fieldName, String attribute, String value) throws ASCException {
+		if (fieldName.equals(null) || fieldName.isEmpty()
+				|| fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
@@ -67,13 +85,14 @@ public class Player extends DataType {
 		} else if (fieldName.equalsIgnoreCase("allies")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("ally")) {
-			this.addAlly(Player.getInstance(Integer.parseInt(value)));
+			this.addAlly(Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("score")) {
 			this.setScore(Double.parseDouble(value));
 		} else if (fieldName.equalsIgnoreCase("resourceSurplus")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			this.addResource(Integer.parseInt(attribute), Integer.parseInt(value));
+			this.addResource(Integer.parseInt(attribute),
+					Integer.parseInt(value));
 		}
 	}
 
@@ -85,8 +104,9 @@ public class Player extends DataType {
 	 *            The unique identifier for the instance of Player you are
 	 *            looking for.
 	 * @return Player associated with instanceId, or null.
+	 * @throws DataSourceParseException 
 	 */
-	public static Player getInstance(Integer instanceId) {
+	public static Player getInstance(Integer instanceId) throws DataSourceParseException {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		ArrayList<DataType> players = new ArrayList<DataType>();
 		ids.add(instanceId);
@@ -95,7 +115,7 @@ public class Player extends DataType {
 		try {
 			players = parser.parse("src/datastore/players.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get Player Instance lookup", e);
+			throw new DataSourceParseException("Get Player instance lookup: " + instanceId, e);
 		}
 
 		Iterator<DataType> it = players.iterator();
@@ -124,13 +144,6 @@ public class Player extends DataType {
 		fields.add("score");
 		fields.add("resourceSurplus");
 		return fields;
-	}
-	
-	/**
-	 * Method which sets this instance's type-specific fields based on input.
-	 */
-	public void setType(String type) {
-		// do nothing
 	}
 
 	/**
@@ -172,7 +185,7 @@ public class Player extends DataType {
 	/**
 	 * @return the allies
 	 */
-	public ArrayList<Player> getAllies() {
+	public ArrayList<Integer> getAllies() {
 		return allies;
 	}
 
@@ -234,7 +247,7 @@ public class Player extends DataType {
 	 * @param allies
 	 *            the allies to set
 	 */
-	public void setAllies(ArrayList<Player> allies) {
+	public void setAllies(ArrayList<Integer> allies) {
 		this.allies = allies;
 	}
 
@@ -259,22 +272,27 @@ public class Player extends DataType {
 	 * 
 	 * @param cityId
 	 *            the ID of the City to be added to this Player's cities
+	 * @throws DataSourceParseException 
 	 */
-	private void addCity(Integer cityId) {
+	private void addCity(Integer cityId) throws DataSourceParseException {
 		ArrayList<City> temp = this.getCities();
 		temp.add(City.getInstance(cityId));
 		this.setCities(temp);
 	}
 
 	/**
-	 * Adds an Ally to this Player's allies list
+	 * Adds an Ally to this Player's allies list.
+	 * <p>
+	 * Note: In order to avoid infinite recursion, this method was changed from
+	 * addAlly(Player) to addAlly(Integer). Otherwise, Players which are Allies
+	 * would be infinitely added to each other's Allies ArrayList.
 	 * 
-	 * @param player
-	 *            the Player to be added as an Ally
+	 * @param playerId
+	 *            the Id of the Player to be added as an Ally
 	 */
-	private void addAlly(Player player) {
-		ArrayList<Player> temp = this.getAllies();
-		temp.add(player);
+	private void addAlly(Integer playerId) {
+		ArrayList<Integer> temp = this.getAllies();
+		temp.add(playerId);
 		this.setAllies(temp);
 	}
 
@@ -282,22 +300,22 @@ public class Player extends DataType {
 	 * Adds the Integer values of the Resource.amount to this Player's resource
 	 * surplus.
 	 * 
-	 * @param amount
+	 * @param values
 	 *            ArrayList of Resource which will be added in a one-to-one
 	 *            fashion to this Player's resource surplus.
 	 * @return
 	 */
-	public ArrayList<Resource> addToSurplus(ArrayList<Resource> amount) {
+	public ArrayList<Resource> addToSurplus(ArrayList<Resource> values) {
 		ArrayList<Resource> result = this.getResourceSurplus();
-		if (this.getResourceSurplus() == null || this.getResourceSurplus().isEmpty()
-				|| this.getResourceSurplus().size() == 0) {
-			this.setResourceSurplus(amount);
-		} else if (amount.size() != this.getResourceSurplus().size()) {
-			// throw new SurplusManagementException("Add to Surplus: invalid ArrayList size.");
+		if (result == null || result.isEmpty() || result.size() == 0) {
+			this.setResourceSurplus(values);
+		} else if (values == null || values.size() != result.size()) {
+			// throw new
+			// SurplusManagementException("Add to Surplus: invalid ArrayList size.");
 		} else {
 			for (int i = 0; i < result.size(); i++) {
 				Resource r = result.get(i);
-				int temp = r.getAmount() + amount.get(i).getAmount();
+				int temp = r.getAmount() + values.get(i).getAmount();
 				r.setAmount(temp);
 				result.set(i, r);
 			}
@@ -306,20 +324,22 @@ public class Player extends DataType {
 	}
 
 	/**
-	 * Method which adds the specified resourceType with the specified amount to this instance's Resources.
-	 *   Used when parsing data from the data source only.
+	 * Method which adds the specified resourceType with the specified amount to
+	 * this instance's Resources. Used when parsing data from the data source
+	 * only.
+	 * 
 	 * @param resourceType
 	 * @param amount
 	 */
 	private void addResource(int resourceType, int amount) {
-		Resource r = new Resource(resourceType);
-		r.setAmount(amount);
 		ArrayList<Resource> resources = this.getResourceSurplus();
-		resources.add(resourceType, r);
+		resources.add(resourceType, new Resource(resourceType, amount));
 		this.setResourceSurplus(resources);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

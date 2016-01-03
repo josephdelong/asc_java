@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import exceptions.ASCException;
+import exceptions.InvalidBuildingProductionTypeException;
 import util.XMLparser;
 
 /**
@@ -50,6 +52,7 @@ public class BuildingType extends DataType {
 		this.setGoldCost(0);
 		this.setSpecial(false);
 		this.setImage(null);
+		this.setDescription("");
 		this.setMaxOccupants(0);
 		this.setMaxGarrison(0);
 		this.setRequiredBuildings(new ArrayList<Building>());
@@ -57,9 +60,10 @@ public class BuildingType extends DataType {
 
 	/**
 	 * Parse method which sets the data members of this class to values parsed from input
+	 * @throws ASCException 
 	 */
 	@Override
-	public void parse(String fieldName, String attribute, String value) {
+	public void parse(String fieldName, String attribute, String value) throws ASCException {
 		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
@@ -113,7 +117,7 @@ public class BuildingType extends DataType {
 		try {
 			buildingTypes = parser.parse("src/datastore/buildingTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get BuildingType Instance lookup", e);
+			// throw new DataSourceParseException("Get BuildingType instance lookup: " + instanceId, e);
 			System.exit(1);
 		}
 		
@@ -140,17 +144,11 @@ public class BuildingType extends DataType {
 		fields.add("goldCost");
 		fields.add("special");
 		fields.add("image");
+		fields.add("description");
 		fields.add("maxOccupants");
 		fields.add("maxGarrison");
 		fields.add("requiredBuildings");
 		return fields;
-	}
-
-	/**
-	 * Method which sets this instance's type-specific fields based on input.
-	 */
-	public void setType(String type) {
-		// do nothing
 	}
 
 	/**
@@ -338,8 +336,9 @@ public class BuildingType extends DataType {
 	/**
 	 * Adds a Required Building to this BuildingType
 	 * @param buildingTypeId
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
@@ -380,13 +379,16 @@ public class BuildingType extends DataType {
 		builder.append("image=");
 		builder.append(image);
 		builder.append("\n\t");
+		builder.append("description=");
+		builder.append(description);
+		builder.append("\n\t");
 		builder.append("maxOccupants=");
 		builder.append(maxOccupants);
 		builder.append("\n\t");
 		builder.append("maxGarrison=");
 		builder.append(maxGarrison);
 		builder.append("\n\t");
-		builder.append("requiredBuildings=");
+		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
 		Iterator<Building> it = buildings.iterator();
 		while(it.hasNext()) {

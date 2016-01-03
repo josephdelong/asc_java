@@ -9,6 +9,7 @@ package util;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -17,6 +18,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import exceptions.ASCException;
+import exceptions.InvalidBuildingProductionTypeException;
 import asc_dataTypes.Building;
 import asc_dataTypes.BuildingType;
 import asc_dataTypes.City;
@@ -109,13 +112,6 @@ public class XMLparser extends DefaultHandler {
 				// get specific tags from specific indexes
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-//					if(attribute == null) {
-//						// do nothing
-//					} else {
-//						dataMember.setType(attribute);
-//						attribute = null;
-//					}
 				} else { // we're getting a FIELD
 					if(indexes.contains(currentIndex)) { // if we want this index
 						if(tags.contains(field)) { // if we want this field
@@ -132,13 +128,6 @@ public class XMLparser extends DefaultHandler {
 				// get all tags from specific indexes
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-//					if(attribute == null) {
-//						// do nothing
-//					} else {
-//						dataMember.setType(attribute);
-//						attribute = null;
-//					}
 				} else { // we're getting a FIELD
 					if(indexes.contains(currentIndex)) { // if we want this index
 						field = qName; // get the field for later parsing
@@ -153,13 +142,6 @@ public class XMLparser extends DefaultHandler {
 				// get every occurence of tags
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-//					if(attribute.equals(null)) {
-//						// do nothing
-//					} else {
-//						dataMember.setType(attribute);
-//						attribute = null;
-//					}
 				} else { // we're getting a FIELD
 					if(tags.contains(field)) { // if we want this field
 						field = qName; // get the field for later parsing
@@ -172,13 +154,6 @@ public class XMLparser extends DefaultHandler {
 				//get EVERYTHING
 				if(qName.equalsIgnoreCase(dataType)) { // if a new index of this Data Type is indicated
 					dataMember = newDataMember(dataType);
-//					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
-//					if(attribute == null) {
-//						// do nothing
-//					} else {
-//						dataMember.setType(attribute);
-//						attribute = null;
-//					}
 				} else { // we're getting a FIELD
 					field = qName; // get the field for later parsing
 					attribute = attributes.getValue("type"); // get the TYPE attribute if exists
@@ -199,7 +174,12 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("battleLog")) {
 			//d = new BattleLog();
 		} else if(dataType.equalsIgnoreCase("building")) {
-			d = new Building();
+			try {
+				d = new Building();
+			} catch (InvalidBuildingProductionTypeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else if(dataType.equalsIgnoreCase("buildingType")) {
 			d = new BuildingType();
 		} else if(dataType.equalsIgnoreCase("checkInLog")) {
@@ -244,12 +224,15 @@ public class XMLparser extends DefaultHandler {
 					// do nothing
 				}
 			}
-			//System.out.println("Processed DataMember #" + currentIndex + ": " + dataType + " with values of: " + dataMember.toString());
-			// increment currentIndex
 			currentIndex++;
 		} else {
 			// pass temp to dataMember so it can parse
-			dataMember.parse(field, attribute, temp);
+			try {
+				dataMember.parse(field, attribute, temp);
+			} catch (ASCException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import exceptions.ASCException;
+import exceptions.InvalidBuildingProductionTypeException;
 import util.XMLparser;
 
 /**
@@ -64,9 +66,11 @@ public class UnitType extends DataType {
 
 	/**
 	 * Parse method which sets the data members of this class to values parsed from input
+	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws NumberFormatException 
 	 */
 	@Override
-	public void parse(String fieldName, String attribute, String value) {
+	public void parse(String fieldName, String attribute, String value) throws ASCException {
 		if(fieldName == null || fieldName.equals(null) || fieldName.isEmpty() || fieldName.equalsIgnoreCase("")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
@@ -130,7 +134,7 @@ public class UnitType extends DataType {
 		try {
 			unitTypes = parser.parse("src/datastore/unitTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get UnitType Instance lookup", e);
+			// throw new DataSourceParseException("Get UnitType instance lookup: " + instanceId, e);
 		}
 		
 		Iterator<DataType> it = unitTypes.iterator();
@@ -168,13 +172,6 @@ public class UnitType extends DataType {
 		return fields;
 	}
 	
-	/**
-	 * Method which sets this instance's type-specific fields based on input.
-	 */
-	public void setType(String type) {
-		// do nothing
-	}
-
 	/**
 	 * @return the id
 	 */
@@ -402,8 +399,9 @@ public class UnitType extends DataType {
 	/**
 	 * Adds a Required Building to this UnitType
 	 * @param buildingTypeId
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
@@ -413,8 +411,9 @@ public class UnitType extends DataType {
 	 * Adds a Required Building to this UnitType
 	 * @param buildingTypeId
 	 * @param buildingSubType
+	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) {
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		Building newBuilding = new Building(buildingTypeId);
 		newBuilding.setProductionType(buildingSubType);
@@ -475,7 +474,7 @@ public class UnitType extends DataType {
 		builder.append("description=");
 		builder.append(description);
 		builder.append("\n\t");
-		builder.append("requiredBuildings=");
+		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
 		Iterator<Building> it = buildings.iterator();
 		while(it.hasNext()) {
