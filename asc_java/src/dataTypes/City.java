@@ -2,7 +2,7 @@
  * @author joseph_delong
  *
  */
-package asc_dataTypes;
+package dataTypes;
 
 import java.io.File;
 import java.io.IOException;

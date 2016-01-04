@@ -4,16 +4,16 @@
  */
 package test;
 
+import dataTypes.BuildingType;
+import dataTypes.City;
+import dataTypes.Resource;
+import dataTypes.UnitType;
 import exceptions.ASCException;
 import exceptions.BuildingAtMaxGarrisonException;
 import exceptions.DataSourceParseException;
 import exceptions.InvalidBuildingProductionTypeException;
 import exceptions.UnitNotFoundException;
 import exceptions.UnitNotFoundInBuildingException;
-import asc_dataTypes.BuildingType;
-import asc_dataTypes.City;
-import asc_dataTypes.Resource;
-import asc_dataTypes.UnitType;
 
 /**
  * 

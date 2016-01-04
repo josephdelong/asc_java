@@ -2,7 +2,7 @@
  * @author Joseph DeLong
  *
  */
-package asc_dataTypes;
+package dataTypes;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,47 +20,54 @@ import util.XMLparser;
 /**
  *
  */
-public class BuildingType extends DataType {
-
+public class UnitType extends DataType {
+	
 	/**
 	 * Private Data Members
 	 */
 	private int id;
 	private String name;
+	private String combatType;
 	private int offense;
 	private int defense;
+	private int foodCost;
 	private int woodCost;
 	private int stoneCost;
+	private int ironCost;
+	private int cottonCost;
+	private int silkCost;
 	private int goldCost;
 	private boolean special;
 	private File image;
 	private String description;
-	private int maxOccupants;
-	private int maxGarrison;
 	private ArrayList<Building> requiredBuildings;
-	
+
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
-	public BuildingType() {
+	public UnitType() {
 		this.setId(0);
 		this.setName("");
+		this.setCombatType("");
 		this.setOffense(0);
 		this.setDefense(0);
+		this.setFoodCost(0);
 		this.setWoodCost(0);
 		this.setStoneCost(0);
+		this.setIronCost(0);
+		this.setCottonCost(0);
+		this.setSilkCost(0);
 		this.setGoldCost(0);
 		this.setSpecial(false);
 		this.setImage(null);
 		this.setDescription("");
-		this.setMaxOccupants(0);
-		this.setMaxGarrison(0);
 		this.setRequiredBuildings(new ArrayList<Building>());
 	}
 
 	/**
 	 * Parse method which sets the data members of this class to values parsed from input
-	 * @throws ASCException 
+	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws NumberFormatException 
 	 */
 	@Override
 	public void parse(String fieldName, String attribute, String value) throws ASCException {
@@ -70,14 +77,24 @@ public class BuildingType extends DataType {
 			this.setId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
+		} else if(fieldName.equalsIgnoreCase("combatType")) {
+			this.setCombatType(value);
 		} else if(fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
 			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("foodCost")) {
+			this.setFoodCost(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("woodCost")) {
 			this.setWoodCost(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("stoneCost")) {
 			this.setStoneCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("ironCost")) {
+			this.setIronCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("cottonCost")) {
+			this.setCottonCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("silkCost")) {
+			this.setSilkCost(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("goldCost")) {
 			this.setGoldCost(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("special")) {
@@ -86,10 +103,6 @@ public class BuildingType extends DataType {
 			this.setImage(new File(value));
 		} else if(fieldName.equalsIgnoreCase("description")) {
 			this.setDescription(value);
-		} else if(fieldName.equalsIgnoreCase("maxOccupants")) {
-			this.setMaxOccupants(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("maxGarrison")) {
-			this.setMaxGarrison(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
@@ -97,33 +110,38 @@ public class BuildingType extends DataType {
 			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
 				// do nothing
 			} else {
-				this.addRequiredBuilding(Integer.valueOf(s));
+				if(attribute == null || attribute.equals(null) || attribute.isEmpty() || attribute.equalsIgnoreCase("")) {
+					this.addRequiredBuilding(Integer.valueOf(s));
+				} else {
+					this.addRequiredBuilding(Integer.valueOf(s), Integer.valueOf(attribute.trim()));
+				}
 			}
 		}
 	}
 
 	/**
-	 * Method which returns an instance of BuildingType based on a unique instance ID, if found.
+	 * Method which returns an instance of UnitType based on a unique instance ID, if found.
 	 *   Otherwise returns null.
-	 * @param instanceId The unique identifier for the instance of BuildingType you are looking for.
-	 * @return BuildingType associated with instanceId, or null.
+	 * @param instanceId The unique identifier for the instance of UnitType you are looking for.
+	 * @return UnitType associated with instanceId, or null.
 	 */
-	public static BuildingType getInstance(Integer instanceId) {
+	public static UnitType getInstance(Integer instanceId) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		ArrayList<DataType> buildingTypes = new ArrayList<DataType>();
+		ArrayList<DataType> unitTypes = new ArrayList<DataType>();
 		ids.add(instanceId);
 		XMLparser parser = new XMLparser();
 		
 		try {
-			buildingTypes = parser.parse("src/datastore/buildingTypes.xml", null, ids);
+			unitTypes = parser.parse("src/datastore/unitTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get BuildingType instance lookup: " + instanceId, e);
-			System.exit(1);
+			// throw new DataSourceParseException("Get UnitType instance lookup: " + instanceId, e);
 		}
 		
-		Iterator<DataType> it = buildingTypes.iterator();
+		Iterator<DataType> it = unitTypes.iterator();
 		if(it.hasNext()) {
-			return (BuildingType)it.next();
+			UnitType ut = (UnitType)it.next();
+//			System.out.println(ut.toString());
+			return ut;
 		} else {
 			return null;
 		}
@@ -137,20 +155,23 @@ public class BuildingType extends DataType {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("id");
 		fields.add("name");
+		fields.add("combatType");
 		fields.add("offense");
 		fields.add("defense");
+		fields.add("foodCost");
 		fields.add("woodCost");
 		fields.add("stoneCost");
+		fields.add("ironCost");
+		fields.add("cottonCost");
+		fields.add("silkCost");
 		fields.add("goldCost");
 		fields.add("special");
 		fields.add("image");
 		fields.add("description");
-		fields.add("maxOccupants");
-		fields.add("maxGarrison");
 		fields.add("requiredBuildings");
 		return fields;
 	}
-
+	
 	/**
 	 * @return the id
 	 */
@@ -163,6 +184,13 @@ public class BuildingType extends DataType {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return the combatType
+	 */
+	public String getCombatType() {
+		return combatType;
 	}
 
 	/**
@@ -180,6 +208,13 @@ public class BuildingType extends DataType {
 	}
 
 	/**
+	 * @return the foodCost
+	 */
+	public int getFoodCost() {
+		return foodCost;
+	}
+
+	/**
 	 * @return the woodCost
 	 */
 	public int getWoodCost() {
@@ -191,6 +226,27 @@ public class BuildingType extends DataType {
 	 */
 	public int getStoneCost() {
 		return stoneCost;
+	}
+
+	/**
+	 * @return the ironCost
+	 */
+	public int getIronCost() {
+		return ironCost;
+	}
+
+	/**
+	 * @return the cottonCost
+	 */
+	public int getCottonCost() {
+		return cottonCost;
+	}
+
+	/**
+	 * @return the silkCost
+	 */
+	public int getSilkCost() {
+		return silkCost;
 	}
 
 	/**
@@ -222,20 +278,6 @@ public class BuildingType extends DataType {
 	}
 
 	/**
-	 * @return the maxOccupants
-	 */
-	public int getMaxOccupants() {
-		return maxOccupants;
-	}
-
-	/**
-	 * @return the maxGarrison
-	 */
-	public int getMaxGarrison() {
-		return maxGarrison;
-	}
-
-	/**
 	 * @return the requiredBuildings
 	 */
 	public ArrayList<Building> getRequiredBuildings() {
@@ -243,7 +285,7 @@ public class BuildingType extends DataType {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param iD the iD to set
 	 */
 	public void setId(int id) {
 		this.id = id;
@@ -254,6 +296,13 @@ public class BuildingType extends DataType {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param combatType the combatType to set
+	 */
+	public void setCombatType(String combatType) {
+		this.combatType = combatType;
 	}
 
 	/**
@@ -271,6 +320,13 @@ public class BuildingType extends DataType {
 	}
 
 	/**
+	 * @param foodCost the foodCost to set
+	 */
+	public void setFoodCost(int foodCost) {
+		this.foodCost = foodCost;
+	}
+
+	/**
 	 * @param woodCost the woodCost to set
 	 */
 	public void setWoodCost(int woodCost) {
@@ -282,6 +338,27 @@ public class BuildingType extends DataType {
 	 */
 	public void setStoneCost(int stoneCost) {
 		this.stoneCost = stoneCost;
+	}
+
+	/**
+	 * @param ironCost the ironCost to set
+	 */
+	public void setIronCost(int ironCost) {
+		this.ironCost = ironCost;
+	}
+
+	/**
+	 * @param cottonCost the cottonCost to set
+	 */
+	public void setCottonCost(int cottonCost) {
+		this.cottonCost = cottonCost;
+	}
+
+	/**
+	 * @param silkCost the silkCost to set
+	 */
+	public void setSilkCost(int silkCost) {
+		this.silkCost = silkCost;
 	}
 
 	/**
@@ -313,20 +390,6 @@ public class BuildingType extends DataType {
 	}
 
 	/**
-	 * @param maxOccupants the maxOccupants to set
-	 */
-	public void setMaxOccupants(int maxOccupants) {
-		this.maxOccupants = maxOccupants;
-	}
-
-	/**
-	 * @param maxGarrison the maxGarrison to set
-	 */
-	public void setMaxGarrison(int maxGarrison) {
-		this.maxGarrison = maxGarrison;
-	}
-
-	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
 	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
@@ -334,13 +397,27 @@ public class BuildingType extends DataType {
 	}
 	
 	/**
-	 * Adds a Required Building to this BuildingType
+	 * Adds a Required Building to this UnitType
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
+		this.setRequiredBuildings(temp);
+	}
+	
+	/**
+	 * Adds a Required Building to this UnitType
+	 * @param buildingTypeId
+	 * @param buildingSubType
+	 * @throws InvalidBuildingProductionTypeException 
+	 */
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException {
+		ArrayList<Building> temp = this.getRequiredBuildings();
+		Building newBuilding = new Building(buildingTypeId);
+		newBuilding.setProductionType(buildingSubType);
+		temp.add(newBuilding);
 		this.setRequiredBuildings(temp);
 	}
 
@@ -350,7 +427,7 @@ public class BuildingType extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BuildingType:");
+		builder.append("UnitType:");
 		builder.append("\n\t");
 		builder.append("id=");
 		builder.append(id);
@@ -358,17 +435,32 @@ public class BuildingType extends DataType {
 		builder.append("name=");
 		builder.append(name);
 		builder.append("\n\t");
+		builder.append("combatType=");
+		builder.append(combatType);
+		builder.append("\n\t");
 		builder.append("offense=");
 		builder.append(offense);
 		builder.append("\n\t");
 		builder.append("defense=");
 		builder.append(defense);
 		builder.append("\n\t");
+		builder.append("foodCost=");
+		builder.append(foodCost);
+		builder.append("\n\t");
 		builder.append("woodCost=");
 		builder.append(woodCost);
 		builder.append("\n\t");
 		builder.append("stoneCost=");
 		builder.append(stoneCost);
+		builder.append("\n\t");
+		builder.append("ironCost=");
+		builder.append(ironCost);
+		builder.append("\n\t");
+		builder.append("cottonCost=");
+		builder.append(cottonCost);
+		builder.append("\n\t");
+		builder.append("silkCost=");
+		builder.append(silkCost);
 		builder.append("\n\t");
 		builder.append("goldCost=");
 		builder.append(goldCost);
@@ -381,12 +473,6 @@ public class BuildingType extends DataType {
 		builder.append("\n\t");
 		builder.append("description=");
 		builder.append(description);
-		builder.append("\n\t");
-		builder.append("maxOccupants=");
-		builder.append(maxOccupants);
-		builder.append("\n\t");
-		builder.append("maxGarrison=");
-		builder.append(maxGarrison);
 		builder.append("\n\t");
 		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();

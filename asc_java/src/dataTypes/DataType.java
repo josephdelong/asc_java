@@ -2,7 +2,7 @@
  * @author Joseph DeLong
  *
  */
-package asc_dataTypes;
+package dataTypes;
 
 import java.util.ArrayList;
 

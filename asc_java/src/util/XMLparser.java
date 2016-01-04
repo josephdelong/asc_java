@@ -18,16 +18,15 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import dataTypes.Building;
+import dataTypes.BuildingType;
+import dataTypes.City;
+import dataTypes.DataType;
+import dataTypes.Player;
+import dataTypes.Resource;
+import dataTypes.Unit;
+import dataTypes.UnitType;
 import exceptions.ASCException;
-import exceptions.InvalidBuildingProductionTypeException;
-import asc_dataTypes.Building;
-import asc_dataTypes.BuildingType;
-import asc_dataTypes.City;
-import asc_dataTypes.DataType;
-import asc_dataTypes.Player;
-import asc_dataTypes.Resource;
-import asc_dataTypes.Unit;
-import asc_dataTypes.UnitType;
 
 public class XMLparser extends DefaultHandler {
 
@@ -174,12 +173,7 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("battleLog")) {
 			//d = new BattleLog();
 		} else if(dataType.equalsIgnoreCase("building")) {
-			try {
-				d = new Building();
-			} catch (InvalidBuildingProductionTypeException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			d = new Building();
 		} else if(dataType.equalsIgnoreCase("buildingType")) {
 			d = new BuildingType();
 		} else if(dataType.equalsIgnoreCase("checkInLog")) {

@@ -2,7 +2,7 @@
  * @author Joseph DeLong
  *
  */
-package asc_dataTypes;
+package dataTypes;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class Building extends DataType {
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 * @throws InvalidBuildingProductionTypeException 
 	 */
-	public Building() throws InvalidBuildingProductionTypeException {
+	public Building() {
 		this.setId(0);
 		this.setBuildingType(0);
 		this.setName("");
@@ -61,7 +61,12 @@ public class Building extends DataType {
 		this.setImage(null);
 		this.setOccupants(new ArrayList<Unit>());
 		this.setGarrisonedUnits(new ArrayList<Unit>());
-		this.setProductionType(0);
+		try {
+			this.setProductionType(0);
+		} catch (InvalidBuildingProductionTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setRequiredBuildings(new ArrayList<Building>());
 	}
 

@@ -2,7 +2,7 @@
  * @author Joseph DeLong
  *
  */
-package asc_dataTypes;
+package dataTypes;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,60 +14,73 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import exceptions.ASCException;
+import exceptions.DataSourceParseException;
 import exceptions.InvalidBuildingProductionTypeException;
 import util.XMLparser;
 
 /**
  *
  */
-public class UnitType extends DataType {
-	
+public class Unit extends DataType {
+
 	/**
 	 * Private Data Members
 	 */
 	private int id;
+	private int unitId;
 	private String name;
-	private String combatType;
+	private Player player;
+	private City city;
+	private int location;
 	private int offense;
 	private int defense;
-	private int foodCost;
-	private int woodCost;
-	private int stoneCost;
-	private int ironCost;
-	private int cottonCost;
-	private int silkCost;
-	private int goldCost;
+	private int upgrade;
+	private int xp;
 	private boolean special;
 	private File image;
-	private String description;
 	private ArrayList<Building> requiredBuildings;
-
+	
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
-	public UnitType() {
+	public Unit() {
 		this.setId(0);
+		this.setUnitId(0);
 		this.setName("");
-		this.setCombatType("");
+		this.setPlayer(null);
+		this.setCity(null);
+		this.setLocation(0);
 		this.setOffense(0);
 		this.setDefense(0);
-		this.setFoodCost(0);
-		this.setWoodCost(0);
-		this.setStoneCost(0);
-		this.setIronCost(0);
-		this.setCottonCost(0);
-		this.setSilkCost(0);
-		this.setGoldCost(0);
+		this.setUpgrade(0);
+		this.setXp(0);
 		this.setSpecial(false);
 		this.setImage(null);
-		this.setDescription("");
 		this.setRequiredBuildings(new ArrayList<Building>());
+	}
+	
+	/**
+	 * Constructor which sets a new Unit's details based on its Unit Type
+	 * @param unitTypeId <code>int</code> representing the ASC UnitType of this Unit.
+	 */
+	public Unit(int unitTypeId) {
+		UnitType unitType = UnitType.getInstance(unitTypeId);
+		if(unitType == null) {
+			new Unit();
+		} else {
+			this.setUnitId(unitType.getId());
+			this.setName(unitType.getName());
+			this.setOffense(unitType.getOffense());
+			this.setDefense(unitType.getDefense());
+			this.setSpecial(unitType.getSpecial());
+			this.setImage(unitType.getImage());
+			this.setRequiredBuildings(unitType.getRequiredBuildings());
+		}
 	}
 
 	/**
 	 * Parse method which sets the data members of this class to values parsed from input
-	 * @throws InvalidBuildingProductionTypeException 
-	 * @throws NumberFormatException 
+	 * @throws ASCException 
 	 */
 	@Override
 	public void parse(String fieldName, String attribute, String value) throws ASCException {
@@ -77,32 +90,24 @@ public class UnitType extends DataType {
 			this.setId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
-		} else if(fieldName.equalsIgnoreCase("combatType")) {
-			this.setCombatType(value);
+		} else if(fieldName.equalsIgnoreCase("player")) {
+			this.setPlayer(Player.getInstance(Integer.parseInt(value)));
+		} else if(fieldName.equalsIgnoreCase("city")) {
+			this.setCity(City.getInstance(Integer.parseInt(value)));
+		} else if(fieldName.equalsIgnoreCase("location")) {
+			this.setLocation(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
 			this.setDefense(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("foodCost")) {
-			this.setFoodCost(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("woodCost")) {
-			this.setWoodCost(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("stoneCost")) {
-			this.setStoneCost(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("ironCost")) {
-			this.setIronCost(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("cottonCost")) {
-			this.setCottonCost(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("silkCost")) {
-			this.setSilkCost(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("goldCost")) {
-			this.setGoldCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("upgrade")) {
+			this.setUpgrade(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("xp")) {
+			this.setXp(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("special")) {
 			this.setSpecial(Boolean.parseBoolean(value));
 		} else if(fieldName.equalsIgnoreCase("image")) {
 			this.setImage(new File(value));
-		} else if(fieldName.equalsIgnoreCase("description")) {
-			this.setDescription(value);
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
@@ -120,28 +125,26 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * Method which returns an instance of UnitType based on a unique instance ID, if found.
+	 * Method which returns an instance of Unit based on a unique instance ID, if found.
 	 *   Otherwise returns null.
-	 * @param instanceId The unique identifier for the instance of UnitType you are looking for.
-	 * @return UnitType associated with instanceId, or null.
+	 * @param instanceId The unique identifier for the instance of Unit you are looking for.
+	 * @return Unit associated with instanceId, or null.
 	 */
-	public static UnitType getInstance(Integer instanceId) {
+	public static Unit getInstance(Integer instanceId) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		ArrayList<DataType> unitTypes = new ArrayList<DataType>();
+		ArrayList<DataType> units = new ArrayList<DataType>();
 		ids.add(instanceId);
 		XMLparser parser = new XMLparser();
 		
 		try {
-			unitTypes = parser.parse("src/datastore/unitTypes.xml", null, ids);
+			units = parser.parse("src/datastore/units.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get UnitType instance lookup: " + instanceId, e);
+			// throw new DataSourceParseException("Get Unit instance lookup: " + instanceId, e);
 		}
 		
-		Iterator<DataType> it = unitTypes.iterator();
+		Iterator<DataType> it = units.iterator();
 		if(it.hasNext()) {
-			UnitType ut = (UnitType)it.next();
-//			System.out.println(ut.toString());
-			return ut;
+			return (Unit)it.next();
 		} else {
 			return null;
 		}
@@ -154,20 +157,17 @@ public class UnitType extends DataType {
 	public ArrayList<String> getFields() {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("id");
+		fields.add("unitId");
 		fields.add("name");
-		fields.add("combatType");
+		fields.add("player");
+		fields.add("city");
+		fields.add("location");
 		fields.add("offense");
 		fields.add("defense");
-		fields.add("foodCost");
-		fields.add("woodCost");
-		fields.add("stoneCost");
-		fields.add("ironCost");
-		fields.add("cottonCost");
-		fields.add("silkCost");
-		fields.add("goldCost");
+		fields.add("upgrade");
+		fields.add("xp");
 		fields.add("special");
 		fields.add("image");
-		fields.add("description");
 		fields.add("requiredBuildings");
 		return fields;
 	}
@@ -180,17 +180,38 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @return the name
+	 * @return the unitId
+	 */
+	public int getUnitId() {
+		return unitId;
+	}
+
+	/**
+	 * @return the unitName
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return the combatType
+	 * @return the player
 	 */
-	public String getCombatType() {
-		return combatType;
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * @return the city
+	 */
+	public City getCity() {
+		return city;
+	}
+
+	/**
+	 * @return the location
+	 */
+	public int getLocation() {
+		return location;
 	}
 
 	/**
@@ -208,52 +229,17 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @return the foodCost
+	 * @return the upgrade
 	 */
-	public int getFoodCost() {
-		return foodCost;
+	public int getUpgrade() {
+		return upgrade;
 	}
 
 	/**
-	 * @return the woodCost
+	 * @return the xp
 	 */
-	public int getWoodCost() {
-		return woodCost;
-	}
-
-	/**
-	 * @return the stoneCost
-	 */
-	public int getStoneCost() {
-		return stoneCost;
-	}
-
-	/**
-	 * @return the ironCost
-	 */
-	public int getIronCost() {
-		return ironCost;
-	}
-
-	/**
-	 * @return the cottonCost
-	 */
-	public int getCottonCost() {
-		return cottonCost;
-	}
-
-	/**
-	 * @return the silkCost
-	 */
-	public int getSilkCost() {
-		return silkCost;
-	}
-
-	/**
-	 * @return the goldCost
-	 */
-	public int getGoldCost() {
-		return goldCost;
+	public int getXp() {
+		return xp;
 	}
 
 	/**
@@ -271,13 +257,6 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
 	 * @return the requiredBuildings
 	 */
 	public ArrayList<Building> getRequiredBuildings() {
@@ -285,24 +264,45 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @param iD the iD to set
+	 * @param id the id to set
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param unitId the unitId to set
+	 */
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
+	}
+
+	/**
+	 * @param unitName the unitName to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * @param combatType the combatType to set
+	 * @param player the player to set
 	 */
-	public void setCombatType(String combatType) {
-		this.combatType = combatType;
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(int location) {
+		this.location = location;
 	}
 
 	/**
@@ -320,52 +320,17 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @param foodCost the foodCost to set
+	 * @param upgrade the upgrade to set
 	 */
-	public void setFoodCost(int foodCost) {
-		this.foodCost = foodCost;
+	public void setUpgrade(int upgrade) {
+		this.upgrade = upgrade;
 	}
 
 	/**
-	 * @param woodCost the woodCost to set
+	 * @param xp the xp to set
 	 */
-	public void setWoodCost(int woodCost) {
-		this.woodCost = woodCost;
-	}
-
-	/**
-	 * @param stoneCost the stoneCost to set
-	 */
-	public void setStoneCost(int stoneCost) {
-		this.stoneCost = stoneCost;
-	}
-
-	/**
-	 * @param ironCost the ironCost to set
-	 */
-	public void setIronCost(int ironCost) {
-		this.ironCost = ironCost;
-	}
-
-	/**
-	 * @param cottonCost the cottonCost to set
-	 */
-	public void setCottonCost(int cottonCost) {
-		this.cottonCost = cottonCost;
-	}
-
-	/**
-	 * @param silkCost the silkCost to set
-	 */
-	public void setSilkCost(int silkCost) {
-		this.silkCost = silkCost;
-	}
-
-	/**
-	 * @param goldCost the goldCost to set
-	 */
-	public void setGoldCost(int goldCost) {
-		this.goldCost = goldCost;
+	public void setXp(int xp) {
+		this.xp = xp;
 	}
 
 	/**
@@ -383,13 +348,6 @@ public class UnitType extends DataType {
 	}
 
 	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
 	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
@@ -397,7 +355,7 @@ public class UnitType extends DataType {
 	}
 	
 	/**
-	 * Adds a Required Building to this UnitType
+	 * Adds a Required Building to this Unit
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
 	 */
@@ -408,7 +366,7 @@ public class UnitType extends DataType {
 	}
 	
 	/**
-	 * Adds a Required Building to this UnitType
+	 * Adds a Required Building to this Unit
 	 * @param buildingTypeId
 	 * @param buildingSubType
 	 * @throws InvalidBuildingProductionTypeException 
@@ -427,16 +385,25 @@ public class UnitType extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("UnitType:");
+		builder.append("Unit:");
 		builder.append("\n\t");
 		builder.append("id=");
 		builder.append(id);
 		builder.append("\n\t");
+		builder.append("unitId=");
+		builder.append(unitId);
+		builder.append("\n\t");
 		builder.append("name=");
 		builder.append(name);
 		builder.append("\n\t");
-		builder.append("combatType=");
-		builder.append(combatType);
+		builder.append("player=");
+		builder.append(player);
+		builder.append("\n\t");
+		builder.append("city=");
+		builder.append(city);
+		builder.append("\n\t");
+		builder.append("location=");
+		builder.append(location);
 		builder.append("\n\t");
 		builder.append("offense=");
 		builder.append(offense);
@@ -444,35 +411,17 @@ public class UnitType extends DataType {
 		builder.append("defense=");
 		builder.append(defense);
 		builder.append("\n\t");
-		builder.append("foodCost=");
-		builder.append(foodCost);
+		builder.append("upgrade=");
+		builder.append(upgrade);
 		builder.append("\n\t");
-		builder.append("woodCost=");
-		builder.append(woodCost);
-		builder.append("\n\t");
-		builder.append("stoneCost=");
-		builder.append(stoneCost);
-		builder.append("\n\t");
-		builder.append("ironCost=");
-		builder.append(ironCost);
-		builder.append("\n\t");
-		builder.append("cottonCost=");
-		builder.append(cottonCost);
-		builder.append("\n\t");
-		builder.append("silkCost=");
-		builder.append(silkCost);
-		builder.append("\n\t");
-		builder.append("goldCost=");
-		builder.append(goldCost);
+		builder.append("xp=");
+		builder.append(xp);
 		builder.append("\n\t");
 		builder.append("special=");
 		builder.append(special);
 		builder.append("\n\t");
 		builder.append("image=");
 		builder.append(image);
-		builder.append("\n\t");
-		builder.append("description=");
-		builder.append(description);
 		builder.append("\n\t");
 		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
@@ -489,5 +438,4 @@ public class UnitType extends DataType {
 		}
 		return builder.toString();
 	}
-	
 }

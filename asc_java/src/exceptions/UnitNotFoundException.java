@@ -3,7 +3,7 @@
  */
 package exceptions;
 
-import asc_dataTypes.DataType;
+import dataTypes.DataType;
 
 /**
  * @author Joseph

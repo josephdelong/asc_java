@@ -2,7 +2,7 @@
  * @author Joseph DeLong
  *
  */
-package asc_dataTypes;
+package dataTypes;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,68 +14,48 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import exceptions.ASCException;
-import exceptions.DataSourceParseException;
 import exceptions.InvalidBuildingProductionTypeException;
 import util.XMLparser;
 
 /**
  *
  */
-public class Unit extends DataType {
+public class BuildingType extends DataType {
 
 	/**
 	 * Private Data Members
 	 */
 	private int id;
-	private int unitId;
 	private String name;
-	private Player player;
-	private City city;
-	private int location;
 	private int offense;
 	private int defense;
-	private int upgrade;
-	private int xp;
+	private int woodCost;
+	private int stoneCost;
+	private int goldCost;
 	private boolean special;
 	private File image;
+	private String description;
+	private int maxOccupants;
+	private int maxGarrison;
 	private ArrayList<Building> requiredBuildings;
 	
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
-	public Unit() {
+	public BuildingType() {
 		this.setId(0);
-		this.setUnitId(0);
 		this.setName("");
-		this.setPlayer(null);
-		this.setCity(null);
-		this.setLocation(0);
 		this.setOffense(0);
 		this.setDefense(0);
-		this.setUpgrade(0);
-		this.setXp(0);
+		this.setWoodCost(0);
+		this.setStoneCost(0);
+		this.setGoldCost(0);
 		this.setSpecial(false);
 		this.setImage(null);
+		this.setDescription("");
+		this.setMaxOccupants(0);
+		this.setMaxGarrison(0);
 		this.setRequiredBuildings(new ArrayList<Building>());
-	}
-	
-	/**
-	 * Constructor which sets a new Unit's details based on its Unit Type
-	 * @param unitTypeId <code>int</code> representing the ASC UnitType of this Unit.
-	 */
-	public Unit(int unitTypeId) {
-		UnitType unitType = UnitType.getInstance(unitTypeId);
-		if(unitType == null) {
-			new Unit();
-		} else {
-			this.setUnitId(unitType.getId());
-			this.setName(unitType.getName());
-			this.setOffense(unitType.getOffense());
-			this.setDefense(unitType.getDefense());
-			this.setSpecial(unitType.getSpecial());
-			this.setImage(unitType.getImage());
-			this.setRequiredBuildings(unitType.getRequiredBuildings());
-		}
 	}
 
 	/**
@@ -90,24 +70,26 @@ public class Unit extends DataType {
 			this.setId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
-		} else if(fieldName.equalsIgnoreCase("player")) {
-			this.setPlayer(Player.getInstance(Integer.parseInt(value)));
-		} else if(fieldName.equalsIgnoreCase("city")) {
-			this.setCity(City.getInstance(Integer.parseInt(value)));
-		} else if(fieldName.equalsIgnoreCase("location")) {
-			this.setLocation(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
 			this.setDefense(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("upgrade")) {
-			this.setUpgrade(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("xp")) {
-			this.setXp(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("woodCost")) {
+			this.setWoodCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("stoneCost")) {
+			this.setStoneCost(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("goldCost")) {
+			this.setGoldCost(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("special")) {
 			this.setSpecial(Boolean.parseBoolean(value));
 		} else if(fieldName.equalsIgnoreCase("image")) {
 			this.setImage(new File(value));
+		} else if(fieldName.equalsIgnoreCase("description")) {
+			this.setDescription(value);
+		} else if(fieldName.equalsIgnoreCase("maxOccupants")) {
+			this.setMaxOccupants(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("maxGarrison")) {
+			this.setMaxGarrison(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("requiredBuilding")) {
@@ -115,36 +97,33 @@ public class Unit extends DataType {
 			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
 				// do nothing
 			} else {
-				if(attribute == null || attribute.equals(null) || attribute.isEmpty() || attribute.equalsIgnoreCase("")) {
-					this.addRequiredBuilding(Integer.valueOf(s));
-				} else {
-					this.addRequiredBuilding(Integer.valueOf(s), Integer.valueOf(attribute.trim()));
-				}
+				this.addRequiredBuilding(Integer.valueOf(s));
 			}
 		}
 	}
 
 	/**
-	 * Method which returns an instance of Unit based on a unique instance ID, if found.
+	 * Method which returns an instance of BuildingType based on a unique instance ID, if found.
 	 *   Otherwise returns null.
-	 * @param instanceId The unique identifier for the instance of Unit you are looking for.
-	 * @return Unit associated with instanceId, or null.
+	 * @param instanceId The unique identifier for the instance of BuildingType you are looking for.
+	 * @return BuildingType associated with instanceId, or null.
 	 */
-	public static Unit getInstance(Integer instanceId) {
+	public static BuildingType getInstance(Integer instanceId) {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
-		ArrayList<DataType> units = new ArrayList<DataType>();
+		ArrayList<DataType> buildingTypes = new ArrayList<DataType>();
 		ids.add(instanceId);
 		XMLparser parser = new XMLparser();
 		
 		try {
-			units = parser.parse("src/datastore/units.xml", null, ids);
+			buildingTypes = parser.parse("src/datastore/buildingTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get Unit instance lookup: " + instanceId, e);
+			// throw new DataSourceParseException("Get BuildingType instance lookup: " + instanceId, e);
+			System.exit(1);
 		}
 		
-		Iterator<DataType> it = units.iterator();
+		Iterator<DataType> it = buildingTypes.iterator();
 		if(it.hasNext()) {
-			return (Unit)it.next();
+			return (BuildingType)it.next();
 		} else {
 			return null;
 		}
@@ -157,21 +136,21 @@ public class Unit extends DataType {
 	public ArrayList<String> getFields() {
 		ArrayList<String> fields = new ArrayList<String>();
 		fields.add("id");
-		fields.add("unitId");
 		fields.add("name");
-		fields.add("player");
-		fields.add("city");
-		fields.add("location");
 		fields.add("offense");
 		fields.add("defense");
-		fields.add("upgrade");
-		fields.add("xp");
+		fields.add("woodCost");
+		fields.add("stoneCost");
+		fields.add("goldCost");
 		fields.add("special");
 		fields.add("image");
+		fields.add("description");
+		fields.add("maxOccupants");
+		fields.add("maxGarrison");
 		fields.add("requiredBuildings");
 		return fields;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
@@ -180,38 +159,10 @@ public class Unit extends DataType {
 	}
 
 	/**
-	 * @return the unitId
-	 */
-	public int getUnitId() {
-		return unitId;
-	}
-
-	/**
-	 * @return the unitName
+	 * @return the name
 	 */
 	public String getName() {
 		return name;
-	}
-
-	/**
-	 * @return the player
-	 */
-	public Player getPlayer() {
-		return player;
-	}
-
-	/**
-	 * @return the city
-	 */
-	public City getCity() {
-		return city;
-	}
-
-	/**
-	 * @return the location
-	 */
-	public int getLocation() {
-		return location;
 	}
 
 	/**
@@ -229,17 +180,24 @@ public class Unit extends DataType {
 	}
 
 	/**
-	 * @return the upgrade
+	 * @return the woodCost
 	 */
-	public int getUpgrade() {
-		return upgrade;
+	public int getWoodCost() {
+		return woodCost;
 	}
 
 	/**
-	 * @return the xp
+	 * @return the stoneCost
 	 */
-	public int getXp() {
-		return xp;
+	public int getStoneCost() {
+		return stoneCost;
+	}
+
+	/**
+	 * @return the goldCost
+	 */
+	public int getGoldCost() {
+		return goldCost;
 	}
 
 	/**
@@ -257,6 +215,27 @@ public class Unit extends DataType {
 	}
 
 	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @return the maxOccupants
+	 */
+	public int getMaxOccupants() {
+		return maxOccupants;
+	}
+
+	/**
+	 * @return the maxGarrison
+	 */
+	public int getMaxGarrison() {
+		return maxGarrison;
+	}
+
+	/**
 	 * @return the requiredBuildings
 	 */
 	public ArrayList<Building> getRequiredBuildings() {
@@ -271,38 +250,10 @@ public class Unit extends DataType {
 	}
 
 	/**
-	 * @param unitId the unitId to set
-	 */
-	public void setUnitId(int unitId) {
-		this.unitId = unitId;
-	}
-
-	/**
-	 * @param unitName the unitName to set
+	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @param player the player to set
-	 */
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	/**
-	 * @param city the city to set
-	 */
-	public void setCity(City city) {
-		this.city = city;
-	}
-
-	/**
-	 * @param location the location to set
-	 */
-	public void setLocation(int location) {
-		this.location = location;
 	}
 
 	/**
@@ -320,17 +271,24 @@ public class Unit extends DataType {
 	}
 
 	/**
-	 * @param upgrade the upgrade to set
+	 * @param woodCost the woodCost to set
 	 */
-	public void setUpgrade(int upgrade) {
-		this.upgrade = upgrade;
+	public void setWoodCost(int woodCost) {
+		this.woodCost = woodCost;
 	}
 
 	/**
-	 * @param xp the xp to set
+	 * @param stoneCost the stoneCost to set
 	 */
-	public void setXp(int xp) {
-		this.xp = xp;
+	public void setStoneCost(int stoneCost) {
+		this.stoneCost = stoneCost;
+	}
+
+	/**
+	 * @param goldCost the goldCost to set
+	 */
+	public void setGoldCost(int goldCost) {
+		this.goldCost = goldCost;
 	}
 
 	/**
@@ -348,6 +306,27 @@ public class Unit extends DataType {
 	}
 
 	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @param maxOccupants the maxOccupants to set
+	 */
+	public void setMaxOccupants(int maxOccupants) {
+		this.maxOccupants = maxOccupants;
+	}
+
+	/**
+	 * @param maxGarrison the maxGarrison to set
+	 */
+	public void setMaxGarrison(int maxGarrison) {
+		this.maxGarrison = maxGarrison;
+	}
+
+	/**
 	 * @param requiredBuildings the requiredBuildings to set
 	 */
 	public void setRequiredBuildings(ArrayList<Building> requiredBuildings) {
@@ -355,27 +334,13 @@ public class Unit extends DataType {
 	}
 	
 	/**
-	 * Adds a Required Building to this Unit
+	 * Adds a Required Building to this BuildingType
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
 	 */
 	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
-		this.setRequiredBuildings(temp);
-	}
-	
-	/**
-	 * Adds a Required Building to this Unit
-	 * @param buildingTypeId
-	 * @param buildingSubType
-	 * @throws InvalidBuildingProductionTypeException 
-	 */
-	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException {
-		ArrayList<Building> temp = this.getRequiredBuildings();
-		Building newBuilding = new Building(buildingTypeId);
-		newBuilding.setProductionType(buildingSubType);
-		temp.add(newBuilding);
 		this.setRequiredBuildings(temp);
 	}
 
@@ -385,25 +350,13 @@ public class Unit extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Unit:");
+		builder.append("BuildingType:");
 		builder.append("\n\t");
 		builder.append("id=");
 		builder.append(id);
 		builder.append("\n\t");
-		builder.append("unitId=");
-		builder.append(unitId);
-		builder.append("\n\t");
 		builder.append("name=");
 		builder.append(name);
-		builder.append("\n\t");
-		builder.append("player=");
-		builder.append(player);
-		builder.append("\n\t");
-		builder.append("city=");
-		builder.append(city);
-		builder.append("\n\t");
-		builder.append("location=");
-		builder.append(location);
 		builder.append("\n\t");
 		builder.append("offense=");
 		builder.append(offense);
@@ -411,17 +364,29 @@ public class Unit extends DataType {
 		builder.append("defense=");
 		builder.append(defense);
 		builder.append("\n\t");
-		builder.append("upgrade=");
-		builder.append(upgrade);
+		builder.append("woodCost=");
+		builder.append(woodCost);
 		builder.append("\n\t");
-		builder.append("xp=");
-		builder.append(xp);
+		builder.append("stoneCost=");
+		builder.append(stoneCost);
+		builder.append("\n\t");
+		builder.append("goldCost=");
+		builder.append(goldCost);
 		builder.append("\n\t");
 		builder.append("special=");
 		builder.append(special);
 		builder.append("\n\t");
 		builder.append("image=");
 		builder.append(image);
+		builder.append("\n\t");
+		builder.append("description=");
+		builder.append(description);
+		builder.append("\n\t");
+		builder.append("maxOccupants=");
+		builder.append(maxOccupants);
+		builder.append("\n\t");
+		builder.append("maxGarrison=");
+		builder.append(maxGarrison);
 		builder.append("\n\t");
 		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
@@ -438,4 +403,5 @@ public class Unit extends DataType {
 		}
 		return builder.toString();
 	}
+	
 }
