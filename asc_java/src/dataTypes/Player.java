@@ -14,6 +14,7 @@ import org.xml.sax.SAXException;
 
 import exceptions.ASCException;
 import exceptions.DataSourceParseException;
+import exceptions.SurplusManagementException;
 import util.XMLparser;
 
 /**
@@ -304,14 +305,14 @@ public class Player extends DataType {
 	 *            ArrayList of Resource which will be added in a one-to-one
 	 *            fashion to this Player's resource surplus.
 	 * @return
+	 * @throws SurplusManagementException 
 	 */
-	public ArrayList<Resource> addToSurplus(ArrayList<Resource> values) {
+	public ArrayList<Resource> addToSurplus(ArrayList<Resource> values) throws SurplusManagementException {
 		ArrayList<Resource> result = this.getResourceSurplus();
 		if (result == null || result.isEmpty() || result.size() == 0) {
 			this.setResourceSurplus(values);
 		} else if (values == null || values.size() != result.size()) {
-			// throw new
-			// SurplusManagementException("Add to Surplus: invalid ArrayList size.");
+			throw new SurplusManagementException("Add to Surplus: invalid ArrayList size.");
 		} else {
 			for (int i = 0; i < result.size(); i++) {
 				Resource r = result.get(i);
