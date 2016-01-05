@@ -96,8 +96,19 @@ public class Building extends DataType {
 	 * @throws InvalidBuildingProductionTypeException 
 	 */
 	public Building(int buildingTypeId, int productionType) throws InvalidBuildingProductionTypeException {
-		new Building(buildingTypeId);
-		setProductionType(productionType);
+		BuildingType buildingType = BuildingType.getInstance(buildingTypeId);
+		if(buildingType == null) {
+			new Building();
+		} else {
+			this.setBuildingType(buildingType.getId());
+			this.setName(buildingType.getName());
+			this.setDefense(buildingType.getDefense());
+			this.setOffense(buildingType.getOffense());
+			this.setSpecial(buildingType.getSpecial());
+			this.setImage(buildingType.getImage());
+			this.setRequiredBuildings(buildingType.getRequiredBuildings());
+			this.setProductionType(productionType);
+		}
 	}
 
 	/**
@@ -539,18 +550,21 @@ public class Building extends DataType {
 		builder.append("\n\t");
 		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
-		Iterator<Building> it = buildings.iterator();
-		while(it.hasNext()) {
-			Building b = it.next();
-			builder.append("\n\t\t");
-			builder.append(b.getName());
-			Integer i = Integer.valueOf(b.getProductionType());
-			if(i != null && i > 0 && i < 4) {
-				builder.append(", Type=");
-				builder.append(i);
+		if(buildings == null) {
+			builder.append((String) null);
+		} else {
+			Iterator<Building> it = buildings.iterator();
+			while(it.hasNext()) {
+				Building b = it.next();
+				builder.append("\n\t\t");
+				builder.append(b.getName());
+				Integer i = Integer.valueOf(b.getProductionType());
+				if(i != null && i > 0 && i < 4) {
+					builder.append(", Type=");
+					builder.append(i);
+				}
 			}
 		}
 		return builder.toString();
 	}
-
 }

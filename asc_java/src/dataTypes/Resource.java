@@ -355,29 +355,37 @@ public class Resource extends DataType {
 		builder.append("\n\t");
 		builder.append("requiredBuildings:");
 		ArrayList<Building> buildings = this.getRequiredBuildings();
-		Iterator<Building> it = buildings.iterator();
-		while(it.hasNext()) {
-			Building b = it.next();
-			builder.append("\n\t\t");
-			builder.append(b.getName());
-			Integer i = Integer.valueOf(b.getProductionType());
-			if(i != null && i > 0 && i < 4) {
-				builder.append(", Type=");
-				builder.append(i);
+		if(buildings == null) {
+			builder.append((String) null);
+		} else {
+			Iterator<Building> it = buildings.iterator();
+			while(it.hasNext()) {
+				Building b = it.next();
+				builder.append("\n\t\t");
+				builder.append(b.getName());
+				Integer i = Integer.valueOf(b.getProductionType());
+				if(i != null && i > 0 && i < 4) {
+					builder.append(", Type=");
+					builder.append(i);
+				}
 			}
 		}
 		builder.append("\n\t");
 		builder.append("producingBuildings:");
 		buildings = this.getProducingBuildings();
-		it = buildings.iterator();
-		while(it.hasNext()) {
-			Building b = it.next();
-			builder.append("\n\t\t");
-			builder.append(b.getName());
-			Integer i = Integer.valueOf(b.getProductionType());
-			if(i != null && i > 0 && i < 4) {
-				builder.append(", Type=");
-				builder.append(i);
+		if(buildings == null) {
+			builder.append((String) null);
+		} else {
+			Iterator<Building> it = buildings.iterator();
+			while(it.hasNext()) {
+				Building b = it.next();
+				builder.append("\n\t\t");
+				builder.append(b.getName());
+				Integer i = Integer.valueOf(b.getProductionType());
+				if(i != null && i > 0 && i < 4) {
+					builder.append(", Type=");
+					builder.append(i);
+				}
 			}
 		}
 		builder.append("\n\t");
