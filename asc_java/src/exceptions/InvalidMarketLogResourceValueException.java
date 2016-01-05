@@ -8,14 +8,14 @@ package exceptions;
 /**
  *
  */
-public class SurplusManagementException extends ASCException {
+public class InvalidMarketLogResourceValueException extends ASCException {
 
 	/**
 	 * Generated Serial Version ID
 	 */
-	private static final long serialVersionUID = 3851465638762807227L;
+	private static final long serialVersionUID = 7321562815022450132L;
 
-	public SurplusManagementException(String message) {
+	public InvalidMarketLogResourceValueException(String message) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(message);
 		System.out.println(builder.toString());

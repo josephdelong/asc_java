@@ -63,7 +63,7 @@ public class Player extends DataType {
 
 	/**
 	 * Parse method which sets the data members of this class to values parsed
-	 * from input
+	 * from input.
 	 * @throws DataSourceParseException 
 	 */
 	@Override
@@ -346,23 +346,31 @@ public class Player extends DataType {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Player [id=");
+		builder.append("Player:");
+		builder.append("\n\t");
+		builder.append("id=");
 		builder.append(id);
-		builder.append(", name=");
+		builder.append("\n\t");
+		builder.append("name=");
 		builder.append(name);
-		builder.append(", active=");
+		builder.append("\n\t");
+		builder.append("active=");
 		builder.append(active);
-		builder.append(", cities=");
+		builder.append("\n\t");
+		builder.append("cities=");
 		builder.append(cities);
-		builder.append(", currentCity=");
+		builder.append("\n\t");
+		builder.append("currentCity=");
 		builder.append(currentCity);
-		builder.append(", allies=");
+		builder.append("\n\t");
+		builder.append("allies=");
 		builder.append(allies);
-		builder.append(", score=");
+		builder.append("\n\t");
+		builder.append("score=");
 		builder.append(score);
-		builder.append(", resourceSurplus=");
+		builder.append("\n\t");
+		builder.append("resourceSurplus=");
 		builder.append(resourceSurplus);
-		builder.append("]");
 		return builder.toString();
 	}
 

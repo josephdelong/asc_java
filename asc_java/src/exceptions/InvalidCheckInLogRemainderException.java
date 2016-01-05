@@ -8,14 +8,14 @@ package exceptions;
 /**
  *
  */
-public class SurplusManagementException extends ASCException {
+public class InvalidCheckInLogRemainderException extends ASCException {
 
 	/**
 	 * Generated Serial Version ID
 	 */
-	private static final long serialVersionUID = 3851465638762807227L;
+	private static final long serialVersionUID = -8494934032291770960L;
 
-	public SurplusManagementException(String message) {
+	public InvalidCheckInLogRemainderException(String message) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(message);
 		System.out.println(builder.toString());

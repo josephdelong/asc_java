@@ -20,8 +20,10 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import dataTypes.Building;
 import dataTypes.BuildingType;
+import dataTypes.CheckInLog;
 import dataTypes.City;
 import dataTypes.DataType;
+import dataTypes.MarketLog;
 import dataTypes.Player;
 import dataTypes.Resource;
 import dataTypes.Unit;
@@ -177,7 +179,7 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("buildingType")) {
 			d = new BuildingType();
 		} else if(dataType.equalsIgnoreCase("checkInLog")) {
-			//d = new CheckInLog();
+			d = new CheckInLog();
 		} else if(dataType.equalsIgnoreCase("city")) {
 			d = new City();
 		} else if(dataType.equalsIgnoreCase("map")) {
@@ -185,7 +187,7 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("mapTile")) {
 			//d = new MapTile();
 		} else if(dataType.equalsIgnoreCase("marketLog")) {
-			//d = new MarketLog
+			d = new MarketLog();
 		} else if(dataType.equalsIgnoreCase("player")) {
 			d = new Player();
 		} else if(dataType.equalsIgnoreCase("resource")) {
