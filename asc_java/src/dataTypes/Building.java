@@ -46,7 +46,6 @@ public class Building extends DataType {
 
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
-	 * @throws InvalidBuildingProductionTypeException 
 	 */
 	public Building() {
 		this.setId(0);

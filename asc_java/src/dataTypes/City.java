@@ -1,5 +1,5 @@
 /**
- * @author joseph_delong
+ * @author Joseph DeLong
  *
  */
 package dataTypes;

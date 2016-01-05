@@ -18,14 +18,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import dataTypes.Battle;
+import dataTypes.BattleLog;
 import dataTypes.Building;
 import dataTypes.BuildingType;
 import dataTypes.CheckInLog;
 import dataTypes.City;
 import dataTypes.DataType;
+import dataTypes.Map;
+import dataTypes.MapTile;
 import dataTypes.MarketLog;
 import dataTypes.Player;
 import dataTypes.Resource;
+import dataTypes.Ticket;
+import dataTypes.Trade;
 import dataTypes.Unit;
 import dataTypes.UnitType;
 import exceptions.ASCException;
@@ -171,9 +177,9 @@ public class XMLparser extends DefaultHandler {
 	private DataType newDataMember(String dataType) {
 		DataType d = null;
 		if(dataType.equalsIgnoreCase("battle")) {
-			//d = new Battle();
+			d = new Battle();
 		} else if(dataType.equalsIgnoreCase("battleLog")) {
-			//d = new BattleLog();
+			d = new BattleLog();
 		} else if(dataType.equalsIgnoreCase("building")) {
 			d = new Building();
 		} else if(dataType.equalsIgnoreCase("buildingType")) {
@@ -183,9 +189,9 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("city")) {
 			d = new City();
 		} else if(dataType.equalsIgnoreCase("map")) {
-			//d = new Map();
+			d = new Map();
 		} else if(dataType.equalsIgnoreCase("mapTile")) {
-			//d = new MapTile();
+			d = new MapTile();
 		} else if(dataType.equalsIgnoreCase("marketLog")) {
 			d = new MarketLog();
 		} else if(dataType.equalsIgnoreCase("player")) {
@@ -193,9 +199,9 @@ public class XMLparser extends DefaultHandler {
 		} else if(dataType.equalsIgnoreCase("resource")) {
 			d = new Resource();
 		} else if(dataType.equalsIgnoreCase("ticket")) {
-			//d = new Ticket();
+			d = new Ticket();
 		} else if(dataType.equalsIgnoreCase("trade")) {
-			//d = new Trade();
+			d = new Trade();
 		} else if(dataType.equalsIgnoreCase("unit")) {
 			d = new Unit();
 		} else if(dataType.equalsIgnoreCase("unitType")) {
