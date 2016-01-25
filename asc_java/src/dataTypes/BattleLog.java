@@ -107,7 +107,8 @@ public class BattleLog extends DataType {
 		try {
 			battles = parser.parse("src/datastore/battleLogs.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get BattleLog instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get BattleLog instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = battles.iterator();

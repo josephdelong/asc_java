@@ -132,7 +132,8 @@ public class MapTile extends DataType {
 		try {
 			mapTiles = parser.parse("src/datastore/mapTiles.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get MapTile instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get MapTile instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = mapTiles.iterator();

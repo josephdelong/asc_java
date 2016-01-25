@@ -62,8 +62,9 @@ public class Unit extends DataType {
 	/**
 	 * Constructor which sets a new Unit's details based on its Unit Type
 	 * @param unitTypeId <code>int</code> representing the ASC UnitType of this Unit.
+	 * @throws DataSourceParseException 
 	 */
-	public Unit(int unitTypeId) {
+	public Unit(int unitTypeId) throws DataSourceParseException {
 		UnitType unitType = UnitType.getInstance(unitTypeId);
 		if(unitType == null) {
 			new Unit();
@@ -140,6 +141,7 @@ public class Unit extends DataType {
 			units = parser.parse("src/datastore/units.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
 			// throw new DataSourceParseException("Get Unit instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = units.iterator();
@@ -358,8 +360,9 @@ public class Unit extends DataType {
 	 * Adds a Required Building to this Unit
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
@@ -370,8 +373,9 @@ public class Unit extends DataType {
 	 * @param buildingTypeId
 	 * @param buildingSubType
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException {
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		Building newBuilding = new Building(buildingTypeId);
 		newBuilding.setProductionType(buildingSubType);

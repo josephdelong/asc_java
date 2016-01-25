@@ -102,7 +102,7 @@ public class Battle extends DataType {
 			this.addAttackingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defendingPlayerResources")) {
 			// do nothing
-		} else if(fieldName.equalsIgnoreCase("defendingPlayerResoruce")) {
+		} else if(fieldName.equalsIgnoreCase("defendingPlayerResource")) {
 			this.addDefendingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("turns")) {
 			// do nothing
@@ -129,7 +129,8 @@ public class Battle extends DataType {
 		try {
 			battles = parser.parse("src/datastore/battles.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get Battle instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get Battle instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = battles.iterator();
@@ -386,8 +387,9 @@ public class Battle extends DataType {
 	 * Adds the specified Resource to this Battle's attacking Player Resource pile.
 	 * @param resourceType
 	 * @param amount
+	 * @throws DataSourceParseException 
 	 */
-	private void addAttackingPlayerResource(int resourceType, int amount) {
+	private void addAttackingPlayerResource(int resourceType, int amount) throws DataSourceParseException {
 		ArrayList<Resource> temp = this.getAttackingPlayerResources();
 		if(temp == null || temp.equals(null) || temp.isEmpty() || temp.size() == 0) {
 			temp = new ArrayList<Resource>();
@@ -405,8 +407,9 @@ public class Battle extends DataType {
 	 * Adds the specified Resource to this Battle's defending Player Resource pile.
 	 * @param resourceType
 	 * @param amount
+	 * @throws DataSourceParseException 
 	 */
-	private void addDefendingPlayerResource(int resourceType, int amount) {
+	private void addDefendingPlayerResource(int resourceType, int amount) throws DataSourceParseException {
 		ArrayList<Resource> temp = this.getDefendingPlayerResources();
 		if(temp == null || temp.equals(null) || temp.isEmpty() || temp.size() == 0) {
 			temp = new ArrayList<Resource>();

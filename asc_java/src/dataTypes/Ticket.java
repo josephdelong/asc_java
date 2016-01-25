@@ -149,7 +149,8 @@ public class Ticket extends DataType {
 		try {
 			tickets = parser.parse("src/datastore/tickets.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get Ticket instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get Ticket instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = tickets.iterator();

@@ -115,7 +115,8 @@ public class CheckInLog extends DataType {
 		try {
 			checkInLogs = parser.parse("src/datastore/checkInLogs.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get CheckInLog instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get CheckInLog instance lookup: " + instanceId, e);
+			return null;
 		}
 
 		Iterator<DataType> it = checkInLogs.iterator();

@@ -4,6 +4,8 @@
  */
 package test;
 
+import java.util.ArrayList;
+
 import dataTypes.Building;
 import dataTypes.BuildingType;
 import dataTypes.City;
@@ -44,7 +46,44 @@ public class XMLparserTest {
 			player.setScore(0d);
 			System.out.println(player.toString());
 			
-			City city = new City(0, "Happy Town", "Happy Hall", "Happy Hogan", null);
+			City city = new City();
+			city.setOwner(player);
+			city.setName("Happy Town");
+			city.setOffense(7);
+			city.setDefense(15);
+			ArrayList<Integer> resources = new ArrayList<Integer>();
+			resources.add(25);
+			resources.add(27);
+			resources.add(32);
+			resources.add(6);
+			resources.add(11);
+			resources.add(2);
+			resources.add(0);
+			resources.add(462);
+			city.setResources(resources);
+			city.setPopulation(217);
+			city.setValue(city.getResourceValue());
+			
+			ArrayList<Integer> work = new ArrayList<Integer>();
+			work.add(0);
+			work.add(0);
+			work.add(0);
+			work.add(0);
+			work.add(0);
+			work.add(100);
+			city.setAssignedWork(work);
+			
+			ArrayList<Unit> units = new ArrayList<Unit>();
+			units.add(u);
+			
+			b.setOccupants(units);
+			b.setGarrisonedUnits(units);
+			
+			ArrayList<Building> buildings = new ArrayList<Building>();
+			buildings.add(b);
+			
+			city.setBuildings(buildings);
+			
 			System.out.println(city.toString());
 			
 		} catch (ASCException e) {

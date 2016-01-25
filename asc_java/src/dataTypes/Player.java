@@ -116,7 +116,8 @@ public class Player extends DataType {
 		try {
 			players = parser.parse("src/datastore/players.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get Player instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get Player instance lookup: " + instanceId, e);
+			return null;
 		}
 
 		Iterator<DataType> it = players.iterator();
@@ -331,8 +332,9 @@ public class Player extends DataType {
 	 * 
 	 * @param resourceType
 	 * @param amount
+	 * @throws DataSourceParseException 
 	 */
-	private void addResource(int resourceType, int amount) {
+	private void addResource(int resourceType, int amount) throws DataSourceParseException {
 		ArrayList<Resource> resources = this.getResourceSurplus();
 		resources.add(resourceType, new Resource(resourceType, amount));
 		this.setResourceSurplus(resources);

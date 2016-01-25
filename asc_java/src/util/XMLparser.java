@@ -169,6 +169,34 @@ public class XMLparser extends DefaultHandler {
 		}
 	}
 
+	/*
+	 * When the parser encounters the end of an element, it calls this method
+	 */
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+
+		if(qName.equalsIgnoreCase(dataType)) {
+			if(dataMember.getId() == 0) { // this means the data type hasn't been properly initialized
+				// do nothing
+			} else {
+				if(indexes.contains(currentIndex)) {
+					dataMembers.add(dataMember); // add it to the list
+				} else {
+					// do nothing
+				}
+			}
+			currentIndex++;
+		} else {
+			// pass temp to dataMember so it can parse
+			try {
+				dataMember.parse(field, attribute, temp);
+			} catch (ASCException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * 
 	 * @param dataType String representation of the DataType subclass to be returned.
@@ -208,35 +236,6 @@ public class XMLparser extends DefaultHandler {
 			d = new UnitType();
 		}
 		return d;
-	}
-
-	/*
-	 * When the parser encounters the end of an element, it calls this method
-	 */
-	public void endElement(String uri, String localName, String qName)
-			throws SAXException {
-
-		if(qName.equalsIgnoreCase(dataType)) {
-			if(dataMember.getId() == 0) { // this means the data type hasn't been properly initialized
-				// do nothing
-			} else {
-				if(indexes.contains(currentIndex)) {
-					dataMembers.add(dataMember); // add it to the list
-				} else {
-					// do nothing
-				}
-			}
-			currentIndex++;
-		} else {
-			// pass temp to dataMember so it can parse
-			try {
-				dataMember.parse(field, attribute, temp);
-			} catch (ASCException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
 	}
 
 //	private void readList() {

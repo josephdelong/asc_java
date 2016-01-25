@@ -216,7 +216,8 @@ public class City extends DataType {
 		try {
 			cities = parser.parse("src/datastore/citys.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get City instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get City instance lookup: " + instanceId, e);
+			return null;
 		}
 
 		Iterator<DataType> it = cities.iterator();
@@ -266,8 +267,9 @@ public class City extends DataType {
 	 * Calculates this City's total Resource value.
 	 * 
 	 * @return
+	 * @throws DataSourceParseException 
 	 */
-	public double getResourceValue() {
+	public double getResourceValue() throws DataSourceParseException {
 		ArrayList<Integer> resources = this.getResources();
 		Iterator<Integer> it = resources.iterator();
 		double value = 0;
@@ -519,8 +521,9 @@ public class City extends DataType {
 	 * @param buildingType
 	 * @param productionValue
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addBuilding(int buildingType, int productionValue) throws InvalidBuildingProductionTypeException {
+	private void addBuilding(int buildingType, int productionValue) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> buildings = this.getBuildings();
 		Building newBuilding = new Building(buildingType);
 		Integer i = Integer.valueOf(productionValue);
@@ -532,7 +535,7 @@ public class City extends DataType {
 		buildings.add(newBuilding);
 		this.setBuildings(buildings);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

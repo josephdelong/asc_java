@@ -73,8 +73,9 @@ public class Building extends DataType {
 	 * Constructor which sets a new Building's details based on its Building Type.
 	 * @param buildingTypeId <code>int</code> representing the ASC BuildingType of this Building.
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	public Building(int buildingTypeId) throws InvalidBuildingProductionTypeException {
+	public Building(int buildingTypeId) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		BuildingType buildingType = BuildingType.getInstance(buildingTypeId);
 		if(buildingType == null) {
 			new Building();
@@ -94,8 +95,9 @@ public class Building extends DataType {
 	 * @param buildingTypeId
 	 * @param productionType
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	public Building(int buildingTypeId, int productionType) throws InvalidBuildingProductionTypeException {
+	public Building(int buildingTypeId, int productionType) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		BuildingType buildingType = BuildingType.getInstance(buildingTypeId);
 		if(buildingType == null) {
 			new Building();
@@ -175,7 +177,8 @@ public class Building extends DataType {
 		try {
 			buildings = parser.parse("src/datastore/buildings.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get Building instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get Building instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = buildings.iterator();
@@ -414,8 +417,9 @@ public class Building extends DataType {
 	 * Adds a Required Building to this Building
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
@@ -427,8 +431,9 @@ public class Building extends DataType {
 	 * @param unitId
 	 * @throws UnitNotFoundException 
 	 * @throws BuildingAtMaxGarrisonException 
+	 * @throws DataSourceParseException 
 	 */
-	public void addGarrisonedUnit(Integer unitId) throws UnitNotFoundException, BuildingAtMaxGarrisonException {
+	public void addGarrisonedUnit(Integer unitId) throws UnitNotFoundException, BuildingAtMaxGarrisonException, DataSourceParseException {
 		// Parse data source for Unit by unitId
 		if(Unit.getInstance(unitId) == null) {
 			throw new UnitNotFoundException("Unit with ID of " + unitId + " not found. Unable to add to Building Garrison.", this);

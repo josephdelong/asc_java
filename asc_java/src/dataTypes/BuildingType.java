@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import exceptions.ASCException;
+import exceptions.DataSourceParseException;
 import exceptions.InvalidBuildingProductionTypeException;
 import util.XMLparser;
 
@@ -107,8 +108,9 @@ public class BuildingType extends DataType {
 	 *   Otherwise returns null.
 	 * @param instanceId The unique identifier for the instance of BuildingType you are looking for.
 	 * @return BuildingType associated with instanceId, or null.
+	 * @throws DataSourceParseException 
 	 */
-	public static BuildingType getInstance(Integer instanceId) {
+	public static BuildingType getInstance(Integer instanceId) throws DataSourceParseException {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		ArrayList<DataType> buildingTypes = new ArrayList<DataType>();
 		ids.add(instanceId);
@@ -117,8 +119,7 @@ public class BuildingType extends DataType {
 		try {
 			buildingTypes = parser.parse("src/datastore/buildingTypes.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get BuildingType instance lookup: " + instanceId, e);
-			System.exit(1);
+			throw new DataSourceParseException("Get BuildingType instance lookup: " + instanceId, e);
 		}
 		
 		Iterator<DataType> it = buildingTypes.iterator();
@@ -337,8 +338,9 @@ public class BuildingType extends DataType {
 	 * Adds a Required Building to this BuildingType
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);

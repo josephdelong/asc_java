@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import exceptions.ASCException;
+import exceptions.DataSourceParseException;
 import exceptions.InvalidBuildingProductionTypeException;
 import util.XMLparser;
 
@@ -51,8 +52,9 @@ public class Resource extends DataType {
 	/**
 	 * Constructor which sets a Resource's details based on its Resource ID.
 	 * @param resourceId <code>int</code> representing the ID of this Resource.
+	 * @throws DataSourceParseException 
 	 */
-	public Resource(int resourceId) {
+	public Resource(int resourceId) throws DataSourceParseException {
 		// Parse data source for values
 		Resource.getInstance(resourceId);
 	}
@@ -61,8 +63,9 @@ public class Resource extends DataType {
 	 * Constructor which sets a Resource's details based on its Resource ID and amount.
 	 * @param resourceId
 	 * @param amount
+	 * @throws DataSourceParseException 
 	 */
-	public Resource(int resourceId, int amount) {
+	public Resource(int resourceId, int amount) throws DataSourceParseException {
 		new Resource(resourceId);
 		setAmount(amount);
 	}
@@ -127,8 +130,9 @@ public class Resource extends DataType {
 	 *   Otherwise returns null.
 	 * @param instanceId The unique identifier for the instance of Resource you are looking for.
 	 * @return Resource associated with instanceId, or null.
+	 * @throws DataSourceParseException 
 	 */
-	public static Resource getInstance(Integer instanceId) {
+	public static Resource getInstance(Integer instanceId) throws DataSourceParseException {
 		ArrayList<Integer> ids = new ArrayList<Integer>();
 		ArrayList<DataType> resources = new ArrayList<DataType>();
 		ids.add(instanceId);
@@ -137,8 +141,7 @@ public class Resource extends DataType {
 		try {
 			resources = parser.parse("src/datastore/resources.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			// throw new DataSourceParseException("Get Resource instance lookup: " + instanceId, e);
-			System.exit(1);
+			throw new DataSourceParseException("Get Resource instance lookup: " + instanceId, e);
 		}
 		
 		Iterator<DataType> it = resources.iterator();
@@ -284,8 +287,9 @@ public class Resource extends DataType {
 	 * Adds a Required Building to this Resource
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
+	private void addRequiredBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setRequiredBuildings(temp);
@@ -296,8 +300,9 @@ public class Resource extends DataType {
 	 * @param buildingTypeId
 	 * @param buildingSubType
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException {
+	private void addRequiredBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getRequiredBuildings();
 		Building newBuilding = new Building(buildingTypeId);
 		newBuilding.setProductionType(buildingSubType);
@@ -309,8 +314,9 @@ public class Resource extends DataType {
 	 * Adds a Producing Building to this Resource
 	 * @param buildingTypeId
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addProducingBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException {
+	private void addProducingBuilding(Integer buildingTypeId) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getProducingBuildings();
 		temp.add(new Building(buildingTypeId));
 		this.setProducingBuildings(temp);
@@ -321,8 +327,9 @@ public class Resource extends DataType {
 	 * @param buildingTypeId
 	 * @param buildingSubType
 	 * @throws InvalidBuildingProductionTypeException 
+	 * @throws DataSourceParseException 
 	 */
-	private void addProducingBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException {
+	private void addProducingBuilding(Integer buildingTypeId, Integer buildingSubType) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> temp = this.getProducingBuildings();
 		Building newBuilding = new Building(buildingTypeId);
 		newBuilding.setProductionType(buildingSubType);

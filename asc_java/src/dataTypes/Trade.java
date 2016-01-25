@@ -163,7 +163,8 @@ public class Trade extends DataType {
 		try {
 			trades = parser.parse("src/datastore/trades.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get Trade instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get Trade instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = trades.iterator();

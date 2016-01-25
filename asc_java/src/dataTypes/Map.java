@@ -85,7 +85,8 @@ public class Map extends DataType {
 		try {
 			maps = parser.parse("src/datastore/maps.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get Map instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get Map instance lookup: " + instanceId, e);
+			return null;
 		}
 		
 		Iterator<DataType> it = maps.iterator();

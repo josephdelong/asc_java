@@ -111,7 +111,8 @@ public class MarketLog extends DataType {
 		try {
 			marketLogs = parser.parse("src/datastore/marketLogs.xml", null, ids);
 		} catch (IOException | SAXException | ParserConfigurationException e) {
-			throw new DataSourceParseException("Get MarketLog instance lookup: " + instanceId, e);
+//			throw new DataSourceParseException("Get MarketLog instance lookup: " + instanceId, e);
+			return null;
 		}
 
 		Iterator<DataType> it = marketLogs.iterator();
