@@ -85,14 +85,19 @@ public class CheckInLog extends DataType {
 			try {
 				this.setCheckInDateTime(sdf.parse(value));
 			} catch (ParseException e) {
-				throw new DataSourceParseException("Couldn't parse " + " into a valid SimpleDateFormat.", e);
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if (fieldName.equalsIgnoreCase("cityId")) {
 			this.setCityId(Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("remainders")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("remainder")) {
-			this.setRemainderValue(Integer.parseInt(attribute), Float.parseFloat(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.setRemainderValue(Integer.parseInt(attribute), Float.parseFloat(s));
+			}
 		}
 	}
 

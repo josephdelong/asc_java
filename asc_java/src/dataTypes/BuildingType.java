@@ -30,6 +30,7 @@ public class BuildingType extends DataType {
 	private String name;
 	private int offense;
 	private int defense;
+	private int baseHealth;
 	private int woodCost;
 	private int stoneCost;
 	private int goldCost;
@@ -48,6 +49,7 @@ public class BuildingType extends DataType {
 		this.setName("");
 		this.setOffense(0);
 		this.setDefense(0);
+		this.setBaseHealth(0);
 		this.setWoodCost(0);
 		this.setStoneCost(0);
 		this.setGoldCost(0);
@@ -75,6 +77,8 @@ public class BuildingType extends DataType {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
 			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("baseHealth")) {
+			this.setBaseHealth(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("woodCost")) {
 			this.setWoodCost(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("stoneCost")) {
@@ -140,6 +144,7 @@ public class BuildingType extends DataType {
 		fields.add("name");
 		fields.add("offense");
 		fields.add("defense");
+		fields.add("baseHealth");
 		fields.add("woodCost");
 		fields.add("stoneCost");
 		fields.add("goldCost");
@@ -178,6 +183,13 @@ public class BuildingType extends DataType {
 	 */
 	public int getDefense() {
 		return defense;
+	}
+
+	/**
+	 * @return the baseHealth
+	 */
+	public int getBaseHealth() {
+		return baseHealth;
 	}
 
 	/**
@@ -269,6 +281,13 @@ public class BuildingType extends DataType {
 	 */
 	public void setDefense(int defense) {
 		this.defense = defense;
+	}
+
+	/**
+	 * @param defense the defense to set
+	 */
+	public void setBaseHealth(int baseHealth) {
+		this.baseHealth = baseHealth;
 	}
 
 	/**
@@ -365,6 +384,9 @@ public class BuildingType extends DataType {
 		builder.append("\n\t");
 		builder.append("defense=");
 		builder.append(defense);
+		builder.append("\n\t");
+		builder.append("baseHealth=");
+		builder.append(baseHealth);
 		builder.append("\n\t");
 		builder.append("woodCost=");
 		builder.append(woodCost);

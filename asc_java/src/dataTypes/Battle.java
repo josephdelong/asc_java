@@ -69,16 +69,14 @@ public class Battle extends DataType {
 			try {
 				this.setStartDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("endDate")) {
 			SimpleDateFormat sdf = new SimpleDateFormat();
 			try {
 				this.setEndDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("attackingPlayer")) {
 			this.setId(Integer.parseInt(value));
@@ -87,11 +85,21 @@ public class Battle extends DataType {
 		} else if(fieldName.equalsIgnoreCase("attackingUnits")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("attackingUnit")) {
-			this.addAttackingUnit(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addAttackingUnit(Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("defendingUnits")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("defendingUnit")) {
-			this.addDefendingUnit(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addDefendingUnit(Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("attackingStrength")) {
 			this.setAttackingStrength(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defendingStrength")) {
@@ -99,15 +107,30 @@ public class Battle extends DataType {
 		} else if(fieldName.equalsIgnoreCase("attackingPlayerResources")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("attackingPlayerResource")) {
-			this.addAttackingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addAttackingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("defendingPlayerResources")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("defendingPlayerResource")) {
-			this.addDefendingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addDefendingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("turns")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("turn")) {
-			this.addTurn(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addTurn(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("result")) {
 			this.setResult(value);
 		}
@@ -162,6 +185,110 @@ public class Battle extends DataType {
 		fields.add("turns");
 		fields.add("result");
 		return fields;
+	}
+	
+	/**
+	 * Method which returns a String representation of one of this Data Type's fields, 
+	 *   indicated by the fieldName parameter.
+	 * @param fieldName The name of the field for which we are retrieving its data value.
+	 * @return THe value of the field specified by fieldName.
+	 * @throws DataSourceParseException 
+	 */
+	public String getFieldValue(String fieldName) throws DataSourceParseException {
+		ArrayList<String> fields = getFields();
+		String r = null;
+		Iterator<Unit> it_u;
+		Iterator<Resource> it_r;
+		Iterator<BattleLog> it_b;
+		if(fields.contains(fieldName)) {
+			switch (fieldName) {
+			case "id":
+				r = String.valueOf(this.getId());
+				break;
+			case "startDate":
+				r = this.getStartDate().toString();
+				break;
+			case "endDate":
+				r = this.getEndDate().toString();
+				break;
+			case "attackingPlayer":
+				r = this.getAttackingPlayer().getName();
+				break;
+			case "defendingPlayer":
+				r = this.getDefendingPlayer().getName();
+				break;
+			case "attackingUnits":
+				r = "[";
+				it_u = getAttackingUnits().iterator();
+				while(it_u.hasNext()) {
+					r += it_u.next().getId();
+					if(it_u.hasNext()) {
+						r += ", ";
+					}
+				}
+				r += "]";
+				break;
+			case "defendingUnits":
+				r = "[";
+				it_u = this.getDefendingUnits().iterator();
+				while(it_u.hasNext()) {
+					r += it_u.next().getId();
+					if(it_u.hasNext()) {
+						r += ", ";
+					}
+				}
+				r += "]";
+				break;
+			case "attackingStrength":
+				r = String.valueOf(this.getAttackingStrength());
+				break;
+			case "defendingStrength":
+				r = String.valueOf(this.getDefendingStrength());
+				break;
+			case "attackingPlayerResources":
+				r = "[";
+				it_r = this.getAttackingPlayerResources().iterator();
+				while(it_r.hasNext()) {
+					r += it_r.next().getAmount();
+					if(it_r.hasNext()) {
+						r += ", ";
+					}
+				}
+				r += "]";
+				break;
+			case "defendingPlayerResources":
+				r = "[";
+				it_r = this.getDefendingPlayerResources().iterator();
+				while(it_r.hasNext()) {
+					r += it_r.next().getAmount();
+					if(it_r.hasNext()) {
+						r += ", ";
+					}
+				}
+				r += "]";
+				break;
+			case "wager":
+				//r = this.getWager();
+				break;
+			case "turns":
+				r = "[";
+				it_b = this.getTurns().iterator();
+				while(it_b.hasNext()) {
+					r += it_b.next().printTurn();
+					if(it_b.hasNext()) {
+						r += ",\n";
+					}
+				}
+				r += "]";
+				break;
+			case "result":
+				r = this.getResult();
+				break;
+			default:
+				break;
+			}
+		}
+		return r;
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class City extends DataType {
 	 */
 	private int id;
 	private String name;
-	private Player owner;
+	private Integer owner;
 	private ArrayList<Building> buildings;
 	private int offense;
 	private int defense;
@@ -86,7 +86,8 @@ public class City extends DataType {
 		} else {
 			this.setName(cityName);
 		}
-		this.setOwner(Player.getInstance(playerId));
+//		this.setOwner(Player.getInstance(playerId));
+		this.setOwner(playerId);
 		// new Town Center
 		ArrayList<Building> newBuildings = new ArrayList<Building>();
 		Building b = new Building(1);
@@ -165,12 +166,21 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
 		} else if (fieldName.equalsIgnoreCase("owner")) {
-			this.setOwner(Player.getInstance(Integer.parseInt(value)));
+			this.setOwner(Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("buildings")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("building")) {
-			this.addBuilding(Integer.parseInt(attribute),
-					Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				if(attribute != null && !attribute.isEmpty()) {
+					this.addBuilding(Integer.parseInt(attribute),
+							Integer.parseInt(s));
+				} else {
+					this.addBuilding(Integer.parseInt(s), 0);
+				}
+			}
 		} else if (fieldName.equalsIgnoreCase("offense")) {
 			this.setOffense(Integer.parseInt(value));
 		} else if (fieldName.equalsIgnoreCase("defense")) {
@@ -180,8 +190,12 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("resources")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			this.addResource(Integer.parseInt(attribute),
-					Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addResource(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if (fieldName.equalsIgnoreCase("value")) {
 			this.setValue(Double.parseDouble(value));
 		} else if (fieldName.equalsIgnoreCase("happiness")) {
@@ -193,7 +207,12 @@ public class City extends DataType {
 		} else if (fieldName.equalsIgnoreCase("assignedWork")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("work")) {
-			this.addWork(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addWork(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		}
 	}
 
@@ -301,7 +320,7 @@ public class City extends DataType {
 	/**
 	 * @return the owner
 	 */
-	public Player getOwner() {
+	public Integer getOwner() {
 		return owner;
 	}
 
@@ -395,7 +414,7 @@ public class City extends DataType {
 	 * @param owner
 	 *            the owner to set
 	 */
-	public void setOwner(Player owner) {
+	public void setOwner(Integer owner) {
 		this.owner = owner;
 	}
 
@@ -488,7 +507,14 @@ public class City extends DataType {
 	 */
 	private void addWork(int workType, int percent) {
 		ArrayList<Integer> work = this.getAssignedWork();
-		work.add(workType, percent);
+		if(work == null) {
+			work = new ArrayList<Integer>();
+			for (int i = 0; i < 5; i++) {
+				work.add(0);
+			}
+			work.add(100);
+		}
+		work.set(workType - 1, percent);
 		this.setAssignedWork(work);
 	}
 
@@ -525,6 +551,9 @@ public class City extends DataType {
 	 */
 	private void addBuilding(int buildingType, int productionValue) throws InvalidBuildingProductionTypeException, DataSourceParseException {
 		ArrayList<Building> buildings = this.getBuildings();
+		if(buildings == null) {
+			buildings = new ArrayList<Building>();
+		}
 		Building newBuilding = new Building(buildingType);
 		Integer i = Integer.valueOf(productionValue);
 		if (i == null || i.equals(null) || i.intValue() == 0) {

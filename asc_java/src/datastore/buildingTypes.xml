@@ -5,6 +5,7 @@
 		<name>Town Center</name>
 		<offense>1</offense>
 		<defense>5</defense>
+		<baseHealth>150</baseHealth>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>0</goldCost>
@@ -20,6 +21,7 @@
 		<name>Farm</name>
 		<offense>0</offense>
 		<defense>1</defense>
+		<baseHealth>50</baseHealth>
 		<woodCost>5</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>150</goldCost>
@@ -37,6 +39,7 @@
 		<name>Mine</name>
 		<offense>0</offense>
 		<defense>2</defense>
+		<baseHealth>50</baseHealth>
 		<woodCost>5</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>200</goldCost>
@@ -54,6 +57,7 @@
 		<name>Lumber Mill</name>
 		<offense>0</offense>
 		<defense>1</defense>
+		<baseHealth>50</baseHealth>
 		<woodCost>5</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>200</goldCost>
@@ -71,6 +75,7 @@
 		<name>Granary</name>
 		<offense>0</offense>
 		<defense>2</defense>
+		<baseHealth>50</baseHealth>
 		<woodCost>5</woodCost>
 		<stoneCost>5</stoneCost>
 		<goldCost>200</goldCost>
@@ -90,6 +95,7 @@
 		<name>Blacksmith</name>
 		<offense>1</offense>
 		<defense>2</defense>
+		<baseHealth>75</baseHealth>
 		<woodCost>5</woodCost>
 		<stoneCost>5</stoneCost>
 		<goldCost>250</goldCost>
@@ -105,6 +111,7 @@
 		<name>Siege Workshop</name>
 		<offense>1</offense>
 		<defense>2</defense>
+		<baseHealth>75</baseHealth>
 		<woodCost>10</woodCost>
 		<stoneCost>5</stoneCost>
 		<goldCost>250</goldCost>
@@ -124,6 +131,7 @@
 		<name>Church</name>
 		<offense>0</offense>
 		<defense>3</defense>
+		<baseHealth>150</baseHealth>
 		<woodCost>10</woodCost>
 		<stoneCost>10</stoneCost>
 		<goldCost>500</goldCost>
@@ -143,6 +151,7 @@
 		<name>Barracks</name>
 		<offense>2</offense>
 		<defense>3</defense>
+		<baseHealth>75</baseHealth>
 		<woodCost>15</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>300</goldCost>
@@ -158,6 +167,7 @@
 		<name>Archery Range</name>
 		<offense>3</offense>
 		<defense>2</defense>
+		<baseHealth>75</baseHealth>
 		<woodCost>15</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>300</goldCost>
@@ -176,6 +186,7 @@
 		<name>Stable</name>
 		<offense>2</offense>
 		<defense>3</defense>
+		<baseHealth>75</baseHealth>
 		<woodCost>15</woodCost>
 		<stoneCost>0</stoneCost>
 		<goldCost>300</goldCost>
@@ -194,6 +205,7 @@
 		<name>Castle</name>
 		<offense>5</offense>
 		<defense>10</defense>
+		<baseHealth>500</baseHealth>
 		<woodCost>25</woodCost>
 		<stoneCost>25</stoneCost>
 		<goldCost>1000</goldCost>

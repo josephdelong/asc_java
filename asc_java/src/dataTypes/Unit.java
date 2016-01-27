@@ -34,6 +34,8 @@ public class Unit extends DataType {
 	private int location;
 	private int offense;
 	private int defense;
+	private int currentHealth;
+	private int maxHealth;
 	private int upgrade;
 	private int xp;
 	private boolean special;
@@ -52,6 +54,8 @@ public class Unit extends DataType {
 		this.setLocation(0);
 		this.setOffense(0);
 		this.setDefense(0);
+		this.setCurrentHealth(0);
+		this.setMaxHealth(0);
 		this.setUpgrade(0);
 		this.setXp(0);
 		this.setSpecial(false);
@@ -73,6 +77,8 @@ public class Unit extends DataType {
 			this.setName(unitType.getName());
 			this.setOffense(unitType.getOffense());
 			this.setDefense(unitType.getDefense());
+			this.setCurrentHealth(unitType.getBaseHealth());
+			this.setMaxHealth(unitType.getBaseHealth());
 			this.setSpecial(unitType.getSpecial());
 			this.setImage(unitType.getImage());
 			this.setRequiredBuildings(unitType.getRequiredBuildings());
@@ -89,6 +95,8 @@ public class Unit extends DataType {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("id")) {
 			this.setId(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("unitId")) {
+			this.setUnitId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("name")) {
 			this.setName(value);
 		} else if(fieldName.equalsIgnoreCase("player")) {
@@ -101,6 +109,10 @@ public class Unit extends DataType {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
 			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("currentHealth")) {
+			this.setCurrentHealth(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("maxHealth")) {
+			this.setMaxHealth(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("upgrade")) {
 			this.setUpgrade(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("xp")) {
@@ -166,6 +178,8 @@ public class Unit extends DataType {
 		fields.add("location");
 		fields.add("offense");
 		fields.add("defense");
+		fields.add("currentHealth");
+		fields.add("maxHealth");
 		fields.add("upgrade");
 		fields.add("xp");
 		fields.add("special");
@@ -228,6 +242,20 @@ public class Unit extends DataType {
 	 */
 	public int getDefense() {
 		return defense;
+	}
+
+	/**
+	 * @return the currentHealth
+	 */
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	/**
+	 * @return the maxHealth
+	 */
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 
 	/**
@@ -319,6 +347,20 @@ public class Unit extends DataType {
 	 */
 	public void setDefense(int defense) {
 		this.defense = defense;
+	}
+
+	/**
+	 * @param currentHealth the currentHealth to set
+	 */
+	public void setCurrentHealth(int currentHealth) {
+		this.currentHealth = currentHealth;
+	}
+
+	/**
+	 * @param maxHealth the maxHealth to set
+	 */
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
 	}
 
 	/**
@@ -414,6 +456,12 @@ public class Unit extends DataType {
 		builder.append("\n\t");
 		builder.append("defense=");
 		builder.append(defense);
+		builder.append("\n\t");
+		builder.append("currentHealth=");
+		builder.append(currentHealth);
+		builder.append("\n\t");
+		builder.append("maxHealth=");
+		builder.append(maxHealth);
 		builder.append("\n\t");
 		builder.append("upgrade=");
 		builder.append(upgrade);

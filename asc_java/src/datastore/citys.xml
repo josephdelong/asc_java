@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cities>
+	<city>
+		<id>1</id>
+		<name>Bighorn Bluff</name>
+		<owner>1</owner>
+		<buildings>
+			<building>1</building>
+		</buildings>
+		<offense>7</offense>
+		<defense>15</defense>
+		<population>112</population>
+		<resources>
+			<resource type="1">17</resource>
+			<resource type="2">12</resource>
+			<resource type="3">11</resource>
+			<resource type="4">3</resource>
+			<resource type="5">2</resource>
+			<resource type="6">0</resource>
+			<resource type="7">0</resource>
+			<resource type="8">1743</resource>
+		</resources>
+		<value>0</value>
+		<happiness>2</happiness>
+		<score>1.35</score>
+		<image></image>
+		<assignedWork>
+			<work type="1">5</work>
+			<work type="2">7</work>
+			<work type="3">13</work>
+			<work type="4">5</work>
+			<work type="5">0</work>
+			<work type="6">70</work>
+		</assignedWork>
+	</city>
+</cities>

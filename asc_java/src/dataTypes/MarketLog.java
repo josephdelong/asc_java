@@ -78,16 +78,26 @@ public class MarketLog extends DataType {
 			try {
 				this.setDateTime(sdf.parse(value));
 			} catch (ParseException e) {
-				throw new DataSourceParseException("Couldn't parse " + " into a valid SimpleDateFormat.", e);
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if (fieldName.equalsIgnoreCase("resourceTotals")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resourceTotal")) {
-			this.setResourceTotalValue(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.setResourceTotalValue(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if (fieldName.equalsIgnoreCase("resourceStdDevs")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resourceStdDev")) {
-			this.setResourceStdDevValue(Integer.parseInt(attribute), Float.parseFloat(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.setResourceStdDevValue(Integer.parseInt(attribute), Float.parseFloat(s));
+			}
 		}
 
 	}

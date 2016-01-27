@@ -80,20 +80,34 @@ public class Player extends DataType {
 		} else if (fieldName.equalsIgnoreCase("cities")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("city")) {
-			this.addCity(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addCity(Integer.parseInt(s));
+			}
 		} else if (fieldName.equalsIgnoreCase("currentCity")) {
 			this.setCurrentCity(City.getInstance(Integer.parseInt(value)));
 		} else if (fieldName.equalsIgnoreCase("allies")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("ally")) {
-			this.addAlly(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addAlly(Integer.parseInt(s));
+			}
 		} else if (fieldName.equalsIgnoreCase("score")) {
 			this.setScore(Double.parseDouble(value));
 		} else if (fieldName.equalsIgnoreCase("resourceSurplus")) {
 			// do nothing
 		} else if (fieldName.equalsIgnoreCase("resource")) {
-			this.addResource(Integer.parseInt(attribute),
-					Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addResource(Integer.parseInt(attribute), Integer.parseInt(value));
+			}
 		}
 	}
 
@@ -336,7 +350,13 @@ public class Player extends DataType {
 	 */
 	private void addResource(int resourceType, int amount) throws DataSourceParseException {
 		ArrayList<Resource> resources = this.getResourceSurplus();
-		resources.add(resourceType, new Resource(resourceType, amount));
+		if(resources == null || resources.isEmpty()) {
+			resources = new ArrayList<Resource>();
+			for (int i = 0; i < 8; i++) {
+				resources.add(new Resource());
+			}
+		}
+		resources.set(resourceType - 1, new Resource(resourceType, amount));
 		this.setResourceSurplus(resources);
 	}
 

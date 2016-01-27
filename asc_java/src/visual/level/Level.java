@@ -74,6 +74,7 @@ public class Level {
 	/**
 	 * Takes image and inserts it into the new File (as a PNG)
 	 */
+	@SuppressWarnings("unused")
 	private void saveLevelToFile() {
 		try {
 			ImageIO.write(image, "png", new File(Level.class.getResource(this.imagePath).getFile()));

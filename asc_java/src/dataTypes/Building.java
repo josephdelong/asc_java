@@ -36,6 +36,8 @@ public class Building extends DataType {
 	private int location;
 	private int defense;
 	private int offense;
+	private int currentHealth;
+	private int maxHealth;
 	private int upgrade;
 	private boolean special;
 	private File image;
@@ -55,6 +57,8 @@ public class Building extends DataType {
 		this.setLocation(0);
 		this.setDefense(0);
 		this.setOffense(0);
+		this.setCurrentHealth(0);
+		this.setMaxHealth(0);
 		this.setUpgrade(0);
 		this.setSpecial(false);
 		this.setImage(null);
@@ -84,6 +88,8 @@ public class Building extends DataType {
 			this.setName(buildingType.getName());
 			this.setDefense(buildingType.getDefense());
 			this.setOffense(buildingType.getOffense());
+			this.setCurrentHealth(buildingType.getBaseHealth());
+			this.setMaxHealth(buildingType.getBaseHealth());
 			this.setSpecial(buildingType.getSpecial());
 			this.setImage(buildingType.getImage());
 			this.setRequiredBuildings(buildingType.getRequiredBuildings());
@@ -106,6 +112,8 @@ public class Building extends DataType {
 			this.setName(buildingType.getName());
 			this.setDefense(buildingType.getDefense());
 			this.setOffense(buildingType.getOffense());
+			this.setCurrentHealth(buildingType.getBaseHealth());
+			this.setMaxHealth(buildingType.getBaseHealth());
 			this.setSpecial(buildingType.getSpecial());
 			this.setImage(buildingType.getImage());
 			this.setRequiredBuildings(buildingType.getRequiredBuildings());
@@ -133,6 +141,10 @@ public class Building extends DataType {
 			this.setOffense(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("defense")) {
 			this.setDefense(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("currentHealth")) {
+			this.setCurrentHealth(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("maxHealth")) {
+			this.setMaxHealth(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("upgrade")) {
 			this.setUpgrade(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("special")) {
@@ -142,11 +154,21 @@ public class Building extends DataType {
 		} else if(fieldName.equalsIgnoreCase("occupants")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("occupant")) {
-			this.addOccupant(Integer.valueOf(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addOccupant(Integer.valueOf(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("garrisonedUnits")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("garrisonedUnit")) {
-			this.addGarrisonedUnit(Integer.valueOf(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addGarrisonedUnit(Integer.valueOf(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("productionType")) {
 			this.setProductionType(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("requiredBuildings")) {
@@ -202,6 +224,8 @@ public class Building extends DataType {
 		fields.add("location");
 		fields.add("offense");
 		fields.add("defense");
+		fields.add("currentHealth");
+		fields.add("maxHealth");
 		fields.add("upgrade");
 		fields.add("special");
 		fields.add("image");
@@ -259,6 +283,20 @@ public class Building extends DataType {
 	 */
 	public int getOffense() {
 		return offense;
+	}
+
+	/**
+	 * @return the currentHealth
+	 */
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
+
+	/**
+	 * @return the maxHealth
+	 */
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 
 	/**
@@ -357,6 +395,20 @@ public class Building extends DataType {
 	 */
 	public void setOffense(int offense) {
 		this.offense = offense;
+	}
+
+	/**
+	 * @param currentHealth the offense to set
+	 */
+	public void setCurrentHealth(int currentHealth) {
+		this.currentHealth = currentHealth;
+	}
+
+	/**
+	 * @param maxHealth the offense to set
+	 */
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
 	}
 
 	/**
@@ -534,6 +586,12 @@ public class Building extends DataType {
 		builder.append("\n\t");
 		builder.append("offense=");
 		builder.append(offense);
+		builder.append("\n\t");
+		builder.append("currentHealth=");
+		builder.append(currentHealth);
+		builder.append("\n\t");
+		builder.append("maxHealth=");
+		builder.append(maxHealth);
 		builder.append("\n\t");
 		builder.append("upgrade=");
 		builder.append(upgrade);

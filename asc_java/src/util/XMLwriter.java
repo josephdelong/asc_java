@@ -5,225 +5,141 @@
  */
 package util;
 
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  *
  */
-public class XMLwriter {
+public class XMLwriter extends DefaultHandler {
 	
-	public void write(String fileName, boolean doOverwrite) {
+	private String displayText[] = new String[1000];
+	private int numLines = 0;
+	private String indent = "";
+
+	/**
+	 * 
+	 * @param xmlFile
+	 * @param doOverwrite
+	 * @throws ParserConfigurationException
+	 * @throws SAXException
+	 * @throws IOException
+	 */
+	public void write(String xmlFile, boolean doOverwrite)
+			throws ParserConfigurationException, SAXException, IOException {
+
+		// Create a "parser factory" for creating SAX parsers
+		SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+
+		// Now use the parser factory to create a SAXParser object
+		SAXParser sp = saxParserFactory.newSAXParser();
+
+		// DO OTHER SET UP STUFF HERE IF NECESSARY
 		
-		XMLStreamWriter writer = new XMLStreamWriter() {
-			
-			@Override
-			public void writeStartElement(String prefix, String localName, String namespaceURI)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeStartElement(String namespaceURI, String localName)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeStartElement(String localName) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeStartDocument(String encoding, String version)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeStartDocument(String version) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeStartDocument() throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeProcessingInstruction(String target, String data)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeProcessingInstruction(String target)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeNamespace(String prefix, String namespaceURI)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeEntityRef(String name) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeEndElement() throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeEndDocument() throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeEmptyElement(String prefix, String localName, String namespaceURI)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeEmptyElement(String namespaceURI, String localName)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeEmptyElement(String localName) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeDefaultNamespace(String namespaceURI) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeDTD(String dtd) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeComment(String data) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeCharacters(char[] text, int start, int len)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeCharacters(String text) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeCData(String data) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeAttribute(String prefix, String namespaceURI, String localName,
-					String value) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeAttribute(String namespaceURI, String localName, String value)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void writeAttribute(String localName, String value)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void setPrefix(String prefix, String uri) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void setNamespaceContext(NamespaceContext context)
-					throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void setDefaultNamespace(String uri) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public Object getProperty(String name) throws IllegalArgumentException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public String getPrefix(String uri) throws XMLStreamException {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public NamespaceContext getNamespaceContext() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public void flush() throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void close() throws XMLStreamException {
-				// TODO Auto-generated method stub
-				
-			}
-		};
+		// Finally, tell the parser to parse the input and notify the handler
+		sp.parse(xmlFile, this);
+		
+		FileWriter fileWriter = new FileWriter(xmlFile + "_" + System.currentTimeMillis());
+		
+		for (int i = 0; i < numLines; i++) {
+			fileWriter.write(displayText[i].toCharArray());
+			fileWriter.write("\n");
+		}
+		
+		fileWriter.close();
+
+	}
+	
+	/**
+	 * This method runs when we first start writing to the XML File (when NEW)
+	 */
+	public void startDocument() {
+		displayText[numLines] = indent;
+		displayText[numLines] += "<?xml version'\"1.0\" encoding=\"UTF-8\"?>";
+		numLines++;
+	}
+	
+	/**
+	 * This method runs when we need to insert comments / instructional text into the XML document
+	 * @param target
+	 * @param data
+	 */
+	public void processingInstruction(String target, String data) {
+		displayText[numLines] = indent;
+		displayText[numLines] += "<?";
 		
 	}
 	
+	/**
+	 * Method which runs when we need to insert an XML start tag
+	 * @param uri
+	 * @param localName
+	 * @param qualifiedName
+	 * @param attributes
+	 */
+	public void startElement(String uri, String localName, String qualifiedName, Attributes attributes) {
+		displayText[numLines] = indent;
+		indent+= "\t";
+		displayText[numLines] += "<";
+		displayText[numLines] += qualifiedName;
+		if(attributes != null) {
+			for (int i = 0; i < attributes.getLength(); i++) {
+				displayText[numLines] += ' ';
+				displayText[numLines] += attributes.getQName(i);
+				displayText[numLines] += "=\"";
+				displayText[numLines] += attributes.getValue(i);
+				displayText[numLines] += '"';
+			}
+		}
+		displayText[numLines] += '>';
+		numLines++;
+	}
+	
+	/**
+	 * 
+	 * @param characters
+	 * @param start
+	 * @param length
+	 */
+	public void characters(char characters[], int start, int length) {
+		String characterData = (new String(characters, start, length)).trim();
+		if(characterData.indexOf("\n") < 0 && characterData.length() > 0) {
+			displayText[numLines] = indent;
+			displayText[numLines] += characterData;
+			numLines++;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param characters
+	 * @param start
+	 * @param length
+	 */
+	public void ignorableWhitespace(char characters[], int start, int length) {
+		// characters(characters, start, length);
+	}
+	
+	/**
+	 * @param uri
+	 * @param localName
+	 * @param qualifiedName
+	 */
+	public void endElement(String uri, String localName, String qualifiedName) {
+		indent = indent.substring(0,  indent.length() - 1);
+		displayText[numLines] = indent;
+		displayText[numLines] += "</";
+		displayText[numLines] += qualifiedName;
+		displayText[numLines] += '>';
+		numLines++;
+	}
+
 }

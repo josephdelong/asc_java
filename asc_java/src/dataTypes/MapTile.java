@@ -102,17 +102,32 @@ public class MapTile extends DataType {
 		} else if(fieldName.equalsIgnoreCase("terrainObjects")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("terrainObject")) {
-			this.addTerrainObject(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addTerrainObject(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("building")) {
 			this.setBuilding(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("units")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("unit")) {
-			this.addUnit(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addUnit(Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("miscObjects")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("miscObject")) {
-			this.addMiscObject(Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addMiscObject(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		}
 	}
 

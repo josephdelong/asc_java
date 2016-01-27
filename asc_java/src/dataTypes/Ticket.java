@@ -98,24 +98,21 @@ public class Ticket extends DataType {
 			try {
 				this.setSubmitDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("reviewDate")) {
 			SimpleDateFormat sdf = new SimpleDateFormat();
 			try {
 				this.setReviewDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("resolveDate")) {
 			SimpleDateFormat sdf = new SimpleDateFormat();
 			try {
 				this.setResolveDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("reviewerName")) {
 			this.setReviewerName(value);

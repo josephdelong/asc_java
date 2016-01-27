@@ -6,6 +6,7 @@
 		<combatType>Melee</combatType>
 		<offense>1</offense>
 		<defense>2</defense>
+		<baseHealth>10</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>1</stoneCost>
@@ -26,6 +27,7 @@
 		<combatType>Ranged</combatType>
 		<offense>2</offense>
 		<defense>1</defense>
+		<baseHealth>10</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>1</stoneCost>
@@ -46,6 +48,7 @@
 		<combatType>Melee</combatType>
 		<offense>2</offense>
 		<defense>3</defense>
+		<baseHealth>15</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -70,6 +73,7 @@
 		<combatType>Ranged</combatType>
 		<offense>3</offense>
 		<defense>2</defense>
+		<baseHealth>15</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -93,6 +97,7 @@
 		<combatType>Ranged</combatType>
 		<offense>4</offense>
 		<defense>3</defense>
+		<baseHealth>20</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>2</woodCost>
 		<stoneCost>0</stoneCost>
@@ -116,6 +121,7 @@
 		<combatType>Melee</combatType>
 		<offense>3</offense>
 		<defense>4</defense>
+		<baseHealth>20</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -141,6 +147,7 @@
 		<combatType>Melee</combatType>
 		<offense>4</offense>
 		<defense>5</defense>
+		<baseHealth>25</baseHealth>
 		<foodCost>2</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -167,6 +174,7 @@
 		<combatType>Ranged</combatType>
 		<offense>5</offense>
 		<defense>4</defense>
+		<baseHealth>25</baseHealth>
 		<foodCost>2</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -193,6 +201,7 @@
 		<combatType>Melee</combatType>
 		<offense>6</offense>
 		<defense>7</defense>
+		<baseHealth>40</baseHealth>
 		<foodCost>3</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -219,6 +228,7 @@
 		<combatType>Ranged</combatType>
 		<offense>7</offense>
 		<defense>6</defense>
+		<baseHealth>40</baseHealth>
 		<foodCost>3</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -246,6 +256,7 @@
 		<combatType>Melee</combatType>
 		<offense>6</offense>
 		<defense>4</defense>
+		<baseHealth>30</baseHealth>
 		<foodCost>2</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -271,6 +282,7 @@
 		<combatType>Ranged</combatType>
 		<offense>8</offense>
 		<defense>2</defense>
+		<baseHealth>30</baseHealth>
 		<foodCost>0</foodCost>
 		<woodCost>3</woodCost>
 		<stoneCost>1</stoneCost>
@@ -295,6 +307,7 @@
 		<combatType>Ranged</combatType>
 		<offense>6</offense>
 		<defense>5</defense>
+		<baseHealth>30</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>2</woodCost>
 		<stoneCost>0</stoneCost>
@@ -322,6 +335,7 @@
 		<combatType>Melee</combatType>
 		<offense>5</offense>
 		<defense>6</defense>
+		<baseHealth>30</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -348,6 +362,7 @@
 		<combatType>Melee</combatType>
 		<offense>8</offense>
 		<defense>6</defense>
+		<baseHealth>35</baseHealth>
 		<foodCost>3</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -373,6 +388,7 @@
 		<combatType>Melee</combatType>
 		<offense>6</offense>
 		<defense>8</defense>
+		<baseHealth>35</baseHealth>
 		<foodCost>3</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>
@@ -399,6 +415,7 @@
 		<combatType>Special</combatType>
 		<offense>0</offense>
 		<defense>0</defense>
+		<baseHealth>0</baseHealth>
 		<foodCost>0</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -420,6 +437,7 @@
 		<combatType>Special</combatType>
 		<offense>0</offense>
 		<defense>0</defense>
+		<baseHealth>0</baseHealth>
 		<foodCost>0</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -441,6 +459,7 @@
 		<combatType>Melee</combatType>
 		<offense>10</offense>
 		<defense>8</defense>
+		<baseHealth>45</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>0</woodCost>
 		<stoneCost>0</stoneCost>
@@ -468,6 +487,7 @@
 		<combatType>Melee</combatType>
 		<offense>8</offense>
 		<defense>10</defense>
+		<baseHealth>45</baseHealth>
 		<foodCost>1</foodCost>
 		<woodCost>1</woodCost>
 		<stoneCost>0</stoneCost>

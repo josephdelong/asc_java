@@ -15,6 +15,11 @@ import visual.level.Level;
  */
 public class PlayerMP extends Player {
 
+	/**
+	 * Default Serial Version ID
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	public InetAddress ipAddress;
 	public int port;
 	

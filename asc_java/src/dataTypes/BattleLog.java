@@ -27,12 +27,14 @@ public class BattleLog extends DataType {
 	private int id;
 	private int battleId;
 	private int turnNumber;
-	private int playerId;
-	private int turnAction;
+	private int unitId;
+	private int turnAction; // 0 = NO ACTION, 1 = MOVE, 2 = ATTACK/HEAL, 3 = DEFEND
 	private Integer locationStart;
 	private Integer locationEnd;
 	private Integer target;
 	private Integer targetLocation;
+	private int damageGiven;
+	private int damageTaken;
 	
 	/**
 	 * Default Constructor which initializes all fields to unusable defaults.
@@ -41,24 +43,26 @@ public class BattleLog extends DataType {
 		this.setId(0);
 		this.setBattleId(0);
 		this.setTurnNumber(0);
-		this.setPlayerId(0);
+		this.setUnitId(0);
 		this.setTurnAction(0);
 		this.setLocationStart(null);
 		this.setLocationEnd(null);
 		this.setTarget(null);
 		this.setTargetLocation(null);
+		this.setDamageGiven(0);
+		this.setDamageTaken(0);
 	}
 	
 	/**
 	 * Constructor which sets up this BattleLog with the specified Battle, Player, and turn number.
 	 * @param battleId
-	 * @param playerId
+	 * @param unitId
 	 * @param turnNumber
 	 */
-	public BattleLog(int battleId, int playerId, int turnNumber) {
+	public BattleLog(int battleId, int unitId, int turnNumber) {
 		new BattleLog();
 		this.setBattleId(battleId);
-		this.setPlayerId(playerId);
+		this.setUnitId(unitId);
 		this.setTurnNumber(turnNumber);
 	}
 	
@@ -76,8 +80,8 @@ public class BattleLog extends DataType {
 			this.setBattleId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("turnNumber")) {
 			this.setTurnNumber(Integer.parseInt(value));
-		} else if(fieldName.equalsIgnoreCase("playerId")) {
-			this.setPlayerId(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("unitId")) {
+			this.setUnitId(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("turnAction")) {
 			this.setTurnAction(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("locationStart")) {
@@ -88,6 +92,10 @@ public class BattleLog extends DataType {
 			this.setTarget(Integer.parseInt(value));
 		} else if(fieldName.equalsIgnoreCase("targetLocation")) {
 			this.setTargetLocation(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("damageGiven")) {
+			this.setDamageGiven(Integer.parseInt(value));
+		} else if(fieldName.equalsIgnoreCase("damageTaken")) {
+			this.setDamageTaken(Integer.parseInt(value));
 		}
 	}
 
@@ -129,7 +137,7 @@ public class BattleLog extends DataType {
 		fields.add("id");
 		fields.add("battleId");
 		fields.add("turnNumber");
-		fields.add("playerId");
+		fields.add("unitId");
 		fields.add("turnAction");
 		fields.add("locationStart");
 		fields.add("locationEnd");
@@ -161,10 +169,10 @@ public class BattleLog extends DataType {
 	}
 
 	/**
-	 * @return the playerId
+	 * @return the unitId
 	 */
-	public int getPlayerId() {
-		return playerId;
+	public int getUnitId() {
+		return unitId;
 	}
 
 	/**
@@ -203,6 +211,20 @@ public class BattleLog extends DataType {
 	}
 
 	/**
+	 * @return the damageGiven
+	 */
+	public int getDamageGiven() {
+		return damageGiven;
+	}
+
+	/**
+	 * @return the damageTaken
+	 */
+	public int getDamageTaken() {
+		return damageTaken;
+	}
+
+	/**
 	 * @param id the id to set
 	 */
 	public void setId(int id) {
@@ -224,10 +246,10 @@ public class BattleLog extends DataType {
 	}
 
 	/**
-	 * @param playerId the playerId to set
+	 * @param unitId the unitId to set
 	 */
-	public void setPlayerId(int playerId) {
-		this.playerId = playerId;
+	public void setUnitId(int unitId) {
+		this.unitId = unitId;
 	}
 
 	/**
@@ -265,6 +287,80 @@ public class BattleLog extends DataType {
 		this.targetLocation = targetLocation;
 	}
 
+	/**
+	 * @param damageGiven the damageGiven to set
+	 */
+	public void setDamageGiven(int damageGiven) {
+		this.damageGiven = damageGiven;
+	}
+
+	/**
+	 * @param damageTaken the damageTaken to set
+	 */
+	public void setDamageTaken(int damageTaken) {
+		this.damageTaken = damageTaken;
+	}
+	
+	/**
+	 * Method which returns the contents of this BattleLog in story-like, human-readable format.
+	 * @return
+	 * @throws DataSourceParseException 
+	 */
+	public String printTurn() throws DataSourceParseException {
+		String r = "";
+		Unit u = Unit.getInstance(this.getUnitId());
+		UnitType ut = UnitType.getInstance(u.getUnitId());
+		
+		r = "Unit #" + u.getId() + "(" + ut.getName() + "): " + u.getName() + " ";
+		// ACTION TAKEN
+		switch (this.getTurnAction()) {
+		case 0:
+			r += "did NOTHING this turn.";
+			break;
+		case 1:
+			r += "MOVED from [TILE INDEX " + this.getLocationStart() + "] to [TILE INDEX " + this.getLocationEnd() + "].";
+			break;
+		case 2:
+			if(this.getDamageGiven() == 0) { // no DAMAGE given
+				r += "DEALT NO DAMAGE to ";
+			} else if(this.getDamageGiven() > 0) { // gave positive DAMAGE
+				r += "DEALT " + this.getDamageGiven() + " points of DAMAGE to ";
+			} else { // gave negative DAMAGE
+				r += "HEALED " + Integer.divideUnsigned(this.getDamageGiven(), 1) + " points of DAMAGE on ";
+			}
+			break;
+		case 3:
+			r += "FORTIFIED their location: [TILE INDEX " + this.getLocationStart() + "].";
+			break;
+		default:
+			break;
+		}
+		//ACTION TARGET
+		if(this.getTarget() > 0) { // ACTION had a TARGET
+			Unit u_target = Unit.getInstance(target);
+			UnitType ut_target = UnitType.getInstance(u_target.getUnitId());
+			r += "Unit #" + u_target.getId() + "(" + ut_target.getName() + "): " + u_target.getName();
+		}
+		//TARGET LOCATION
+		if(this.getTarget() > 0 && this.getTargetLocation() > 0) { // TARGET had a LOCATION
+			r += " at location [TILE INDEX " + this.getTargetLocation() + "].";
+		}
+		else if (this.getTarget() > 0) {
+			r += ".";
+		}
+		//ACTION RESULT
+		if(this.getDamageTaken() > 0) {
+			r += "\nUnit #" + u.getId() + "(" + ut.getName() + "): " + u.getName() + " took " + this.getDamageTaken() + " points of DAMAGE.";
+		} else if(this.getDamageTaken() < 0) {
+			r += "\nUnit #" + u.getId() + "(" + ut.getName() + "): " + u.getName() + " was HEALED " + this.getDamageTaken() + " points of DAMAGE.";
+		}
+		//STATUS UPDATE
+		if(u.getDefense() + u.getCurrentHealth() - this.getDamageTaken() <= 0) { // if we've taken enough DAMAGE to be destroyed
+			r += "\nUnit #" + u.getId() + "(" + ut.getName() + "): " + u.getName() + " DIED.";
+		}
+		return r;
+	}
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -283,7 +379,7 @@ public class BattleLog extends DataType {
 		builder.append(turnNumber);
 		builder.append("\n\t");
 		builder.append("playerId=");
-		builder.append(playerId);
+		builder.append(unitId);
 		builder.append("\n\t");
 		builder.append("turnAction=");
 		builder.append(turnAction);

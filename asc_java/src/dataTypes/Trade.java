@@ -105,42 +105,59 @@ public class Trade extends DataType {
 		} else if(fieldName.equalsIgnoreCase("player1Offer")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("player1OfferValue")) {
-			this.setPlayerOfferValue(1, Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.setPlayerOfferValue(1, Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("player2Offer")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("player2OfferValue")) {
-			this.setPlayerOfferValue(2, Integer.parseInt(attribute), Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.setPlayerOfferValue(2, Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("player1Comments")) {
 			// do nothing;
 		} else if(fieldName.equalsIgnoreCase("player1Comment")) {
-			this.addPlayerComment(1, value);
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addPlayerComment(1, s);
+			}
 		} else if(fieldName.equalsIgnoreCase("player2Comments")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("player2Comment")) {
-			this.addPlayerComment(2, value);
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addPlayerComment(2, s);
+			}
 		} else if(fieldName.equalsIgnoreCase("offerDate")) {
 			SimpleDateFormat sdf = new SimpleDateFormat();
 			try {
 				this.setOfferDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("modifiedDate")) {
 			SimpleDateFormat sdf = new SimpleDateFormat();
 			try {
 				this.setModifiedDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("acceptedDate")) {
 			SimpleDateFormat sdf = new SimpleDateFormat();
 			try {
 				this.setAcceptedDate(sdf.parse(value));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new DataSourceParseException("Couldn't parse " + value + " into a valid SimpleDateFormat.", e);
 			}
 		} else if(fieldName.equalsIgnoreCase("status")) {
 			this.setStatus(value);

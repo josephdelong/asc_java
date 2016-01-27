@@ -63,7 +63,12 @@ public class Map extends DataType {
 		} else if(fieldName.equalsIgnoreCase("mapTiles")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("mapTile")) {
-			this.addMapTile(Integer.parseInt(value));
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addMapTile(Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("regionId")) {
 			this.setRegionId(Integer.parseInt(value));
 		}
