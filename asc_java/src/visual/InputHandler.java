@@ -51,64 +51,67 @@ public class InputHandler implements KeyListener {
 	public Key right = new Key();
 	public Key escape = new Key();
 	public Key enter = new Key();
+	public Key shift = new Key();
 
 	public void keyPressed(KeyEvent e) {
 		
-		if (pressedEscape) { // if IN MENU
-			switch (e.getKeyCode()) {
-			case KeyEvent.VK_ESCAPE:
-				pressedEscape = !pressedEscape; // toggle the key
-				// toggle OFF all other keys
-				pressedEnter = false;
-				break;
-			case KeyEvent.VK_ENTER:
-				pressedEnter = !pressedEnter; // toggle the key
-				enter.toggle(pressedEnter);
-				break;
-			case KeyEvent.VK_UP:
-				// toggle the key ON and OFF only once
-				up.toggle(true);
-				up.toggle(false);
-				break;
-			case KeyEvent.VK_DOWN:
-				// toggle the key ON and OFF only once
-				down.toggle(true);
-				down.toggle(false);
-				break;
-			case KeyEvent.VK_LEFT:
-				// toggle the key ON and OFF only once
-				left.toggle(true);
-				left.toggle(false);
-				break;
-			case KeyEvent.VK_RIGHT:
-				// toggle the key ON and OFF only once
-				right.toggle(true);
-				right.toggle(false);
-				break;
-			case KeyEvent.VK_W:
-				// toggle the key ON and OFF only once
-				up.toggle(true);
-				up.toggle(false);
-				break;
-			case KeyEvent.VK_S:
-				// toggle the key ON and OFF only once
-				down.toggle(true);
-				down.toggle(false);
-				break;
-			case KeyEvent.VK_A:
-				// toggle the key ON and OFF only once
-				left.toggle(true);
-				left.toggle(false);
-				break;
-			case KeyEvent.VK_D:
-				// toggle the key ON and OFF only once
-				right.toggle(true);
-				right.toggle(false);
-				break;
-			}
-		} else {
+//		if (pressedEscape) { // if IN MENU
+//			switch (e.getKeyCode()) {
+//			case KeyEvent.VK_ESCAPE:
+//				pressedEscape = !pressedEscape; // toggle the key
+//				// toggle OFF all other keys
+//				pressedEnter = false;
+//				break;
+//			case KeyEvent.VK_ENTER:
+//				pressedEnter = !pressedEnter; // toggle the key
+//				enter.toggle(pressedEnter);
+//				break;
+//			case KeyEvent.VK_UP:
+//				// toggle the key ON and OFF only once
+//				up.toggle(true);
+//				up.toggle(false);
+//				break;
+//			case KeyEvent.VK_DOWN:
+//				// toggle the key ON and OFF only once
+//				down.toggle(true);
+//				down.toggle(false);
+//				break;
+//			case KeyEvent.VK_LEFT:
+//				// toggle the key ON and OFF only once
+//				left.toggle(true);
+//				left.toggle(false);
+//				break;
+//			case KeyEvent.VK_RIGHT:
+//				// toggle the key ON and OFF only once
+//				right.toggle(true);
+//				right.toggle(false);
+//				break;
+//			case KeyEvent.VK_W:
+//				// toggle the key ON and OFF only once
+//				up.toggle(true);
+//				up.toggle(false);
+//				break;
+//			case KeyEvent.VK_S:
+//				// toggle the key ON and OFF only once
+//				down.toggle(true);
+//				down.toggle(false);
+//				break;
+//			case KeyEvent.VK_A:
+//				// toggle the key ON and OFF only once
+//				left.toggle(true);
+//				left.toggle(false);
+//				break;
+//			case KeyEvent.VK_D:
+//				// toggle the key ON and OFF only once
+//				right.toggle(true);
+//				right.toggle(false);
+//				break;
+//			case KeyEvent.VK_SHIFT:
+//				shift.
+//			}
+//		} else {
 			toggleKey(e.getKeyCode(), true);
-		}
+//		}
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -138,6 +141,9 @@ public class InputHandler implements KeyListener {
 		}
 		if (keyCode == KeyEvent.VK_ENTER) {
 			enter.toggle(isPressed);
+		}
+		if(keyCode == KeyEvent.VK_SHIFT) {
+			shift.toggle(isPressed);
 		}
 	}
 

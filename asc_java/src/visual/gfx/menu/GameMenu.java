@@ -168,7 +168,7 @@ public class GameMenu extends JComponent {
 	}
 	
 	public void render(Screen screen) {
-		screen.render(screen.width / 4 + screen.xOffset, screen.height / 8 + screen.yOffset, 0, Colors.get(000, -1, -1, -1), 0x00, Integer.max(screen.height / 8 * 6 / 8, screen.width / 8 * 6 / 8));
+		screen.render(Screen.TILE_SIZE_FONT_MEDIUM, screen.width / 4 + screen.xOffset, screen.height / 8 + screen.yOffset, 0, Colors.get(000, -1, -1, -1), 0x00, Integer.max(screen.height / 8 * 6 / 8, screen.width / 8 * 6 / 8));
 		int index = 0;
 		for(GameMenuItem i: menuItems) {
 			i.render(screen, index, 1);

@@ -7,6 +7,7 @@ package dataTypes;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -39,7 +40,7 @@ public class Battle extends DataType {
 	private double defendingStrength;
 	private ArrayList<Resource> attackingPlayerResources;
 	private ArrayList<Resource> defendingPlayerResources;
-	//private ArrayList<Resource> wager?;
+	private ArrayList<Resource> wager;
 	private ArrayList<BattleLog> turns;
 	private String result;
 	
@@ -47,11 +48,45 @@ public class Battle extends DataType {
 	 * Default Constructor which initializes all fields to unusable defaults.
 	 */
 	public Battle() {
-		
+		this.id = 0;
+		this.startDate = Date.from(Instant.now());
+		this.endDate = Date.from(Instant.now());
+		this.attackingPlayer = new Player();
+		this.defendingPlayer = new Player();
+		this.attackingUnits = new ArrayList<Unit>();
+		this.defendingUnits = new ArrayList<Unit>();
+		this.attackingStrength = 0D;
+		this.defendingStrength = 0D;
+		this.attackingPlayerResources = new ArrayList<Resource>();
+		this.defendingPlayerResources = new ArrayList<Resource>();
+		this.wager = new ArrayList<Resource>();
+		this.turns = new ArrayList<BattleLog>();
+		this.result = "";
 	}
 	
 	public Battle(int player1, int player2) {
-		
+		this.id = 0;
+		this.startDate = Date.from(Instant.now());
+		this.endDate = Date.from(Instant.now());
+		try {
+			this.attackingPlayer = Player.getInstance((Integer)player1);
+		} catch (DataSourceParseException e) {
+			e.printStackTrace();
+		}
+		try {
+			this.defendingPlayer = Player.getInstance((Integer)player2);
+		} catch (DataSourceParseException e) {
+			e.printStackTrace();
+		}
+		this.attackingUnits = new ArrayList<Unit>();
+		this.defendingUnits = new ArrayList<Unit>();
+		this.attackingStrength = 0D;
+		this.defendingStrength = 0D;
+		this.attackingPlayerResources = new ArrayList<Resource>();
+		this.defendingPlayerResources = new ArrayList<Resource>();
+		this.wager = new ArrayList<Resource>();
+		this.turns = new ArrayList<BattleLog>();
+		this.result = "";
 	}
 	
 	/**
@@ -122,6 +157,15 @@ public class Battle extends DataType {
 			} else {
 				this.addDefendingPlayerResource(Integer.parseInt(attribute), Integer.parseInt(s));
 			}
+		} else if(fieldName.equalsIgnoreCase("wager")) {
+			// do nothing
+		} else if(fieldName.equalsIgnoreCase("wagerAmount")) {
+			String s = value.trim();
+			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
+				// do nothing
+			} else {
+				this.addWagerAmount(Integer.parseInt(attribute), Integer.parseInt(s));
+			}
 		} else if(fieldName.equalsIgnoreCase("turns")) {
 			// do nothing
 		} else if(fieldName.equalsIgnoreCase("turn")) {
@@ -129,7 +173,7 @@ public class Battle extends DataType {
 			if(s == null || s.equals(null) || s.isEmpty() || s.equalsIgnoreCase("")) {
 				// do nothing
 			} else {
-				this.addTurn(Integer.parseInt(attribute), Integer.parseInt(s));
+				this.addTurn(Integer.parseInt(s));
 			}
 		} else if(fieldName.equalsIgnoreCase("result")) {
 			this.setResult(value);
@@ -182,6 +226,7 @@ public class Battle extends DataType {
 		fields.add("defendingStrength");
 		fields.add("attackingPlayerResources");
 		fields.add("defendingPlayerResources");
+		fields.add("wager");
 		fields.add("turns");
 		fields.add("result");
 		return fields;
@@ -268,7 +313,16 @@ public class Battle extends DataType {
 				r += "]";
 				break;
 			case "wager":
-				//r = this.getWager();
+				r = "[";
+				it_r = this.getWager().iterator();
+				while(it_r.hasNext()) {
+					Resource temp_r = it_r.next();
+					r += temp_r.getName() + ": " + temp_r.getAmount();
+					if(it_r.hasNext()) {
+						r += ", ";
+					}
+				}
+				r += "]";
 				break;
 			case "turns":
 				r = "[";
@@ -342,7 +396,7 @@ public class Battle extends DataType {
 	}
 
 	/**
-	 * @return the attackingStrngth
+	 * @return the attackingStrength
 	 */
 	public double getAttackingStrength() {
 		return attackingStrength;
@@ -367,6 +421,13 @@ public class Battle extends DataType {
 	 */
 	public ArrayList<Resource> getDefendingPlayerResources() {
 		return defendingPlayerResources;
+	}
+
+	/**
+	 * @return the wager
+	 */
+	public ArrayList<Resource> getWager() {
+		return wager;
 	}
 
 	/**
@@ -461,6 +522,13 @@ public class Battle extends DataType {
 	}
 
 	/**
+	 * @param wager the wager to set
+	 */
+	public void setWager(ArrayList<Resource> wager) {
+		this.wager = wager;
+	}
+
+	/**
 	 * @param turns the turns to set
 	 */
 	public void setTurns(ArrayList<BattleLog> turns) {
@@ -551,18 +619,75 @@ public class Battle extends DataType {
 	}
 
 	/**
+	 * Adds the specified Wager AMount to this Battle's Wager Resource pile.
+	 * @param resourceType
+	 * @param amount
+	 * @throws DataSourceParseException 
+	 */
+	private void addWagerAmount(int resourceType, int amount) throws DataSourceParseException {
+		ArrayList<Resource> temp = this.getWager();
+		if(temp == null || temp.equals(null) || temp.isEmpty() || temp.size() == 0) {
+			temp = new ArrayList<Resource>();
+			for(int i = 0; i < 8; i++) {
+				temp.add(new Resource(i, 0));
+			}
+		}
+		Resource r = temp.get(resourceType);
+		r.setAmount(r.getAmount() + amount);
+		temp.set(resourceType, r);
+		this.setWager(temp);
+	}
+	
+	/**
 	 * Adds an instance of BattleLog to this Battle's BattleLog ArrayList.
-	 * @param player
+	 *   The BattleLog's data gets looked up by a getInstance() call.
+	 * @param turnId
+	 * @throws DataSourceParseException
+	 */
+	private void addTurn(int turnId) throws DataSourceParseException {
+		ArrayList<BattleLog> turns = this.getTurns();
+		if(turns == null || turns.equals(null) || turns.isEmpty() || turns.size() == 0) {
+			turns = new ArrayList<BattleLog>();
+		}
+		BattleLog bl = BattleLog.getInstance(turnId);
+		turns.add(bl);
+		this.setTurns(turns);
+	}
+
+	/**
+	 * Adds a new instance of BattleLog to this Battle's BattleLog ArrayList.
+	 *   Sets up the BattleLog's initial values, to be modified by later method calls.
+	 * @param unitId
 	 * @param turnNumber
 	 */
-	private void addTurn(int player, int turnNumber) {
+	private void addTurn(int unitId, int turnNumber) {
 		ArrayList<BattleLog> temp = this.getTurns();
 		if(turns == null || turns.equals(null) || turns.isEmpty() || turns.size() == 0) {
 			turns = new ArrayList<BattleLog>();
 		}
-		BattleLog bl = new BattleLog(this.getId(), player, turnNumber);
+		BattleLog bl = new BattleLog(temp.size() + 1, this.getId(), unitId, turnNumber, 0, 0, 0, 0, 0, 0, 0);
 		temp.add(bl);
 		this.setTurns(temp);
+	}
+	
+	public void initiate() {
+		// start the Battle: set up turn-based combat, etc.
+	}
+	
+	public void monitor() {
+		// monitor current status of Battle
+	}
+	
+	public void withdraw() {
+		// withdraw from the Battle (concede defeat)
+	}
+	
+	public void deploy() {
+		// deploy Army onto Battlefield
+	}
+	
+	public void setFormation() {
+		// set up / manage Batallion Formations 
 	}
 
 	/* (non-Javadoc)
@@ -605,6 +730,9 @@ public class Battle extends DataType {
 		builder.append("\n\t");
 		builder.append("defendingPlayerResources=");
 		builder.append(defendingPlayerResources);
+		builder.append("\n\t");
+		builder.append("wager=");
+		builder.append(wager);
 		builder.append("\n\t");
 		builder.append("turns=");
 		builder.append(turns);

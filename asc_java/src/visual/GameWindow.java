@@ -29,8 +29,8 @@ public class GameWindow extends Canvas implements Runnable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final int WIDTH = 160;
-	public static final int HEIGHT = WIDTH / 12 * 9;
+	public static final int WIDTH = 320;
+	public static final int HEIGHT = WIDTH / 16 * 9;
 	public static final int SCALE = 3;
 	public static final String NAME = "2D Game Demo";
 	public static final Dimension DIMENSIONS = new Dimension(WIDTH * SCALE, HEIGHT * SCALE);
@@ -223,7 +223,7 @@ public class GameWindow extends Canvas implements Runnable {
 		switch (level) {
 		default:
 		case INFO:
-			if(debug) {
+			if(this.debug) {
 				System.out.println("[" + NAME + "] " + message);
 			}
 			break;

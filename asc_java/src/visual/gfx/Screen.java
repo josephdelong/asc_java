@@ -16,6 +16,11 @@ public class Screen {
 	private static final byte BIT_MIRROR_X = 0x01;
 	private static final byte BIT_MIRROR_Y = 0x02;
 	
+	public static final int TILE_SIZE_TERRAIN = 8;
+	public static final int TILE_SIZE_PLAYER = 8;
+	public static final int TILE_SIZE_FONT_MEDIUM = 8;
+	public static final int TILE_SIZE_FONT_SMALL = 4;
+	
 	public int[] pixels; // pixel data
 
 	public int xOffset = 0;
@@ -43,7 +48,7 @@ public class Screen {
 	 * @param color
 	 * @param mirrorDir
 	 */
-	public void render(int xPos, int yPos, int tile, int color, int mirrorDir, int scale) {
+	public void render(int tileSize, int xPos, int yPos, int tile, int color, int mirrorDir, int scale) {
 		xPos -= xOffset; // keep in bounds
 		yPos -= yOffset; // keep in bounds
 		
@@ -56,21 +61,21 @@ public class Screen {
 		int yTile = tile / 32; // get y coordinate in pixel sheet
 		int tileOffset = (xTile << 3) + (yTile << 3) * sheet.width; // get offset
 		
-		for (int y = 0; y < 8; y++) { // each tile is 8 pixels high
+		for (int y = 0; y < tileSize; y++) { // each tile is 8 pixels high
 			int ySheet = y;
 			if(mirrorY) {
-				ySheet = 7 - y; // invert Y drawing
+				ySheet = tileSize - 1 - y; // invert Y drawing
 			}
 			
-			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap << 3) / 2); // << 3 because tile size is 8x8
+			int yPixel = y + yPos + (y * scaleMap) - ((scaleMap * tileSize) / 2); // << 3 because tile size is 8x8
 			
-			for (int x = 0; x < 8; x++) { // each tile is 8 pixels wide
+			for (int x = 0; x < tileSize; x++) { // each tile is 8 pixels wide
 				int xSheet = x;
 				if(mirrorX) {
-					xSheet = 7 - x; // invert X drawing
+					xSheet = tileSize - 1 - x; // invert X drawing
 				}
 				
-				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap << 3) / 2);
+				int xPixel = x + xPos + (x * scaleMap) - ((scaleMap  * tileSize) / 2);
 				
 				int col = (color >> (sheet.pixels[xSheet + ySheet * sheet.width + tileOffset] * 8)) & 255; // give a 1, 2, 3, or 4, multiplied by 255
 				if(col < 255) { // if col is NOT transparent.. this is ignored currently

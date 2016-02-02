@@ -72,10 +72,10 @@ public enum GameMenuItem {
 		int yOffset = screen.yOffset + (screen.height / 4) + (menuIndex * 8 * scale); // each char is 8 pixels high (before scale modification)
 		
 		if(this.isSelected()) {
-			Font.render(this.displayName, screen, xOffset, yOffset, Colors.get(-1, -1, -1, 555), scale);
+			Font.render(this.displayName, screen, "medium", xOffset, yOffset, Colors.get(-1, -1, -1, 555), scale);
 //			screen.render(xOffset, yOffset, 0, Colors.get(000, -1, -1, 555), 0x00, scale);
 		} else {
-			Font.render(this.displayName, screen, xOffset, yOffset, Colors.get(-1, -1, -1, 444), scale);
+			Font.render(this.displayName, screen, "medium", xOffset, yOffset, Colors.get(-1, -1, -1, 444), scale);
 //			screen.render(xOffset, yOffset, 0, Colors.get(000, -1, -1, 333), 0x00, scale);
 		}
 	}

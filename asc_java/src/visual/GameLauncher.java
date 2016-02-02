@@ -14,10 +14,10 @@ import javax.swing.JFrame;
  *
  */
 @SuppressWarnings("serial")
-public class GameLauncher extends Applet{
+public class GameLauncher extends Applet {
 	
 	private static GameWindow gameWindow = new GameWindow();
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	
 	@Override
 	public void init() {
@@ -54,7 +54,7 @@ public class GameLauncher extends Applet{
 		gameWindow.frame.pack();
 		
 		gameWindow.frame.setResizable(false);
-		gameWindow.frame.setLocationRelativeTo(null);
+		gameWindow.frame.setLocationRelativeTo(null); // start in middle of the screen
 		gameWindow.frame.setVisible(true);
 		
 		gameWindow.windowHandler = new WindowHandler(gameWindow);

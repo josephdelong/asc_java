@@ -14,7 +14,7 @@ import visual.level.Level;
  *   Tutorial by vanZeben taken from https://www.youtube.com/watch?v=dQP7mFhqgg
  *   
  *   Walking Animation tutorial taken from https://www.youtube.com/watch?v=dnvNcjVNqqs
- *   TODO: Fix up animation / rendering for single-width sprite
+ *   TODO: Fix up animation / rendering for single-width sprite?
  *   
  *   Collision Box tutorial taken from https://www.youtube.com/watch?v=NtXDuJHLxRs
  *   
@@ -34,6 +34,7 @@ public class Player extends Mob {
 	private int color = Colors.get(-1, 212, 225, 445); // BLACK BG is transparent
 	private int scale = 1;
 	protected boolean isSwimming = false;
+	protected boolean isSprinting = false;
 	private int tickCount;
 	
 	private String userName;
@@ -49,17 +50,23 @@ public class Player extends Mob {
 		int ya = 0;
 		
 		if(input != null) {
+			isSprinting = false;
+			int speed = 1;
+			if(input.shift.isPressed()) {
+				isSprinting = true;
+				speed = 2;
+			}
 			if(input.up.isPressed()) {
-				ya--;
+				ya -= speed;
 			}
 			if(input.down.isPressed()) {
-				ya++;
+				ya += speed;
 			}
 			if(input.left.isPressed()) {
-				xa--;
+				xa -= speed;
 			}
 			if(input.right.isPressed()) {
-				xa++;
+				xa += speed;
 			}
 		}
 		
@@ -84,6 +91,139 @@ public class Player extends Mob {
 	}
 
 	public void render(Screen screen) { // pixel sheet has character drawn at bottom left of screen (index #28)
+		/*
+		 * TODO: Fix up references to isSprinting:
+		 *   if(isSprinting) { // PUMPED up and ready for ACTION
+		 *   	if(!isMoving) { // standing still
+		 *   		if(movingDir == 0) { // facing BACK
+		 *   			if(tickCount % 30 < 15) { // cycle animation frames
+		 *   				xTile += 0; // BACK PUMPED animation FRAME 1
+		 *   			} else {
+		 *   				xTile += 0; // BACK PUMPED animation FRAME 2
+		 *   			}
+		 *   		} else if(movingDir == 1) { // facing FRONT
+		 *   			if(tickCount % 30 < 15) { // cycle animation frames
+		 *   				xTile += 16; // FRONT PUMPED animation FRAME 1
+		 *   			} else {
+		 *   				xTile += 18; // FRONT PUMPED animation FRAME 2
+		 *   			}
+		 *   		} else if(movingDir > 1) { // facing LEFT or RIGHT
+		 *   			if(tickCount % 30 < 15) { // cycle animation frames
+		 *   				xTile += 0; // SIDE PUMPED FRAME 1
+		 *   			} else {
+		 *   				xTile += 0; // SIDE PUMPED FRAME 2
+		 *   			}
+		 *   		}
+		 *   	} else { // moving
+		 *   		if(movingDir == 0) { //facing BACK
+		 *   			if(tickCount) { // cycle animation frames
+		 *   				if(tickCount % 60 < 10) { //cycle animation frames
+		 *   				xTile += 0; // BACK RUNNING frame 1
+		 *   			} else if(10 <= tickCount && tickCount <= 20) {
+		 *   				xTile += 0; // BACK RUNNING frame 2
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else if(20 <= tickCount && tickCount <= 30) {
+		 *   				xTile += 0; // BACK RUNNING frame 3
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else if(30 <= tickCount && tickCount <= 40) {
+		 *   				xTile += 0; // BACK RUNNING frame 4
+		 *   			} else if(40 <= tickCount && tickCount <= 50) {
+		 *   				xTile += 0; // BACK RUNNING frame 5
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else {
+		 *   				xTile += 0; // BACK RUNNING frame 6
+		 *   			}
+		 *   		} else if(movingDir == 1) { // facing FRONT
+		 *   			if(tickCount % 60 < 10) { //cycle animation frames
+		 *   				xTile += 8 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // FRONT RUNNING frame 1
+		 *   			} else if(10 <= tickCount && tickCount <= 20) {
+		 *   				xTile += 10 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // FRONT RUNNING frame 2
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else if(20 <= tickCount && tickCount <= 30) {
+		 *   				xTile += 12 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // FRONT RUNNING frame 3
+		 *   			} else if(30 <= tickCount && tickCount <= 40) {
+		 *   				xTile += 14 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // FRONT RUNNING frame 4
+		 *   			} else if(40 <= tickCount && tickCount <= 50) {
+		 *   				xTile += 12 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // FRONT RUNNING frame 5
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else {
+		 *   				xTile += 10 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // FRONT RUNNING frame 6
+		 *   			}
+		 *   		} else if(movingDir > 1) { // facing LEFT or RIGHT
+		 *   			if(tickCount) { // cycle animation frames
+		 *   				if(tickCount % 60 < 10) { //cycle animation frames
+		 *   				xTile += 0; // SIDE RUNNING frame 1
+		 *   			} else if(10 <= tickCount && tickCount <= 20) {
+		 *   				xTile += 0; // SIDE RUNNING frame 2
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else if(20 <= tickCount && tickCount <= 30) {
+		 *   				xTile += 0; // SIDE RUNNING frame 3
+		 *   			} else if(30 <= tickCount && tickCount <= 40) {
+		 *   				xTile += 0; // SIDE RUNNING frame 4
+		 *   			} else if(40 <= tickCount && tickCount <= 50) {
+		 *   				xTile += 0; // SIDE RUNNING frame 5
+		 *   				// yOffset += 1; // fully off the ground?
+		 *   			} else {
+		 *   				xTile += 0; // SIDE RUNNING frame 6
+		 *   			}
+		 *   		}
+		 *   	}
+		 *   } else { // not PUMPED
+		 *   	if(!isMoving) { // standing still
+		 *   		if(movingDir == 0) { // facing BACK
+		 *   			if(tickCount % 30 < 15) { // cycle animation frames
+		 *   				xTile += 0; // NORMAL BACK animation FRAME 1
+		 *   			} else {
+		 *   				xTile += 0; // NORMAL BACK animation FRAME 2
+		 *   			}
+		 *   		} else if(movingDir == 1) { // facing FRONT
+		 *   			if(tickCount % 30 < 15) { // cycle animation frames
+		 *   				xTile += 0; // NORMAL FRONT animation FRAME 1
+		 *   			} else {
+		 *   				xTile += 0; // NORMAL FRONT animation FRAME 2
+		 *   			}
+		 *   		} else if(movingDir > 1) { // facing LEFT or RIGHT
+		 *   			if(tickCount % 30 < 15) { // cycle animation frames
+		 *   				xTile += 0; // SIDE NORMAL FRAME 1
+		 *   			} else {
+		 *   				xTile += 0; // SIDE NORMAL FRAME 2
+		 *   			}
+		 *   		}
+		 *   	} else { // moving
+		 *   		if(movingDir == 0) { //facing BACK
+		 *   			if(tickCount % 60 < 15) { //cycle animation frames
+		 *   				xTile += 0; // BACK WALKING frame 1
+		 *   			} else if(15 <= tickCount && tickCount <= 30) {
+		 *   				xTile += 0; // BACK WALKING frame 2
+		 *   			} else if(30 <= tickCount && tickCount <= 45) {
+		 *   				xTile += 0; // BACK WALKING frame 3
+		 *   			} else {
+		 *   				xTile += 0; // BACK WALKING frame 4
+		 *   			}
+		 *   		} else if(movingDir == 1) { // facing FRONT
+		 *   			if(tickCount % 60 < 15) { //cycle animation frames
+		 *   				xTile += 0; // FRONT WALKING frame 1
+		 *   			} else if(15 <= tickCount && tickCount <= 30) {
+		 *   				xTile += 0; // FRONT WALKING frame 2
+		 *   			} else if(30 <= tickCount && tickCount <= 45) {
+		 *   				xTile += 0; // FRONT WALKING frame 3
+		 *   			} else {
+		 *   				xTile += 0; // FRONT WALKING frame 4
+		 *   			}
+		 *   		} else if(movingDir > 1) { // facing LEFT or RIGHT
+		 *   			if(tickCount % 60 < 15) { //cycle animation frames
+		 *   				xTile += 0; // SIDE WALKING frame 1
+		 *   			} else if(15 <= tickCount && tickCount <= 30) {
+		 *   				xTile += 0; // SIDE WALKING frame 2
+		 *   			} else if(30 <= tickCount && tickCount <= 45) {
+		 *   				xTile += 0; // SIDE WALKING frame 3
+		 *   			} else {
+		 *   				xTile += 0; // SIDE WALKING frame 4
+		 *   			}
+		 *   		}
+		 *   	}
+		 *   }
+		 */
 		int xTile = 0;
 		int yTile = 28;
 		
@@ -94,7 +234,23 @@ public class Player extends Mob {
 		if(movingDir == 1) {
 			xTile += 2; // move over to the FRONT FACING tile
 		} else if (movingDir > 1) { // moving LEFT or RIGHT
-			xTile += 4 + ((numSteps >> displayWalkingSpeed) & 1) * 2; // move over to the SIDE FACING TILE & get walking animation tile
+			if(isSprinting) {
+				if(tickCount % 60 < 10) { // cycle animation frames
+					xTile += 8 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // get FIRST frame of running animation
+				} else if(10 <= tickCount % 60 && tickCount % 60 < 20) {
+					xTile += 10 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // get SECOND frame of running animation
+				} else if(20 <= tickCount % 60 && tickCount % 60 < 30) {
+					xTile += 12 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // get THIRD frame of running animation
+				} else if(30 <= tickCount % 60 && tickCount % 60 < 40) {
+					xTile += 14 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // get FOURTH frame of running animation
+				} else if(40 <= tickCount % 60 && tickCount % 60 < 50) {
+					xTile += 12 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // get FIFTH frame of running animation
+				} else /*if(50 <= tickCount % 60 && tickCount % 60 < 60)*/ {
+					xTile += 10 + ((numSteps >> displayWalkingSpeed / 2) & 1) * 2; // get SIXTH frame of running animation{
+				}
+			} else {
+				xTile += 4 + ((numSteps >> displayWalkingSpeed) & 1) * 2; // move over to the SIDE FACING TILE & get walking animation tile
+			}
 			flipTop = (movingDir - 1) % 2;
 			flipBottom = (movingDir - 1) % 2;
 		}
@@ -103,7 +259,7 @@ public class Player extends Mob {
 		int xOffset = x - modifier / 2;
 		int yOffset = y - modifier / 2 - 4; // makes center of Player sprite - 4 the center of location
 		
-		if(isSwimming) {
+		if(isSwimming) { // render the WATER RIPPLE tile
 			int waterColor = 0;
 			yOffset += 4; // 
 			if(tickCount % 60 < 15) { // cycle colors for "moving" water ripple
@@ -117,21 +273,26 @@ public class Player extends Mob {
 				yOffset -= 1;
 				waterColor = Colors.get(-1, 225, 115, -1);
 			}
-			screen.render(xOffset, yOffset + 3, 0 + 27 * 32, waterColor, 0x00, 1);
-			screen.render(xOffset + 8, yOffset + 3, 0 + 27 * 32, waterColor, 0x01, 1);
+			screen.render(Screen.TILE_SIZE_PLAYER, xOffset, yOffset + 3, 0 + 27 * 32, waterColor, 0x00, 1);
+			screen.render(Screen.TILE_SIZE_PLAYER, xOffset + 8, yOffset + 3, 0 + 27 * 32, waterColor, 0x01, 1);
 		}
 		
-		screen.render(xOffset + (modifier * flipTop), yOffset, xTile + yTile * 32, color, flipTop, scale); // tile #1: UL
-		screen.render(xOffset + modifier - (modifier * flipTop), yOffset, (xTile + 1) + yTile * 32, color, flipTop, scale); // TILE #2: UR
+		// UPPER BODY
+		screen.render(Screen.TILE_SIZE_PLAYER, xOffset + (modifier * flipTop), yOffset, xTile + yTile * 32, color, flipTop, scale); // tile #1: UL
+		screen.render(Screen.TILE_SIZE_PLAYER, xOffset + modifier - (modifier * flipTop), yOffset, (xTile + 1) + yTile * 32, color, flipTop, scale); // TILE #2: UR
 		
-		// TODO: change this to show "swimming" animation for upper body also
+		// LOWER BODY TODO: change this to show "swimming" animation for upper body also
 		if(!isSwimming) {
-			screen.render(xOffset + (modifier * flipBottom), yOffset + modifier, xTile + (yTile + 1) * 32, color, flipBottom, scale); // tile #3: LL
-			screen.render(xOffset + modifier - (modifier * flipBottom), yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, color, flipBottom, scale); // TILE #4: LR
+			screen.render(Screen.TILE_SIZE_PLAYER, xOffset + (modifier * flipBottom), yOffset + modifier, xTile + (yTile + 1) * 32, color, flipBottom, scale); // tile #3: LL
+			screen.render(Screen.TILE_SIZE_PLAYER, xOffset + modifier - (modifier * flipBottom), yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, color, flipBottom, scale); // TILE #4: LR
 		}
 		
 		if(userName != null) {
-			Font.render(userName, screen, xOffset - ((userName.length() - 1) / 2 * 8), yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
+			if(userName.length() % 2 == 0) {
+				Font.render(userName, screen, "small", xOffset - ((userName.length() - 1) / 2 * 4), yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
+			} else {
+				Font.render(userName, screen, "small", xOffset - ((userName.length() - 1) / 2 * 4) + 4, yOffset - 10, Colors.get(-1, -1, -1, 555), 1);
+			}
 		}
 	}
 	

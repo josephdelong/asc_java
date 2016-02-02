@@ -19,7 +19,7 @@ public class BaseSolidTile extends BaseTile {
 	}
 
 	public void render(Screen screen, Level level, int x, int y) {
-		screen.render(x, y, tileId, tileColor, 0x00, 1);
+		screen.render(Screen.TILE_SIZE_TERRAIN, x, y, tileId, tileColor, 0x00, 1);
 	}
 
 }
