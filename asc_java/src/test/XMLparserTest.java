@@ -16,6 +16,7 @@ import dataTypes.Unit;
 import dataTypes.UnitType;
 import exceptions.ASCException;
 
+@SuppressWarnings("unused")
 public class XMLparserTest {
 
 	public static void main(String[] args) {

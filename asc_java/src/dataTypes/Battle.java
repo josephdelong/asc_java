@@ -660,6 +660,7 @@ public class Battle extends DataType {
 	 * @param unitId
 	 * @param turnNumber
 	 */
+	@SuppressWarnings("unused")
 	private void addTurn(int unitId, int turnNumber) {
 		ArrayList<BattleLog> temp = this.getTurns();
 		if(turns == null || turns.equals(null) || turns.isEmpty() || turns.size() == 0) {

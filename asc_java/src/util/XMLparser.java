@@ -191,7 +191,6 @@ public class XMLparser extends DefaultHandler {
 			try {
 				dataMember.parse(field, attribute, temp);
 			} catch (ASCException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
